@@ -5,6 +5,12 @@ import { Ban, CheckCircle, Edit, Eye, Loader2, Plus, Search, Trash2 } from 'luci
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -200,7 +206,7 @@ export const TenantsListPage = () => {
     <div className="p-6 space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Clientes (Tenants)</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">Clientes</h1>
           <p className="text-sm text-gray-500">Gestão completa dos clientes e seus recursos.</p>
         </div>
         <Button onClick={() => navigate('/admin-master/tenants/new')} className="flex items-center gap-2">
@@ -318,49 +324,86 @@ export const TenantsListPage = () => {
                   {tenant.stats?.storageUsedGB ?? 0}GB / {tenant.limits.storageGB}GB
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div className="flex items-center justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => navigate(`/admin-master/tenants/${tenant.id}`)}
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => navigate(`/admin-master/tenants/${tenant.id}/edit`)}
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    {tenant.status === TenantStatus.ACTIVE ? (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleChangeStatus(tenant.id, TenantStatus.SUSPENDED)}
-                        disabled={changeStatusMutation.isPending}
-                      >
-                        <Ban className="w-4 h-4 text-orange-600" />
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleChangeStatus(tenant.id, TenantStatus.ACTIVE)}
-                        disabled={changeStatusMutation.isPending}
-                      >
-                        <CheckCircle className="w-4 h-4 text-green-600" />
-                      </Button>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(tenant.id, tenant.name)}
-                      disabled={deleteMutation.isPending}
-                    >
-                      <Trash2 className="w-4 h-4 text-red-600" />
-                    </Button>
-                  </div>
+                  <TooltipProvider>
+                    <div className="flex items-center justify-end gap-2">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => navigate(`/admin-master/tenants/${tenant.id}`)}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Visualizar</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => navigate(`/admin-master/tenants/${tenant.id}/edit`)}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Editar</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      {tenant.status === TenantStatus.ACTIVE ? (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleChangeStatus(tenant.id, TenantStatus.SUSPENDED)}
+                              disabled={changeStatusMutation.isPending}
+                            >
+                              <Ban className="w-4 h-4 text-orange-600" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Suspender</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleChangeStatus(tenant.id, TenantStatus.ACTIVE)}
+                              disabled={changeStatusMutation.isPending}
+                            >
+                              <CheckCircle className="w-4 h-4 text-green-600" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Ativar</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(tenant.id, tenant.name)}
+                            disabled={deleteMutation.isPending}
+                          >
+                            <Trash2 className="w-4 h-4 text-red-600" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Remover</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                  </TooltipProvider>
                 </td>
               </tr>
             ))}
