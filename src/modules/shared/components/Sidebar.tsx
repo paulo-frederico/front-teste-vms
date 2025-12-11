@@ -27,7 +27,7 @@ type AdminNavItem = {
 const adminNavItems: AdminNavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/admin/dashboard' },
   {
-    label: 'Clientes / Tenants',
+    label: 'Clientes',
     icon: Building2,
     to: '/admin/tenants',
     roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
