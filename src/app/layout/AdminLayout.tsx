@@ -28,7 +28,7 @@ export function AdminLayout() {
     <div className="flex min-h-screen bg-brand-pale text-foreground">
       <aside
         className={cn(
-          'hidden flex-shrink-0 flex-col overflow-hidden bg-brand-deep text-white transition-[width] duration-300 lg:flex',
+          'fixed left-0 top-0 hidden h-screen flex-shrink-0 flex-col overflow-y-auto bg-brand-deep text-white transition-[width] duration-300 lg:flex',
           isSidebarExpanded ? 'w-64' : 'w-20',
         )}
         onMouseEnter={() => setIsSidebarExpanded(true)}
@@ -37,7 +37,10 @@ export function AdminLayout() {
         <Sidebar role={user.role} isCompact={!isSidebarExpanded} />
       </aside>
 
-      <div className="flex w-full flex-col">
+      <div className={cn(
+        'flex w-full flex-col transition-all duration-300',
+        isSidebarExpanded ? 'lg:ml-64' : 'lg:ml-20'
+      )}>
         <Header
           user={user}
           sectionTitle="Portal Operacional"
