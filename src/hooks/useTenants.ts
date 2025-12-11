@@ -8,13 +8,21 @@ import {
 } from '@/services/api/tenants.service'
 import type { TenantStatus } from '@/modules/shared/types/tenant'
 
-export const useTenants = (filters?: TenantFilters) =>
-  useQuery({
+export const useTenants = (filters?: TenantFilters) => {
+  console.log('🎣 [useTenants] Hook chamado com filtros:', filters)
+  
+  return useQuery({
     queryKey: ['tenants', filters],
-    queryFn: () => tenantsService.list(filters),
+    queryFn: async () => {
+      console.log('⚡ [useTenants] Executando queryFn...')
+      const result = await tenantsService.list(filters)
+      console.log('✅ [useTenants] queryFn completou:', result)
+      return result
+    },
     staleTime: 30_000,
     retry: 1, // ✅ Tentar apenas 1 vez
   })
+}
 
 export const useTenant = (id: string) =>
   useQuery({

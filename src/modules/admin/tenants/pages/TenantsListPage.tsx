@@ -16,8 +16,8 @@ import { TenantPlan, TenantStatus } from '@/modules/shared/types/tenant'
 
 interface FiltersState {
   search: string
-  status: TenantStatus | ''
-  plan: TenantPlan | ''
+  status: TenantStatus | 'ALL' | ''
+  plan: TenantPlan | 'ALL' | ''
   page: number
   limit: number
 }
@@ -43,24 +43,36 @@ const planLabels: Record<TenantPlan, string> = {
 }
 
 export const TenantsListPage = () => {
+  console.log('🏁 [TenantsListPage] Componente montado')
+  
   const navigate = useNavigate()
   const [filters, setFilters] = useState<FiltersState>({
     search: '',
-    status: '',
-    plan: '',
+    status: 'ALL' as any,
+    plan: 'ALL' as any,
     page: 1,
     limit: 10,
   })
 
   const queryFilters = {
     search: filters.search || undefined,
-    status: filters.status || undefined,
-    plan: filters.plan || undefined,
+    status: filters.status === 'ALL' || !filters.status ? undefined : (filters.status as TenantStatus),
+    plan: filters.plan === 'ALL' || !filters.plan ? undefined : (filters.plan as TenantPlan),
     page: filters.page,
     limit: filters.limit,
   }
 
+  console.log('🔧 [TenantsListPage] Filtros:', queryFilters)
+  
   const { data, isLoading, isFetching, error } = useTenants(queryFilters)
+  
+  console.log('📊 [TenantsListPage] Estado:', { 
+    isLoading, 
+    isFetching, 
+    hasError: !!error, 
+    hasData: !!data,
+    tenantsCount: data?.tenants?.length 
+  })
   const deleteMutation = useDeleteTenant()
   const changeStatusMutation = useChangeStatus()
 
@@ -215,14 +227,14 @@ export const TenantsListPage = () => {
           <Select
             value={filters.status}
             onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, status: value as TenantStatus | '', page: 1 }))
+              setFilters((prev) => ({ ...prev, status: value as any, page: 1 }))
             }
           >
             <SelectTrigger>
               <SelectValue placeholder="Todos os status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Todos os status</SelectItem>
+              <SelectItem value="ALL">Todos os status</SelectItem>
               <SelectItem value={TenantStatus.ACTIVE}>Ativo</SelectItem>
               <SelectItem value={TenantStatus.SUSPENDED}>Suspenso</SelectItem>
               <SelectItem value={TenantStatus.TRIAL}>Trial</SelectItem>
@@ -233,14 +245,14 @@ export const TenantsListPage = () => {
           <Select
             value={filters.plan}
             onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, plan: value as TenantPlan | '', page: 1 }))
+              setFilters((prev) => ({ ...prev, plan: value as any, page: 1 }))
             }
           >
             <SelectTrigger>
               <SelectValue placeholder="Todos os planos" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Todos os planos</SelectItem>
+              <SelectItem value="ALL">Todos os planos</SelectItem>
               <SelectItem value={TenantPlan.BASIC}>Básico</SelectItem>
               <SelectItem value={TenantPlan.PROFESSIONAL}>Profissional</SelectItem>
               <SelectItem value={TenantPlan.ENTERPRISE}>Enterprise</SelectItem>
