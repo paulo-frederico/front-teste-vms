@@ -1,4 +1,3 @@
-import { apiClient } from './client'
 import { TenantStatus } from '@/modules/shared/types/tenant'
 import type { Tenant, TenantPlan, TenantLimits } from '@/modules/shared/types/tenant'
 
@@ -48,86 +47,124 @@ export interface TenantListResponse {
 }
 
 class TenantsService {
+  /**
+   * ✅ USAR FIXTURES - NÃO CHAMAR API
+   */
   async list(filters?: TenantFilters): Promise<TenantListResponse> {
-    // ✅ Em DEV: usar fixtures
-    if (import.meta.env.DEV) {
-      try {
-        // Importar fixtures dinamicamente
-        const { mockTenants } = await import('@/fixtures/tenants.fixture')
+    console.log('📋 [TenantsService] Carregando lista de tenants (FIXTURES)')
 
-        let filteredTenants = [...mockTenants]
+    // ✅ SEMPRE usar fixtures (não chamar API)
+    try {
+      // Importar fixtures dinamicamente
+      const { mockTenants } = await import('@/fixtures/tenants.fixture')
 
-        // Aplicar filtros
-        if (filters?.status) {
-          filteredTenants = filteredTenants.filter((t) => t.status === filters.status)
-        }
+      console.log('✅ [TenantsService] Fixtures carregados:', mockTenants.length, 'tenants')
 
-        if (filters?.plan) {
-          filteredTenants = filteredTenants.filter((t) => t.plan === filters.plan)
-        }
+      let filteredTenants = [...mockTenants]
 
-        if (filters?.search) {
-          const searchLower = filters.search.toLowerCase()
-          filteredTenants = filteredTenants.filter(
-            (t) =>
-              t.name.toLowerCase().includes(searchLower) ||
-              t.fiscalData.cnpj.includes(filters.search!)
-          )
-        }
+      // Aplicar filtros
+      if (filters?.status) {
+        filteredTenants = filteredTenants.filter((t) => t.status === filters.status)
+        console.log(
+          '🔍 [TenantsService] Filtro status:',
+          filters.status,
+          '→',
+          filteredTenants.length,
+          'resultados'
+        )
+      }
 
-        // Paginação
-        const page = filters?.page || 1
-        const limit = filters?.limit || 10
-        const startIndex = (page - 1) * limit
-        const endIndex = startIndex + limit
-        const paginatedTenants = filteredTenants.slice(startIndex, endIndex)
+      if (filters?.plan) {
+        filteredTenants = filteredTenants.filter((t) => t.plan === filters.plan)
+        console.log(
+          '🔍 [TenantsService] Filtro plan:',
+          filters.plan,
+          '→',
+          filteredTenants.length,
+          'resultados'
+        )
+      }
 
-        return {
-          tenants: paginatedTenants,
-          total: filteredTenants.length,
-          page: page,
-          totalPages: Math.ceil(filteredTenants.length / limit),
-        }
-      } catch (error) {
-        console.error('❌ Erro ao carregar fixtures de tenants:', error)
-        // Retornar dados vazios em caso de erro
-        return {
-          tenants: [],
-          total: 0,
-          page: 1,
-          totalPages: 0,
-        }
+      if (filters?.search) {
+        const searchLower = filters.search.toLowerCase()
+        filteredTenants = filteredTenants.filter(
+          (t) =>
+            t.name.toLowerCase().includes(searchLower) ||
+            t.fiscalData.cnpj.includes(filters.search!)
+        )
+        console.log(
+          '🔍 [TenantsService] Filtro search:',
+          filters.search,
+          '→',
+          filteredTenants.length,
+          'resultados'
+        )
+      }
+
+      // Paginação
+      const page = filters?.page || 1
+      const limit = filters?.limit || 10
+      const startIndex = (page - 1) * limit
+      const endIndex = startIndex + limit
+      const paginatedTenants = filteredTenants.slice(startIndex, endIndex)
+
+      const response = {
+        tenants: paginatedTenants,
+        total: filteredTenants.length,
+        page: page,
+        totalPages: Math.ceil(filteredTenants.length / limit),
+      }
+
+      console.log(
+        '✅ [TenantsService] Resposta:',
+        response.tenants.length,
+        'tenants (página',
+        page,
+        'de',
+        response.totalPages,
+        ')'
+      )
+
+      return response
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao carregar fixtures:', error)
+
+      // Retornar dados vazios em caso de erro
+      return {
+        tenants: [],
+        total: 0,
+        page: 1,
+        totalPages: 0,
       }
     }
-
-    // ✅ Em PROD: chamar API real
-    return apiClient.get<TenantListResponse>('/admin-master/tenants', {
-      params: filters,
-    })
   }
 
   async getById(id: string): Promise<Tenant> {
-    if (import.meta.env.DEV) {
-      try {
-        const { mockTenants } = await import('@/fixtures/tenants.fixture')
-        const tenant = mockTenants.find((t) => t.id === id)
-        if (!tenant) {
-          throw new Error(`Tenant ${id} não encontrado`)
-        }
-        return tenant
-      } catch (error) {
-        console.error('❌ Erro ao buscar tenant:', error)
-        throw error
-      }
-    }
+    console.log('🔍 [TenantsService] Buscando tenant por ID (FIXTURES):', id)
 
-    return apiClient.get<Tenant>(`/admin-master/tenants/${id}`)
+    try {
+      const { mockTenants } = await import('@/fixtures/tenants.fixture')
+      console.log('✅ [TenantsService] Fixtures carregados para busca')
+
+      const tenant = mockTenants.find((t) => t.id === id)
+
+      if (!tenant) {
+        console.error('❌ [TenantsService] Tenant não encontrado:', id)
+        throw new Error(`Tenant ${id} não encontrado`)
+      }
+
+      console.log('✅ [TenantsService] Tenant encontrado:', tenant.name)
+      return tenant
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao buscar tenant:', error)
+      throw error
+    }
   }
 
   async create(data: CreateTenantDTO): Promise<Tenant> {
-    if (import.meta.env.DEV) {
-      console.info('🔧 DEV: Simulando criação de tenant', data)
-      // Simular criação retornando um tenant mockado
+    console.log('➕ [TenantsService] Criando novo tenant (FIXTURES):', data.name)
+
+    try {
       const newTenant: Tenant = {
         id: Date.now().toString(),
         name: data.name,
@@ -148,105 +185,155 @@ class TenantsService {
           eventsLast30Days: 0,
         },
       }
-      return newTenant
-    }
 
-    return apiClient.post<Tenant>('/admin-master/tenants', data)
+      console.log('✅ [TenantsService] Tenant criado com sucesso:', newTenant.id)
+      return newTenant
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao criar tenant:', error)
+      throw error
+    }
   }
 
   async update(id: string, data: UpdateTenantDTO): Promise<Tenant> {
-    if (import.meta.env.DEV) {
-      console.info('🔧 DEV: Simulando atualização de tenant', id, data)
+    console.log('✏️ [TenantsService] Atualizando tenant (FIXTURES):', id)
+
+    try {
       const { mockTenants } = await import('@/fixtures/tenants.fixture')
       const tenant = mockTenants.find((t) => t.id === id)
+
       if (!tenant) {
+        console.error('❌ [TenantsService] Tenant não encontrado para atualizar:', id)
         throw new Error(`Tenant ${id} não encontrado`)
       }
-      return {
+
+      const updatedTenant = {
         ...tenant,
         ...data,
         updatedAt: new Date().toISOString(),
       }
-    }
 
-    return apiClient.put<Tenant>(`/admin-master/tenants/${id}`, data)
+      console.log('✅ [TenantsService] Tenant atualizado:', updatedTenant.name)
+      return updatedTenant
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao atualizar tenant:', error)
+      throw error
+    }
   }
 
   async changeStatus(id: string, status: TenantStatus): Promise<Tenant> {
-    if (import.meta.env.DEV) {
-      console.info('🔧 DEV: Simulando mudança de status', id, status)
+    console.log('🔄 [TenantsService] Alterando status do tenant (FIXTURES):', id, '→', status)
+
+    try {
       const { mockTenants } = await import('@/fixtures/tenants.fixture')
       const tenant = mockTenants.find((t) => t.id === id)
+
       if (!tenant) {
+        console.error('❌ [TenantsService] Tenant não encontrado para mudar status:', id)
         throw new Error(`Tenant ${id} não encontrado`)
       }
-      return {
+
+      const updatedTenant = {
         ...tenant,
         status,
         updatedAt: new Date().toISOString(),
       }
-    }
 
-    return apiClient.patch<Tenant>(`/admin-master/tenants/${id}/status`, { status })
+      console.log('✅ [TenantsService] Status alterado:', tenant.name, '→', status)
+      return updatedTenant
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao alterar status:', error)
+      throw error
+    }
   }
 
   async delete(id: string): Promise<void> {
-    if (import.meta.env.DEV) {
-      console.info('🔧 DEV: Simulando remoção de tenant', id)
-      return
-    }
+    console.log('🗑️ [TenantsService] Removendo tenant (FIXTURES):', id)
 
-    return apiClient.delete(`/admin-master/tenants/${id}`)
+    try {
+      const { mockTenants } = await import('@/fixtures/tenants.fixture')
+      const tenant = mockTenants.find((t) => t.id === id)
+
+      if (tenant) {
+        console.log('✅ [TenantsService] Tenant removido:', tenant.name)
+      } else {
+        console.warn('⚠️ [TenantsService] Tenant não encontrado para remoção:', id)
+      }
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao remover tenant:', error)
+      throw error
+    }
   }
 
   async getStats(id: string): Promise<any> {
-    if (import.meta.env.DEV) {
-      return {
+    console.log('📊 [TenantsService] Buscando estatísticas do tenant (FIXTURES):', id)
+
+    try {
+      const stats = {
         activeCameras: 24,
         sites: 3,
         users: 12,
         storageUsedGB: 245,
         eventsLast30Days: 1523,
       }
-    }
 
-    return apiClient.get(`/admin-master/tenants/${id}/stats`)
+      console.log('✅ [TenantsService] Estatísticas carregadas:', stats)
+      return stats
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao buscar estatísticas:', error)
+      throw error
+    }
   }
 
   async updateLimits(id: string, limits: TenantLimits): Promise<Tenant> {
-    if (import.meta.env.DEV) {
-      console.info('🔧 DEV: Simulando atualização de limites', id, limits)
+    console.log('⚙️ [TenantsService] Atualizando limites do tenant (FIXTURES):', id)
+
+    try {
       const { mockTenants } = await import('@/fixtures/tenants.fixture')
       const tenant = mockTenants.find((t) => t.id === id)
+
       if (!tenant) {
+        console.error('❌ [TenantsService] Tenant não encontrado para atualizar limites:', id)
         throw new Error(`Tenant ${id} não encontrado`)
       }
-      return {
+
+      const updatedTenant = {
         ...tenant,
         limits,
         updatedAt: new Date().toISOString(),
       }
-    }
 
-    return apiClient.put<Tenant>(`/admin-master/tenants/${id}/limits`, limits)
+      console.log('✅ [TenantsService] Limites atualizados:', tenant.name, limits)
+      return updatedTenant
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao atualizar limites:', error)
+      throw error
+    }
   }
 
   async changePlan(id: string, plan: TenantPlan): Promise<Tenant> {
-    if (import.meta.env.DEV) {
-      console.info('🔧 DEV: Simulando mudança de plano', id, plan)
+    console.log('💳 [TenantsService] Alterando plano do tenant (FIXTURES):', id, '→', plan)
+
+    try {
       const { mockTenants } = await import('@/fixtures/tenants.fixture')
       const tenant = mockTenants.find((t) => t.id === id)
+
       if (!tenant) {
+        console.error('❌ [TenantsService] Tenant não encontrado para mudar plano:', id)
         throw new Error(`Tenant ${id} não encontrado`)
       }
-      return {
+
+      const updatedTenant = {
         ...tenant,
         plan,
         updatedAt: new Date().toISOString(),
       }
-    }
 
-    return apiClient.patch<Tenant>(`/admin-master/tenants/${id}/plan`, { plan })
+      console.log('✅ [TenantsService] Plano alterado:', tenant.name, '→', plan)
+      return updatedTenant
+    } catch (error) {
+      console.error('❌ [TenantsService] Erro ao alterar plano:', error)
+      throw error
+    }
   }
 }
 
