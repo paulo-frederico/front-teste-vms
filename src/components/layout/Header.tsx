@@ -32,8 +32,8 @@ const roleAccent: Record<SystemRole, string> = {
   [SystemRole.ADMIN]: 'bg-brand-primary/10 text-brand-primary',
   [SystemRole.TECHNICIAN]: 'bg-sky-100 text-sky-600',
   [SystemRole.CLIENT_MASTER]: 'bg-emerald-100 text-emerald-600',
-  [SystemRole.CLIENT_MANAGER]: 'bg-amber-100 text-amber-600',
-  [SystemRole.CLIENT_VIEWER]: 'bg-slate-200 text-slate-600',
+  [SystemRole.MANAGER]: 'bg-amber-100 text-amber-600',
+  [SystemRole.VIEWER]: 'bg-slate-200 text-slate-600',
 }
 
 export function Header({

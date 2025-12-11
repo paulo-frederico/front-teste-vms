@@ -60,7 +60,7 @@ const defaultPermissions: Record<UserRole, UserPermission> = {
     canManageIA: true,
     canManageUsers: true,
   },
-  [UserRole.CLIENT_MANAGER]: {
+  [UserRole.MANAGER]: {
     canViewLive: true,
     canViewRecordings: true,
     canExportVideos: true,
@@ -68,7 +68,7 @@ const defaultPermissions: Record<UserRole, UserPermission> = {
     canManageIA: false,
     canManageUsers: false,
   },
-  [UserRole.CLIENT_VIEWER]: {
+  [UserRole.VIEWER]: {
     canViewLive: true,
     canViewRecordings: true,
     canExportVideos: false,
@@ -86,11 +86,11 @@ const baseFormData: Omit<User, 'id' | 'createdAt' | 'lastLoginAt'> = {
   name: '',
   email: '',
   phone: '',
-  role: UserRole.CLIENT_VIEWER,
+  role: UserRole.VIEWER,
   status: 'ACTIVE',
   tenantId: undefined,
   tenantName: undefined,
-  permissions: getDefaultPermissions(UserRole.CLIENT_VIEWER),
+  permissions: getDefaultPermissions(UserRole.VIEWER),
   scope: undefined,
 }
 
@@ -152,20 +152,20 @@ export function UserForm({
         UserRole.ADMIN,
         UserRole.TECHNICIAN,
         UserRole.CLIENT_MASTER,
-        UserRole.CLIENT_MANAGER,
-        UserRole.CLIENT_VIEWER,
+        UserRole.MANAGER,
+        UserRole.VIEWER,
       ]
     }
     if (currentUserRole === UserRole.ADMIN) {
-      return [UserRole.ADMIN, UserRole.TECHNICIAN, UserRole.CLIENT_MASTER, UserRole.CLIENT_MANAGER, UserRole.CLIENT_VIEWER]
+      return [UserRole.ADMIN, UserRole.TECHNICIAN, UserRole.CLIENT_MASTER, UserRole.MANAGER, UserRole.VIEWER]
     }
     if (currentUserRole === UserRole.CLIENT_MASTER) {
-      return [UserRole.CLIENT_MASTER, UserRole.CLIENT_MANAGER, UserRole.CLIENT_VIEWER]
+      return [UserRole.CLIENT_MASTER, UserRole.MANAGER, UserRole.VIEWER]
     }
-    if (currentUserRole === UserRole.CLIENT_MANAGER) {
-      return [UserRole.CLIENT_MANAGER, UserRole.CLIENT_VIEWER]
+    if (currentUserRole === UserRole.MANAGER) {
+      return [UserRole.MANAGER, UserRole.VIEWER]
     }
-    return [UserRole.CLIENT_VIEWER]
+    return [UserRole.VIEWER]
   }, [currentUserRole])
 
   const availableTenantOptions = useMemo(() => {

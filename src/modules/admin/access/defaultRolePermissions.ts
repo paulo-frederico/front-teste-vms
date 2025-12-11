@@ -93,8 +93,8 @@ export const DEFAULT_ROLE_PERMISSIONS: RoleAccessConfig[] = [
     },
   },
   {
-    role: SystemRole.CLIENT_MANAGER,
-    label: ROLE_LABELS[SystemRole.CLIENT_MANAGER],
+    role: SystemRole.MANAGER,
+    label: ROLE_LABELS[SystemRole.MANAGER],
     description: 'Gestão de setores específicos com acesso limitado.',
     scope: 'SECTOR',
     permissions: {
@@ -115,8 +115,8 @@ export const DEFAULT_ROLE_PERMISSIONS: RoleAccessConfig[] = [
     },
   },
   {
-    role: SystemRole.CLIENT_VIEWER,
-    label: ROLE_LABELS[SystemRole.CLIENT_VIEWER],
+    role: SystemRole.VIEWER,
+    label: ROLE_LABELS[SystemRole.VIEWER],
     description: 'Acesso somente leitura às transmissões autorizadas.',
     scope: 'VIEW_ONLY',
     permissions: {

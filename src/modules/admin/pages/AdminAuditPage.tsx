@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { AuditActionBadge } from '@/modules/admin/audit/components/AuditActionBadge'
 import { AuditEventDetailsDrawer } from '@/modules/admin/audit/components/AuditEventDetailsDrawer'
@@ -14,7 +14,23 @@ import {
 } from '@/modules/admin/audit/mockAuditEvents'
 import { AuditSeverityBadge } from '@/modules/admin/audit/components/AuditSeverityBadge'
 import type { SystemRole } from '@/modules/shared/types/auth'
-import { useDevData } from '@/hooks/useDevData'
+type AuditFixturesModule = typeof import('@/fixtures')
+
+let loadAuditFixtures: () => Promise<AuditFixturesModule>
+
+if (import.meta.env.DEV) {
+  let auditFixturesPromise: Promise<AuditFixturesModule> | null = null
+  loadAuditFixtures = async () => {
+    if (!auditFixturesPromise) {
+      auditFixturesPromise = import('@/fixtures')
+    }
+    return auditFixturesPromise
+  }
+} else {
+  loadAuditFixtures = async () => {
+    throw new Error('Fixtures não estão disponíveis em produção')
+  }
+}
 
 const DATE_RANGE_MS: Record<Exclude<AuditDateRange, 'custom'>, number> = {
   '24h': 24 * 60 * 60 * 1000,
@@ -32,13 +48,29 @@ export function AdminAuditPage() {
   const [selectedEvent, setSelectedEvent] = useState<AuditEvent | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
-  const loadAuditFixtures = useCallback(async () => {
-    const module = await import('@/fixtures')
-    return module.mockAuditEvents
-  }, [])
+  const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([])
 
-  const devAuditEvents = useDevData<AuditEvent>(loadAuditFixtures)
-  const auditEvents = import.meta.env.DEV ? devAuditEvents : []
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      return
+    }
+
+    let isMounted = true
+
+    loadAuditFixtures()
+      .then(({ mockAuditEvents }) => {
+        if (isMounted) {
+          setAuditEvents(mockAuditEvents)
+        }
+      })
+      .catch((error) => {
+        console.error('❌ Erro ao carregar fixtures de auditoria:', error)
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   const stats = useMemo(() => buildAuditKpis(auditEvents, AUDIT_REFERENCE_TIMESTAMP), [auditEvents])
   const tenantOptions = useMemo(() => getUniqueAuditTenants(auditEvents), [auditEvents])

@@ -5,6 +5,7 @@ import { KpiCard } from '@/modules/admin/dashboard/components/KpiCard'
 import { StatusDistribution } from '@/modules/admin/dashboard/components/StatusDistribution'
 import { StorageDonutChart } from '@/modules/admin/dashboard/components/StorageDonutChart'
 import { TrendCard } from '@/modules/admin/dashboard/components/TrendCard'
+import { AdminMasterDashboard } from '@/modules/admin/dashboard/pages/AdminMasterDashboard'
 import { useAuth } from '@/contexts/AuthContext'
 import { SystemRole } from '@/modules/shared/types/auth'
 
@@ -79,6 +80,11 @@ export function AdminDashboardPage() {
   }
 
   const isPlatformAdmin = user.role === SystemRole.ADMIN_MASTER || user.role === SystemRole.ADMIN
+
+  if (user.role === SystemRole.ADMIN_MASTER) {
+    return <AdminMasterDashboard />
+  }
+
   const subtitle = isPlatformAdmin
     ? 'Visão geral consolidada de todos os clientes.'
     : `Visão geral do cliente: ${user.tenantName || 'Ambiente dedicado'}`

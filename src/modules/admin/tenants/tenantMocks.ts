@@ -114,8 +114,6 @@ const tenantStore: Tenant[] = [
   },
 ]
 
-export const TENANT_MOCKS = tenantStore
-
 function generateTenantId() {
   return `tenant-${Math.random().toString(36).slice(2, 8)}-${Date.now().toString(36)}`
 }

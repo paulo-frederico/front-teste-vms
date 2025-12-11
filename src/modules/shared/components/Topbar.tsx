@@ -17,8 +17,8 @@ const roleBadgeClass: Record<SystemRole, string> = {
   [SystemRole.ADMIN]: 'border-brand-primary/30 bg-brand-primary/5 text-brand-primary',
   [SystemRole.TECHNICIAN]: 'border-sky-400/40 bg-sky-50 text-sky-600',
   [SystemRole.CLIENT_MASTER]: 'border-emerald-400/50 bg-emerald-100 text-emerald-700',
-  [SystemRole.CLIENT_MANAGER]: 'border-amber-300/50 bg-amber-50 text-amber-700',
-  [SystemRole.CLIENT_VIEWER]: 'border-slate-300 bg-slate-100 text-slate-600',
+  [SystemRole.MANAGER]: 'border-amber-300/50 bg-amber-50 text-amber-700',
+  [SystemRole.VIEWER]: 'border-slate-300 bg-slate-100 text-slate-600',
 }
 
 export function Topbar({ user, onToggleSidebar, onLogout }: TopbarProps) {

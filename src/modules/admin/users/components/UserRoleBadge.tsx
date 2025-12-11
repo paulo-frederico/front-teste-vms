@@ -7,8 +7,8 @@ const ROLE_STYLES: Record<SystemRole, string> = {
   [SystemRole.ADMIN]: 'bg-violet-100 text-violet-800 border border-violet-200',
   [SystemRole.TECHNICIAN]: 'bg-amber-100 text-amber-800 border border-amber-200',
   [SystemRole.CLIENT_MASTER]: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
-  [SystemRole.CLIENT_MANAGER]: 'bg-cyan-100 text-cyan-800 border border-cyan-200',
-  [SystemRole.CLIENT_VIEWER]: 'bg-slate-100 text-slate-700 border border-slate-200',
+  [SystemRole.MANAGER]: 'bg-cyan-100 text-cyan-800 border border-cyan-200',
+  [SystemRole.VIEWER]: 'bg-slate-100 text-slate-700 border border-slate-200',
 }
 
 export function UserRoleBadge({ role, className }: { role: SystemRole; className?: string }) {

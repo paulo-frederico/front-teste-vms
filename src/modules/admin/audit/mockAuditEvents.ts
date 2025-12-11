@@ -547,7 +547,7 @@ export const mockAuditEvents: AuditEvent[] = [
     timestamp: hoursAgo(19),
     actorName: 'Campus Digital Bot',
     actorEmail: 'bot@campusdigital.com',
-    actorRole: SystemRole.CLIENT_MANAGER,
+    actorRole: SystemRole.MANAGER,
     actionType: 'CAMERA_CREATED',
     severity: 'medium',
     description: 'API adicionou câmera outdoor norte.',

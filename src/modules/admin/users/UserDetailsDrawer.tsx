@@ -26,8 +26,8 @@ const roleBadgeClass: Record<UserRole, string> = {
   [UserRole.ADMIN]: 'bg-purple-50 text-purple-700 border border-purple-100',
   [UserRole.TECHNICIAN]: 'bg-blue-100 text-blue-700 border border-blue-200',
   [UserRole.CLIENT_MASTER]: 'bg-emerald-100 text-emerald-700 border border-emerald-200',
-  [UserRole.CLIENT_MANAGER]: 'bg-sky-100 text-sky-700 border border-sky-200',
-  [UserRole.CLIENT_VIEWER]: 'bg-slate-100 text-slate-600 border border-slate-200',
+  [UserRole.MANAGER]: 'bg-sky-100 text-sky-700 border border-sky-200',
+  [UserRole.VIEWER]: 'bg-slate-100 text-slate-600 border border-slate-200',
 }
 
 export type UserDetailsDrawerProps = {

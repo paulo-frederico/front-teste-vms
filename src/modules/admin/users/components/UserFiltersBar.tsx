@@ -21,8 +21,8 @@ const ROLE_OPTIONS: Array<{ value: SystemRole | 'all'; label: string }> = [
   { value: SystemRole.ADMIN, label: ROLE_LABELS[SystemRole.ADMIN] },
   { value: SystemRole.TECHNICIAN, label: ROLE_LABELS[SystemRole.TECHNICIAN] },
   { value: SystemRole.CLIENT_MASTER, label: ROLE_LABELS[SystemRole.CLIENT_MASTER] },
-  { value: SystemRole.CLIENT_MANAGER, label: ROLE_LABELS[SystemRole.CLIENT_MANAGER] },
-  { value: SystemRole.CLIENT_VIEWER, label: ROLE_LABELS[SystemRole.CLIENT_VIEWER] },
+  { value: SystemRole.MANAGER, label: ROLE_LABELS[SystemRole.MANAGER] },
+  { value: SystemRole.VIEWER, label: ROLE_LABELS[SystemRole.VIEWER] },
 ]
 
 export type UserFiltersBarProps = {

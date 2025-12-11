@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { LocationDetailsDrawer } from '@/modules/admin/locations/components/LocationDetailsDrawer'
@@ -9,7 +9,23 @@ import { CameraDetailsDrawer } from '@/modules/admin/locations/components/Camera
 import type { AdminCamera, AdminCameraStatus } from '@/modules/admin/locations/mockCameras'
 import type { AdminLocation } from '@/modules/admin/locations/mockLocations'
 import { buildLocationKpiStats } from '@/modules/admin/locations/mockLocations'
-import { useDevData } from '@/hooks/useDevData'
+type LocationsFixturesModule = typeof import('@/fixtures')
+
+let loadLocationsFixtures: () => Promise<LocationsFixturesModule>
+
+if (import.meta.env.DEV) {
+  let locationsFixturesPromise: Promise<LocationsFixturesModule> | null = null
+  loadLocationsFixtures = async () => {
+    if (!locationsFixturesPromise) {
+      locationsFixturesPromise = import('@/fixtures')
+    }
+    return locationsFixturesPromise
+  }
+} else {
+  loadLocationsFixtures = async () => {
+    throw new Error('Fixtures não estão disponíveis em produção')
+  }
+}
 
 export function AdminLocationsPage() {
   const [search, setSearch] = useState('')
@@ -22,21 +38,31 @@ export function AdminLocationsPage() {
   const [selectedCamera, setSelectedCamera] = useState<AdminCamera | null>(null)
   const [isCameraDrawerOpen, setIsCameraDrawerOpen] = useState(false)
 
-  const loadLocationsFixtures = useCallback(async () => {
-    const module = await import('@/fixtures')
-    return module.mockLocations
+  const [locations, setLocations] = useState<AdminLocation[]>([])
+  const [cameras, setCameras] = useState<AdminCamera[]>([])
+
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      return
+    }
+
+    let isMounted = true
+
+    loadLocationsFixtures()
+      .then(({ mockLocations, mockCameras }) => {
+        if (isMounted) {
+          setLocations(mockLocations as AdminLocation[])
+          setCameras(mockCameras as AdminCamera[])
+        }
+      })
+      .catch((error) => {
+        console.error('❌ Erro ao carregar fixtures de locais:', error)
+      })
+
+    return () => {
+      isMounted = false
+    }
   }, [])
-
-  const loadCamerasFixtures = useCallback(async () => {
-    const module = await import('@/fixtures')
-    return module.mockCameras
-  }, [])
-
-  const devLocations = useDevData<AdminLocation>(loadLocationsFixtures)
-  const devCameras = useDevData<AdminCamera>(loadCamerasFixtures)
-
-  const locations = import.meta.env.DEV ? devLocations : []
-  const cameras = import.meta.env.DEV ? devCameras : []
 
   const tenantOptions = useMemo(() => {
     const unique = new Map<string, string>()

@@ -1,6 +1,6 @@
 import { defineConfig, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'node:path'
+import path from 'path'
 import type { InlineConfig } from 'vitest'
 
 interface ViteConfigWithVitest extends UserConfig {
@@ -19,7 +19,7 @@ const config: ViteConfigWithVitest = {
     rollupOptions: {
       external: (id) => {
         if (process.env.NODE_ENV === 'production') {
-          return id.includes('/fixtures/')
+          return id.includes('/fixtures/') || id.includes('\\fixtures\\')
         }
         return false
       },

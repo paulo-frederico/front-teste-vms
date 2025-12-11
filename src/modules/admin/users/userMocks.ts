@@ -1,8 +1,8 @@
+import { mockTenants } from '@/fixtures/tenants.fixture'
 import { UserRole } from '@/modules/shared/types/auth'
-import { TENANT_MOCKS } from '@/modules/admin/tenants/tenantMocks'
 import type { User, UserStatus } from '@/modules/admin/users/userTypes'
 
-const tenantMap = Object.fromEntries(TENANT_MOCKS.map((tenant) => [tenant.id, tenant.name]))
+const tenantMap = Object.fromEntries(mockTenants.map((tenant) => [tenant.id, tenant.name]))
 
 const userStore: User[] = [
   {
@@ -118,7 +118,7 @@ const userStore: User[] = [
     id: 'user-client-hq-1',
     name: 'Patrícia Nunes',
     email: 'patricia.nunes@vidaplena.org',
-    role: UserRole.CLIENT_MANAGER,
+    role: UserRole.MANAGER,
     status: 'ACTIVE',
     tenantId: 'tenant-vida-plena',
     tenantName: tenantMap['tenant-vida-plena'],
@@ -136,7 +136,7 @@ const userStore: User[] = [
     id: 'user-client-hq-2',
     name: 'Daniel Souza',
     email: 'daniel.souza@colegiohorizonte.edu',
-    role: UserRole.CLIENT_VIEWER,
+    role: UserRole.VIEWER,
     status: 'INVITED',
     tenantId: 'tenant-horizonte-edu',
     tenantName: tenantMap['tenant-horizonte-edu'],
@@ -154,7 +154,7 @@ const userStore: User[] = [
     id: 'user-client-retail-1',
     name: 'Lívia Costa',
     email: 'livia.costa@retailpark.com',
-    role: UserRole.CLIENT_VIEWER,
+    role: UserRole.VIEWER,
     status: 'ACTIVE',
     tenantId: 'tenant-retail-park',
     tenantName: tenantMap['tenant-retail-park'],

@@ -1,8 +1,7 @@
-import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { AdminLayout } from '@/app/layout/AdminLayout'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
-import { AuthProvider } from '@/contexts/AuthContext'
 import { LoginPage } from '@/modules/auth/pages/LoginPage'
 import { AdminDashboardPage } from '@/modules/admin/pages/AdminDashboardPage'
 import { AdminTenantsPage } from '@/modules/admin/pages/AdminTenantsPage'
@@ -15,66 +14,50 @@ import { AdminSettingsPage } from '@/modules/admin/pages/AdminSettingsPage'
 import { AdminAuditPage } from '@/modules/admin/pages/AdminAuditPage'
 import { SystemRole } from '@/modules/shared/types/auth'
 
-function AppProviders() {
+export function AppRoutes() {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
-  )
-}
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
 
-export const appRouter = createBrowserRouter([
-  {
-    element: <AppProviders />,
-    children: [
-      {
-        path: '/',
-        element: <Navigate to="/admin/dashboard" replace />,
-      },
-      {
-        path: '/login',
-        element: <LoginPage />,
-      },
-      {
-        path: '/admin',
-        element: (
-          <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER, SystemRole.ADMIN, SystemRole.CLIENT_MASTER]}>
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute
+            allowedRoles={[SystemRole.ADMIN_MASTER, SystemRole.ADMIN, SystemRole.CLIENT_MASTER]}
+          >
             <AdminLayout />
           </ProtectedRoute>
-        ),
-        children: [
-          { index: true, element: <Navigate to="dashboard" replace /> },
-          { path: 'dashboard', element: <AdminDashboardPage /> },
-          { path: 'tenants', element: <AdminTenantsPage /> },
-          { path: 'users', element: <AdminUsersPage /> },
-          {
-            path: 'access-levels',
-            element: (
-              <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
-                <AdminAccessLevelsPage />
-              </ProtectedRoute>
-            ),
-          },
-          { path: 'cameras', element: <AdminLocationsPage /> },
-          { path: 'ai-alerts', element: <AdminAiAlertsPage /> },
-          {
-            path: 'audit',
-            element: (
-              <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
-                <AdminAuditPage />
-              </ProtectedRoute>
-            ),
-          },
-          { path: 'analytics-notifications', element: <Navigate to="ai-alerts" replace /> },
-          { path: 'reports', element: <AdminReportsPage /> },
-          { path: 'settings', element: <AdminSettingsPage /> },
-        ],
-      },
-      {
-        path: '*',
-        element: <Navigate to="/admin/dashboard" replace />,
-      },
-    ],
-  },
-  // TODO: adicionar rotas protegidas específicas para técnicos (/technician/*) e clientes finais (/client/*)
-])
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboardPage />} />
+        <Route path="tenants" element={<AdminTenantsPage />} />
+        <Route path="users" element={<AdminUsersPage />} />
+        <Route
+          path="access-levels"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <AdminAccessLevelsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="cameras" element={<AdminLocationsPage />} />
+        <Route path="ai-alerts" element={<AdminAiAlertsPage />} />
+        <Route
+          path="audit"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <AdminAuditPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="analytics-notifications" element={<Navigate to="ai-alerts" replace />} />
+        <Route path="reports" element={<AdminReportsPage />} />
+        <Route path="settings" element={<AdminSettingsPage />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+    </Routes>
+  )
+}

@@ -1,5 +1,5 @@
+import { mockTenants } from '@/fixtures/tenants.fixture'
 import { SystemRole } from '@/modules/shared/types/auth'
-import { TENANT_MOCKS } from '@/modules/admin/tenants/mockTenants'
 
 export type AdminUserStatus = 'active' | 'suspended' | 'pending' | 'invited'
 
@@ -15,7 +15,7 @@ export type AdminUserRow = {
   lastAccessAt?: string
 }
 
-const tenantNameMap = new Map(TENANT_MOCKS.map((tenant) => [tenant.id, tenant.name]))
+const tenantNameMap = new Map(mockTenants.map((tenant) => [tenant.id, tenant.name]))
 
 const resolveTenantName = (tenantId: string) => tenantNameMap.get(tenantId) ?? 'Tenant não identificado'
 
@@ -79,7 +79,7 @@ export const mockUsers: AdminUserRow[] = [
     id: 'usr-006',
     name: 'Beatriz Andrade',
     email: 'beatriz.andrade@vidaplena.org',
-    role: SystemRole.CLIENT_MANAGER,
+    role: SystemRole.MANAGER,
     status: 'active',
     tenantId: 'tnt-003',
     tenantName: resolveTenantName('tnt-003'),
@@ -90,7 +90,7 @@ export const mockUsers: AdminUserRow[] = [
     id: 'usr-007',
     name: 'Daniel Souza',
     email: 'daniel.souza@colegiohorizonte.edu',
-    role: SystemRole.CLIENT_VIEWER,
+    role: SystemRole.VIEWER,
     status: 'invited',
     tenantId: 'tnt-004',
     tenantName: resolveTenantName('tnt-004'),
@@ -111,7 +111,7 @@ export const mockUsers: AdminUserRow[] = [
     id: 'usr-009',
     name: 'Lívia Costa',
     email: 'livia.costa@retailpark.com',
-    role: SystemRole.CLIENT_VIEWER,
+    role: SystemRole.VIEWER,
     status: 'pending',
     tenantId: 'tnt-002',
     tenantName: resolveTenantName('tnt-002'),

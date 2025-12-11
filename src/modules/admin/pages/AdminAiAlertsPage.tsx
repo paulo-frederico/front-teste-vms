@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { AiAlertsKpisHeader } from '@/modules/admin/ai-alerts/components/AiAlertsKpisHeader'
@@ -15,24 +15,50 @@ import {
   type AiEvent
 } from '@/modules/admin/ai-alerts/mockAiEvents'
 import type { AlertRule } from '@/modules/admin/ai-alerts/mockAlertRules'
-import { useDevData } from '@/hooks/useDevData'
+type AiAlertsFixturesModule = typeof import('@/fixtures')
+
+let loadAiAlertsFixtures: () => Promise<AiAlertsFixturesModule>
+
+if (import.meta.env.DEV) {
+  let aiAlertsFixturesPromise: Promise<AiAlertsFixturesModule> | null = null
+  loadAiAlertsFixtures = async () => {
+    if (!aiAlertsFixturesPromise) {
+      aiAlertsFixturesPromise = import('@/fixtures')
+    }
+    return aiAlertsFixturesPromise
+  }
+} else {
+  loadAiAlertsFixtures = async () => {
+    throw new Error('Fixtures não estão disponíveis em produção')
+  }
+}
 
 export function AdminAiAlertsPage() {
-  const loadAiEventsFixtures = useCallback(async () => {
-    const module = await import('@/fixtures')
-    return module.mockAiEvents
+  const [aiEvents, setAiEvents] = useState<AiEvent[]>([])
+  const [alertRules, setAlertRules] = useState<AlertRule[]>([])
+
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      return
+    }
+
+    let isMounted = true
+
+    loadAiAlertsFixtures()
+      .then(({ mockAiEvents, mockAlerts }) => {
+        if (isMounted) {
+          setAiEvents(mockAiEvents)
+          setAlertRules(mockAlerts)
+        }
+      })
+      .catch((error) => {
+        console.error('❌ Erro ao carregar fixtures de IA:', error)
+      })
+
+    return () => {
+      isMounted = false
+    }
   }, [])
-
-  const loadAlertRulesFixtures = useCallback(async () => {
-    const module = await import('@/fixtures')
-    return module.mockAlerts
-  }, [])
-
-  const devAiEvents = useDevData<AiEvent>(loadAiEventsFixtures)
-  const devAlertRules = useDevData<AlertRule>(loadAlertRulesFixtures)
-
-  const aiEvents = import.meta.env.DEV ? devAiEvents : []
-  const alertRules = import.meta.env.DEV ? devAlertRules : []
 
   const kpiStats = useMemo(() => buildAiAlertsKpis(aiEvents), [aiEvents])
   const eventsByType = useMemo(() => aggregateEventsByType(aiEvents), [aiEvents])

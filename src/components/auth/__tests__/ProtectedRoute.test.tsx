@@ -90,7 +90,7 @@ describe('ProtectedRoute', () => {
   it('redireciona usuários sem permissão para a rota compatível com sua role', async () => {
     mockAuthValue({
       isAuthenticated: true,
-      user: { id: '2', role: SystemRole.CLIENT_VIEWER },
+      user: { id: '2', role: SystemRole.VIEWER },
     })
 
     renderProtectedRoute({ allowedRoles: [SystemRole.ADMIN_MASTER] })

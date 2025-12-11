@@ -10,9 +10,9 @@ export function getRedirectPathByRole(role: string): string {
       return '/technician/dashboard'
     case SystemRole.CLIENT_MASTER:
       return '/client/dashboard'
-    case SystemRole.CLIENT_MANAGER:
+    case SystemRole.MANAGER:
       return '/manager/dashboard'
-    case SystemRole.CLIENT_VIEWER:
+    case SystemRole.VIEWER:
       return '/viewer/live'
     default:
       return '/'
