@@ -10,6 +10,8 @@ import {
   Users2,
   Building2,
   ShieldCheck,
+  Shield,
+  Wrench,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -33,6 +35,18 @@ const adminNavItems: AdminNavItem[] = [
     roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
   },
   { label: 'Usuários & Permissões', icon: Users2, to: '/admin/users' },
+  {
+    label: 'Administradores',
+    icon: Shield,
+    to: '/admin/admins',
+    roles: [SystemRole.ADMIN_MASTER],
+  },
+  {
+    label: 'Técnicos',
+    icon: Wrench,
+    to: '/admin/technicians',
+    roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
+  },
   {
     label: 'Níveis de Acesso',
     icon: ShieldCheck,
