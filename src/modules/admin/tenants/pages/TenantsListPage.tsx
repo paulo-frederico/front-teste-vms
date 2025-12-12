@@ -209,7 +209,7 @@ export const TenantsListPage = () => {
           <h1 className="text-2xl font-semibold text-gray-900">Clientes</h1>
           <p className="text-sm text-gray-500">Gestão completa dos clientes e seus recursos.</p>
         </div>
-        <Button onClick={() => navigate('/admin-master/tenants/new')} className="flex items-center gap-2">
+        <Button onClick={() => navigate('/admin/tenants/new')} className="flex items-center gap-2">
           <Plus className="w-4 h-4" />
           Novo Cliente
         </Button>
@@ -331,7 +331,7 @@ export const TenantsListPage = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => navigate(`/admin-master/tenants/${tenant.id}`)}
+                            onClick={() => navigate(`/admin/tenants/${tenant.id}`)}
                           >
                             <Eye className="w-4 h-4" />
                           </Button>
@@ -345,7 +345,7 @@ export const TenantsListPage = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => navigate(`/admin-master/tenants/${tenant.id}/edit`)}
+                            onClick={() => navigate(`/admin/tenants/${tenant.id}/edit`)}
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
