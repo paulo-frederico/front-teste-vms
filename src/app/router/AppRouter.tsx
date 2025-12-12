@@ -9,9 +9,20 @@ import { TenantCreatePage } from '@/modules/admin/tenants/pages/TenantCreatePage
 import { TenantEditPage } from '@/modules/admin/tenants/pages/TenantEditPage'
 import { TenantDetailPage } from '@/modules/admin/tenants/pages/TenantDetailPage'
 import { AdminUsersPage } from '@/modules/admin/pages/AdminUsersPage'
+import { AdminsListPage } from '@/modules/admin/admins/pages/AdminsListPage'
+import { AdminCreatePage } from '@/modules/admin/admins/pages/AdminCreatePage'
+import { AdminEditPage } from '@/modules/admin/admins/pages/AdminEditPage'
+import { TechniciansListPage } from '@/modules/admin/technicians/pages/TechniciansListPage'
+import { TechnicianCreatePage } from '@/modules/admin/technicians/pages/TechnicianCreatePage'
+import { TechnicianEditPage } from '@/modules/admin/technicians/pages/TechnicianEditPage'
+import { GrantAccessPage } from '@/modules/admin/technicians/pages/GrantAccessPage'
 import { AdminAccessLevelsPage } from '@/modules/admin/pages/AdminAccessLevelsPage'
 import { AdminLocationsPage } from '@/modules/admin/pages/AdminLocationsPage'
 import { AdminAiAlertsPage } from '@/modules/admin/pages/AdminAiAlertsPage'
+import { CamerasListPage } from '@/modules/admin/cameras/pages/CamerasListPage'
+import { CameraCreatePage } from '@/modules/admin/cameras/pages/CameraCreatePage'
+import { CameraEditPage } from '@/modules/admin/cameras/pages/CameraEditPage'
+import { CameraDetailPage } from '@/modules/admin/cameras/pages/CameraDetailPage'
 import { AdminReportsPage } from '@/modules/admin/pages/AdminReportsPage'
 import { AdminSettingsPage } from '@/modules/admin/pages/AdminSettingsPage'
 import { AdminAuditPage } from '@/modules/admin/pages/AdminAuditPage'
@@ -42,6 +53,17 @@ export function AppRoutes() {
           <Route path=":id/edit" element={<TenantEditPage />} />
         </Route>
         <Route path="users" element={<AdminUsersPage />} />
+        <Route path="admins">
+          <Route index element={<AdminsListPage />} />
+          <Route path="new" element={<AdminCreatePage />} />
+          <Route path=":id/edit" element={<AdminEditPage />} />
+        </Route>
+        <Route path="technicians">
+          <Route index element={<TechniciansListPage />} />
+          <Route path="new" element={<TechnicianCreatePage />} />
+          <Route path=":id/edit" element={<TechnicianEditPage />} />
+          <Route path=":id/grant-access" element={<GrantAccessPage />} />
+        </Route>
         <Route
           path="access-levels"
           element={
@@ -50,7 +72,13 @@ export function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        <Route path="cameras" element={<AdminLocationsPage />} />
+        <Route path="cameras">
+          <Route index element={<CamerasListPage />} />
+          <Route path="new" element={<CameraCreatePage />} />
+          <Route path=":id" element={<CameraDetailPage />} />
+          <Route path=":id/edit" element={<CameraEditPage />} />
+        </Route>
+        <Route path="locations" element={<AdminLocationsPage />} />
         <Route path="ai-alerts" element={<AdminAiAlertsPage />} />
         <Route
           path="audit"
