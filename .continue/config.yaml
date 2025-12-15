@@ -1,0 +1,19 @@
+models:
+  - name: DeepSeek R1
+    provider: openai
+    model: deepseek-reasoner
+    apiBase: https://api.deepseek.com
+    apiKey: ${DEEPSEEK_API_KEY}
+    contextLength: 64000
+
+chat:
+  defaultModel: DeepSeek R1
+
+autocomplete:
+  defaultModel: DeepSeek R1
+
+embeddings:
+  provider: openai
+  model: deepseek-embedding
+  apiBase: https://api.deepseek.com
+  apiKey: ${DEEPSEEK_API_KEY}

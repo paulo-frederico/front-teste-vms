@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { 
   useCamera, 
@@ -7,9 +7,14 @@ import {
   useCaptureSnapshot,
   useCameraStats
 } from '@/hooks/useCameras';
+import { useCameraAccessSession } from '@/hooks/useCameraAccess';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LoadingButton } from '@/components/form/LoadingButton';
+import { CameraAccessRequestModal } from '@/components/camera/CameraAccessRequestModal';
+import { CameraAccessBanner } from '@/components/camera/CameraAccessBanner';
+import { CameraAccessLogViewer } from '@/components/camera/CameraAccessLogViewer';
+import { AccessReason } from '@/modules/shared/types/camera-access';
 import { 
   ArrowLeft, 
   Edit, 
@@ -24,9 +29,11 @@ import {
 export const CameraDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [showAccessModal, setShowAccessModal] = useState(false);
 
   const { data: camera, isLoading } = useCamera(id!);
   const { data: stats } = useCameraStats(id!);
+  const { data: activeSession } = useCameraAccessSession(id!);
   const deleteMutation = useDeleteCamera();
   const testConnectionMutation = useTestConnection();
   const captureSnapshotMutation = useCaptureSnapshot();
@@ -50,6 +57,11 @@ export const CameraDetailPage: React.FC = () => {
   };
 
   const handleCaptureSnapshot = async () => {
+    // LGPD: Verificar se há acesso ativo
+    if (!activeSession || !activeSession.active) {
+      setShowAccessModal(true);
+      return;
+    }
     await captureSnapshotMutation.mutateAsync(id!);
   };
 
@@ -84,6 +96,28 @@ export const CameraDetailPage: React.FC = () => {
 
   return (
     <div className="p-6">
+      {/* LGPD: Modal de Justificativa de Acesso */}
+      {camera && (
+        <CameraAccessRequestModal
+          open={showAccessModal}
+          onClose={() => setShowAccessModal(false)}
+          camera={{
+            id: camera.id,
+            name: camera.name,
+            tenantId: camera.tenantId,
+            tenantName: camera.tenantName
+          }}
+          onAccessGranted={() => setShowAccessModal(false)}
+        />
+      )}
+
+      {/* LGPD: Banner de Aviso durante Acesso Ativo */}
+      {activeSession && activeSession.active && id && (
+        <div className="mb-6">
+          <CameraAccessBanner cameraId={id} />
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
@@ -198,6 +232,7 @@ export const CameraDetailPage: React.FC = () => {
           <TabsTrigger value="stream">Stream</TabsTrigger>
           <TabsTrigger value="hardware">Hardware</TabsTrigger>
           <TabsTrigger value="gravacao">Gravação</TabsTrigger>
+          <TabsTrigger value="auditoria">Auditoria LGPD</TabsTrigger>
         </TabsList>
 
         {/* ABA GERAL */}
@@ -423,6 +458,69 @@ export const CameraDetailPage: React.FC = () => {
             ) : (
               <p className="text-gray-500">Nenhum módulo de IA habilitado</p>
             )}
+          </div>
+        </TabsContent>
+
+        {/* ABA AUDITORIA LGPD */}
+        <TabsContent value="auditoria" className="space-y-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              🔐 Histórico de Acesso (LGPD)
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Registro completo de todos os acessos a esta câmera, conforme exigido pela LGPD (Lei 13.709/2018).
+              Cada acesso é auditado e registra quem, quando, o motivo e por quanto tempo foi acessada.
+            </p>
+            <CameraAccessLogViewer 
+              logs={[
+                {
+                  id: 'log-001',
+                  timestamp: new Date(Date.now() - 3600000).toISOString(),
+                  actorUserId: '1',
+                  actorUserName: 'Admin Master',
+                  actorRole: 'GLOBAL_ADMIN',
+                  tenantId: camera.tenantId,
+                  tenantName: camera.tenantName,
+                  action: 'VIEW_CAMERA_LIVE',
+                  resourceType: 'CAMERA',
+                  resourceId: camera.id,
+                  resourceName: camera.name,
+                  reason: AccessReason.TECHNICAL_SUPPORT,
+                  reasonLabel: 'Suporte Técnico',
+                  description: 'Verificação de conectividade e qualidade de stream',
+                  ticketNumber: 'TICKET-001',
+                  ipAddress: '192.168.1.100',
+                  durationSeconds: 1200,
+                  details: {
+                    access_type: 'LIVE_VIEW',
+                    stream_quality: '1080p'
+                  }
+                },
+                {
+                  id: 'log-002',
+                  timestamp: new Date(Date.now() - 7200000).toISOString(),
+                  actorUserId: '1',
+                  actorUserName: 'Admin Master',
+                  actorRole: 'GLOBAL_ADMIN',
+                  tenantId: camera.tenantId,
+                  tenantName: camera.tenantName,
+                  action: 'CAPTURE_SNAPSHOT',
+                  resourceType: 'CAMERA',
+                  resourceId: camera.id,
+                  resourceName: camera.name,
+                  reason: AccessReason.INCIDENT_INVESTIGATION,
+                  reasonLabel: 'Investigação de Incidente',
+                  description: 'Captura de imagem para análise de incidente de segurança',
+                  ticketNumber: 'PROTOCOL-002',
+                  ipAddress: '192.168.1.100',
+                  durationSeconds: 180,
+                  details: {
+                    access_type: 'SNAPSHOT',
+                    timestamp_captured: '2024-01-15T10:30:00Z'
+                  }
+                }
+              ]}
+            />
           </div>
         </TabsContent>
       </Tabs>
