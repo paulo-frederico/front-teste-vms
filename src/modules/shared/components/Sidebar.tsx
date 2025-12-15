@@ -48,12 +48,6 @@ const adminNavItems: AdminNavItem[] = [
     roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
   },
   {
-    label: 'Níveis de Acesso',
-    icon: ShieldCheck,
-    to: '/admin/access-levels',
-    roles: [SystemRole.ADMIN_MASTER],
-  },
-  {
     label: 'Locais & Câmeras',
     icon: Camera,
     to: '/admin/cameras',
@@ -67,6 +61,12 @@ const adminNavItems: AdminNavItem[] = [
     roles: [SystemRole.ADMIN_MASTER],
   },
   { label: 'Relatórios & Auditoria', icon: FileChartColumn, to: '/admin/reports' },
+  {
+    label: 'Níveis de Acesso',
+    icon: ShieldCheck,
+    to: '/admin/access-levels',
+    roles: [SystemRole.ADMIN_MASTER],
+  },
   { label: 'Configurações do Sistema', icon: Settings2, to: '/admin/settings' },
 ]
 

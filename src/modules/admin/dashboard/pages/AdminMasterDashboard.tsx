@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
   LineChart,
@@ -37,6 +38,7 @@ if (import.meta.env.DEV) {
 }
 
 export const AdminMasterDashboard = () => {
+  const navigate = useNavigate()
   const isDev = import.meta.env.DEV
 
   const { data: metricas } = useQuery<DashboardMetrics>({
@@ -136,6 +138,7 @@ export const AdminMasterDashboard = () => {
           changeLabel="hoje"
           icon={<Users className="h-6 w-6" />}
           color="blue"
+          onClick={() => navigate('/admin/tenants')}
         />
         <KpiCard
           title="Câmeras"
@@ -143,6 +146,7 @@ export const AdminMasterDashboard = () => {
           subtitle={`${Math.round(((metricas?.camerasOnline ?? 0) / Math.max(metricas?.totalCameras ?? 1, 1)) * 100)}% online`}
           icon={<Camera className="h-6 w-6" />}
           color="green"
+          onClick={() => navigate('/admin/cameras')}
         />
         <KpiCard
           title="Eventos (24h)"
@@ -151,6 +155,7 @@ export const AdminMasterDashboard = () => {
           changeLabel="hoje"
           icon={<AlertTriangle className="h-6 w-6" />}
           color="purple"
+          onClick={() => navigate('/admin/audit')}
         />
         <KpiCard
           title="Storage"
@@ -159,6 +164,7 @@ export const AdminMasterDashboard = () => {
           icon={<HardDrive className="h-6 w-6" />}
           color="orange"
           progress={metricas?.storagePercentual ?? 0}
+          onClick={() => navigate('/admin/settings')}
         />
       </div>
 
@@ -327,6 +333,7 @@ interface KpiCardProps {
   icon: ReactNode
   color: 'blue' | 'green' | 'purple' | 'orange'
   progress?: number
+  onClick?: () => void
 }
 
 const colorClasses: Record<KpiCardProps['color'], string> = {
@@ -336,8 +343,13 @@ const colorClasses: Record<KpiCardProps['color'], string> = {
   orange: 'bg-orange-50 text-orange-600',
 }
 
-const KpiCard = ({ title, value, subtitle, change, changeLabel, icon, color, progress }: KpiCardProps) => (
-  <div className="rounded-lg bg-white p-6 shadow">
+const KpiCard = ({ title, value, subtitle, change, changeLabel, icon, color, progress, onClick }: KpiCardProps) => (
+  <div
+    onClick={onClick}
+    className={`rounded-lg bg-white p-6 shadow transition-all ${
+      onClick ? 'cursor-pointer hover:shadow-lg hover:scale-105' : ''
+    }`}
+  >
     <div className="mb-4 flex items-center justify-between">
       <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${colorClasses[color]}`}>{icon}</div>
       {change !== undefined && (
