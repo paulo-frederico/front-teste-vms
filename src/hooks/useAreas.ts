@@ -2,36 +2,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { areasService } from '@/services/api/areas.service';
 import { toast } from 'react-toastify';
 
-// Definir as interfaces
-export interface CreateAreaDTO {
-  name: string;
-  type: 'RECEPTION' | 'PARKING' | 'PRODUCTION' | 'WAREHOUSE' | 'OFFICE' | 'FACTORY' | 'DATACENTER' | 'OTHER';
-  tenantId: string;
-  zipCode: string;
-  street: string;
-  number: string;
-  complement?: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  country: string;
-  latitude?: number;
-  longitude?: number;
-}
-
-export interface UpdateAreaDTO extends Partial<CreateAreaDTO> {
-  id: string;
-}
-
-export interface AreasFilters {
-  search?: string;
-  type?: string;
-  tenantId?: string;
-  page?: number;
-  limit?: number;
-}
-
-// Implementar os hooks
+// ✅ Importar APENAS os tipos do arquivo centralizado
+import type {
+  CreateAreaDTO,
+  UpdateAreaDTO,
+  AreasFilters,
+  Area
+} from '@/types/areas.types';
 
 // Hook para listar áreas com filtros opcionais
 export const useAreas = (filters?: AreasFilters) => {
@@ -59,7 +36,7 @@ export const useCreateArea = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: areasService.create,
+    mutationFn: (data: CreateAreaDTO) => areasService.create(data),
     onSuccess: () => {
       toast.success('Área cadastrada com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['areas'] });
@@ -94,7 +71,7 @@ export const useDeleteArea = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: areasService.delete,
+    mutationFn: (id: string) => areasService.delete(id),
     onSuccess: () => {
       toast.success('Área removida com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['areas'] });
