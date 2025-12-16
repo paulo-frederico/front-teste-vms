@@ -1,10 +1,9 @@
 import React from 'react';
-import type { FieldError } from 'react-hook-form';
 
 interface FormFieldProps {
   label: string;
   name: string;
-  error?: FieldError;
+  error?: { message?: string };
   required?: boolean;
   children: React.ReactNode;
 }
@@ -23,10 +22,8 @@ export const FormField: React.FC<FormFieldProps> = ({
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       {children}
-      {error && (
-        <p className="text-sm text-red-600 mt-1">
-          {error.message}
-        </p>
+      {error?.message && (
+        <p className="text-sm text-red-600">{error.message}</p>
       )}
     </div>
   );

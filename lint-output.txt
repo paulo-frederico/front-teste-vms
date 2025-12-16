@@ -1,0 +1,332 @@
+
+> vms-unifique-frontend@0.0.0 lint
+> eslint .
+
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/coverage/lcov-report/block-navigation.js
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/coverage/lcov-report/sorter.js
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/components/camera/CameraAccessRequestModal.tsx
+  126:22  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/components/camera/CameraAccessRequestModal.tsx:126:22
+  124 |           <FormField label="Motivo do Acesso" name="reason" error={errors.reason} required>
+  125 |             <Select
+> 126 |               value={watch('reason') || 'TECHNICAL_SUPPORT'}
+      |                      ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  127 |               onValueChange={(value) => setValue('reason', value as any)}
+  128 |             >
+  129 |               <SelectTrigger>  react-hooks/incompatible-library
+  127:69  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/components/ui/textarea.tsx
+  5:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/contexts/AuthContext.tsx
+   50:39  error  '_password' is defined but never used                                                                                           @typescript-eslint/no-unused-vars
+  116:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useAdmins.ts
+  32:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  41:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  48:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  89:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useCameraAccess.ts
+  18:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  49:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useCameraConfig.ts
+   33:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   52:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   71:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   90:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  109:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  127:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  145:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  163:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useCameras.ts
+   34:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   44:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   66:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  119:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useDevData.ts
+  11:18  error    Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `fixtureLoader`, but the source dependencies were []. Inferred dependency not present in source.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useDevData.ts:11:18
+   9 |  */
+  10 | export function useDevData<T>(fixtureLoader: () => T, fallback: T): T {
+> 11 |   return useMemo(() => {
+     |                  ^^^^^^^
+> 12 |     if (import.meta.env.PROD) {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 13 |       console.warn('⚠️ useDevData chamado em produção - retornando fallback')
+     …
+> 21 |       return fallback
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 22 |     }
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 23 |   }, [])
+     | ^^^^ Could not preserve existing manual memoization
+  24 | }
+  25 |  react-hooks/preserve-manual-memoization
+  23:6   warning  React Hook useMemo has missing dependencies: 'fallback' and 'fixtureLoader'. Either include them or remove the dependency array. If 'fixtureLoader' changes too often, find the parent component that defines it and wrap that definition in useCallback                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useTechnicians.ts
+   34:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   44:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   66:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   82:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useTenants.ts
+  44:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  61:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  92:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/hooks/useUsers.ts
+  33:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/admins/pages/AdminCreatePage.tsx
+  65:20  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/admins/pages/AdminCreatePage.tsx:65:20
+  63 |           <MaskedInput
+  64 |             mask="(99) 99999-9999"
+> 65 |             value={watch('phone') || ''}
+     |                    ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  66 |             onChange={(e) => setValue('phone', e.target.value)}
+  67 |             placeholder="(11) 98765-4321"
+  68 |           />  react-hooks/incompatible-library
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/admins/pages/AdminEditPage.tsx
+   41:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-explicit-any
+  101:20  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/admins/pages/AdminEditPage.tsx:101:20
+   99 |           <MaskedInput
+  100 |             mask="(99) 99999-9999"
+> 101 |             value={watch('phone') || ''}
+      |                    ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  102 |             onChange={(e) => setValue('phone', e.target.value)}
+  103 |             placeholder="(11) 98765-4321"
+  104 |           />  react-hooks/incompatible-library
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/admins/pages/AdminsListPage.tsx
+  125:111  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CameraCreatePage.tsx
+   61:22  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CameraCreatePage.tsx:61:22
+  59 |
+  60 |   const handleGenerateUrl = () => {
+> 61 |     const protocol = watch('protocol');
+     |                      ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  62 |     const ipAddress = watch('ipAddress');
+  63 |     const port = watch('port');
+  64 |     const username = watch('username');  react-hooks/incompatible-library
+  170:71  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-explicit-any
+  276:76  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CameraDetailPage.tsx
+  478:39  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CameraDetailPage.tsx:478:39
+  476 |                 {
+  477 |                   id: 'log-001',
+> 478 |                   timestamp: new Date(Date.now() - 3600000).toISOString(),
+      |                                       ^^^^^^^^^^ Cannot call impure function
+  479 |                   actorUserId: '1',
+  480 |                   actorUserName: 'Admin Master',
+  481 |                   actorRole: 'GLOBAL_ADMIN',  react-hooks/purity
+  501:39  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CameraDetailPage.tsx:501:39
+  499 |                 {
+  500 |                   id: 'log-002',
+> 501 |                   timestamp: new Date(Date.now() - 7200000).toISOString(),
+      |                                       ^^^^^^^^^^ Cannot call impure function
+  502 |                   actorUserId: '1',
+  503 |                   actorUserName: 'Admin Master',
+  504 |                   actorRole: 'GLOBAL_ADMIN',  react-hooks/purity
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CameraEditPage.tsx
+  193:22  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CameraEditPage.tsx:193:22
+  191 |
+  192 |   const handleGenerateUrl = () => {
+> 193 |     const protocol = watch('protocol');
+      |                      ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  194 |     const ipAddress = watch('ipAddress');
+  195 |     const port = watch('port');
+  196 |     const username = watch('username');  react-hooks/incompatible-library
+  367:71  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  503:76  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  689:87  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  707:81  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  759:87  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  773:89  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  906:93  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  937:93  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/cameras/pages/CamerasListPage.tsx
+  56:47  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/sites/components/SiteForm.tsx
+  39:19  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/sites/components/SiteForm.tsx:39:19
+  37 |   const addressMutation = useAddressByZipCode();
+  38 |
+> 39 |   const zipCode = watch('zipCode');
+     |                   ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  40 |
+  41 |   const handleFetchAddress = async () => {
+  42 |     if (!zipCode) return;  react-hooks/incompatible-library
+  60:28  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+  84:28  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+  87:53  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/sites/pages/SitesListPage.tsx
+  129:81  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:83  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/technicians/pages/GrantAccessPage.tsx
+  61:28  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/technicians/pages/GrantAccessPage.tsx:61:28
+  59 |
+  60 |   const toggleAction = (action: string) => {
+> 61 |     const currentActions = watch('allowedActions') || [];
+     |                            ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  62 |     const newActions = currentActions.includes(action)
+  63 |       ? currentActions.filter(a => a !== action)
+  64 |       : [...currentActions, action];  react-hooks/incompatible-library
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/technicians/pages/TechnicianCreatePage.tsx
+   51:28  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/technicians/pages/TechnicianCreatePage.tsx:51:28
+  49 |
+  50 |   const toggleTenant = (tenantId: string) => {
+> 51 |     const currentTenants = watch('assignedTenants') || [];
+     |                            ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  52 |     const newTenants = currentTenants.includes(tenantId)
+  53 |       ? currentTenants.filter(id => id !== tenantId)
+  54 |       : [...currentTenants, tenantId];  react-hooks/incompatible-library
+  105:72  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/technicians/pages/TechnicianEditPage.tsx
+   67:28  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/technicians/pages/TechnicianEditPage.tsx:67:28
+  65 |
+  66 |   const toggleTenant = (tenantId: string) => {
+> 67 |     const currentTenants = watch('assignedTenants') || [];
+     |                            ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  68 |     const newTenants = currentTenants.includes(tenantId)
+  69 |       ? currentTenants.filter(id => id !== tenantId)
+  70 |       : [...currentTenants, tenantId];  react-hooks/incompatible-library
+  160:72  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/tenants/components/TenantFormTabs.tsx
+   48:65  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  361:84  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/tenants/pages/TenantCreatePage.tsx
+  24:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/tenants/pages/TenantEditPage.tsx
+  41:65  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/tenants/pages/TenantsListPage.tsx
+   57:22  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+   58:20  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  102:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/admin/tenants/pages/TenantsListPage.tsx:102:5
+  100 |
+  101 |   useEffect(() => {
+> 102 |     setFilters((prev) => {
+      |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  103 |       if (prev.page > totalPages) {
+  104 |         return { ...prev, page: totalPages }
+  105 |       }  react-hooks/set-state-in-effect
+  236:65  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+  254:63  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/shared/types/ai.ts
+  24:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/shared/types/camera-access.ts
+  59:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/modules/shared/types/technician.ts
+  102:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/services/api/admins.service.ts
+  161:16  error  '_id' is defined but never used  @typescript-eslint/no-unused-vars
+  166:23  error  '_id' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/services/api/client.ts
+   13:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  113:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  142:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  147:36  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  152:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/paulo.frederico/Documents/UNIFIQUE/DOCUMENTOS/PROJETOS/VMS Unifique Cameras/FrontEnd Teste/frontend_teste_vms_unifique/vms-unifique-frontend/src/services/api/tenants.service.ts
+  267:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 98 problems (86 errors, 12 warnings)
+  0 errors and 2 warnings potentially fixable with the `--fix` option.
+

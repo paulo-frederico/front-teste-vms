@@ -126,7 +126,7 @@ export const SitesListPage: React.FC = () => {
             {/* Filtro de Tipo */}
             <Select
               value={filters.type}
-              onValueChange={(value) => setFilters({ ...filters, type: value as any })}
+              onValueChange={(value) => setFilters({ ...filters, type: value as SiteType })}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -147,7 +147,7 @@ export const SitesListPage: React.FC = () => {
             {/* Filtro de Status */}
             <Select
               value={filters.status}
-              onValueChange={(value) => setFilters({ ...filters, status: value as any })}
+              onValueChange={(value) => setFilters({ ...filters, status: value as SiteStatus })}
             >
               <SelectTrigger>
                 <SelectValue />

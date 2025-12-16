@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { adminsService } from '@/services/api/admins.service';
-import type { AdminFilters } from '@/services/api/admins.service';
+import { adminsService, type CreateAdminDTO, type AdminFilters } from '@/services/api/admins.service';
 import { toast } from 'react-toastify';
 
 export const useAdmins = (filters?: AdminFilters) => {
@@ -29,7 +28,7 @@ export const useCreateAdmin = () => {
       toast.success('Admin criado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['admins'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao criar admin');
     }
   });
@@ -38,14 +37,14 @@ export const useCreateAdmin = () => {
 export const useUpdateAdmin = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => 
+    mutationFn: ({ id, data }: { id: string; data: Partial<CreateAdminDTO> }) => 
       adminsService.update(id, data),
     onSuccess: (_, variables) => {
       toast.success('Admin atualizado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['admins'] });
       queryClient.invalidateQueries({ queryKey: ['admin', variables.id] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar admin');
     }
   });
@@ -59,7 +58,7 @@ export const useDeleteAdmin = () => {
       toast.success('Admin removido com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['admins'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao remover admin');
     }
   });
@@ -74,7 +73,7 @@ export const useChangeAdminStatus = () => {
       toast.success('Status alterado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['admins'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao alterar status');
     }
   });
@@ -86,7 +85,7 @@ export const useResetAdminPassword = () => {
     onSuccess: () => {
       toast.success('Senha resetada com sucesso! Nova senha enviada por email.');
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao resetar senha');
     }
   });

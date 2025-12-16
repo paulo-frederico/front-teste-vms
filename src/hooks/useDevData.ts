@@ -20,5 +20,5 @@ export function useDevData<T>(fixtureLoader: () => T, fallback: T): T {
       console.error('❌ Erro ao carregar fixture:', error)
       return fallback
     }
-  }, [])
+  }, [fixtureLoader, fallback])
 }

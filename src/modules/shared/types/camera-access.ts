@@ -56,7 +56,7 @@ export interface CameraAccessLog {
   ticketNumber?: string;
   ipAddress: string;
   durationSeconds?: number;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
 }
 
 /**

@@ -264,7 +264,7 @@ class TenantsService {
     }
   }
 
-  async getStats(id: string): Promise<any> {
+  async getStats(id: string): Promise<unknown> {
     console.log('📊 [TenantsService] Buscando estatísticas do tenant (FIXTURES):', id)
 
     try {

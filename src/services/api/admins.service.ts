@@ -158,14 +158,14 @@ class AdminsService {
     return { ...admin, status, updatedAt: new Date().toISOString() };
   }
 
-  async delete(_id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await new Promise(resolve => setTimeout(resolve, 300));
-    console.log('✅ [AdminsService] Admin removido (simulado)');
+    console.log(`✅ [AdminsService] Admin ${id} removido (simulado)`);
   }
 
-  async resetPassword(_id: string): Promise<void> {
+  async resetPassword(id: string): Promise<void> {
     await new Promise(resolve => setTimeout(resolve, 500));
-    console.log('✅ [AdminsService] Senha resetada (simulado)');
+    console.log(`✅ [AdminsService] Senha para admin ${id} resetada (simulado)`);
   }
 }
 

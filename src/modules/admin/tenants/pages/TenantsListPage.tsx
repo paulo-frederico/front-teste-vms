@@ -54,8 +54,8 @@ export const TenantsListPage = () => {
   const navigate = useNavigate()
   const [filters, setFilters] = useState<FiltersState>({
     search: '',
-    status: 'ALL' as any,
-    plan: 'ALL' as any,
+    status: 'ALL' as unknown,
+    plan: 'ALL' as unknown,
     page: 1,
     limit: 10,
   })
@@ -98,13 +98,14 @@ export const TenantsListPage = () => {
   const showingFrom = total ? (filters.page - 1) * filters.limit + 1 : 0
   const showingTo = total ? Math.min(filters.page * filters.limit, total) : 0
 
+  // Reset page if it exceeds totalPages
   useEffect(() => {
-    setFilters((prev) => {
-      if (prev.page > totalPages) {
-        return { ...prev, page: totalPages }
+    if (filters.page > totalPages && totalPages > 0) {
+      const newPage = Math.min(filters.page, totalPages)
+      if (newPage !== filters.page) {
+        setFilters((prev) => ({ ...prev, page: newPage }))
       }
-      return prev
-    })
+    }
   }, [totalPages])
 
   const handlePageChange = (direction: 'prev' | 'next') => {
@@ -231,9 +232,9 @@ export const TenantsListPage = () => {
           </div>
 
           <Select
-            value={filters.status}
+            value={String(filters.status)}
             onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, status: value as any, page: 1 }))
+              setFilters((prev) => ({ ...prev, status: value as unknown, page: 1 }))
             }
           >
             <SelectTrigger>
@@ -249,9 +250,9 @@ export const TenantsListPage = () => {
           </Select>
 
           <Select
-            value={filters.plan}
+            value={String(filters.plan)}
             onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, plan: value as any, page: 1 }))
+              setFilters((prev) => ({ ...prev, plan: value as unknown, page: 1 }))
             }
           >
             <SelectTrigger>

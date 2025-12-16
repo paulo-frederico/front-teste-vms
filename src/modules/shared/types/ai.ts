@@ -21,7 +21,7 @@ export interface AIConfig {
   enabled: boolean
   sensitivity: number
   zones?: Zone[]
-  parameters?: Record<string, any>
+  parameters?: Record<string, unknown>
 }
 
 export interface AIEvent {
@@ -31,7 +31,7 @@ export interface AIEvent {
   module: AIModule
   timestamp: string
   confidence: number
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
   plate?: string
   bbox?: {
     x: number

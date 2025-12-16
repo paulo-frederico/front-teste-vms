@@ -1,8 +1,5 @@
 import { z } from 'zod';
 
-/**
- * Schema de validação para Area
- */
 export const areaSchema = z.object({
   name: z.string()
     .min(3, 'Nome deve ter no mínimo 3 caracteres')
@@ -27,7 +24,9 @@ export const areaSchema = z.object({
     'STAIRS',
     'ELEVATOR',
     'OTHER'
-  ]).describe('Tipo de área'),
+  ], {
+    errorMap: () => ({ message: 'Tipo de área é obrigatório' })
+  }),
   siteId: z.string().min(1, 'Local é obrigatório'),
   floor: z.string().optional().or(z.literal('')),
   capacity: z.number()
@@ -38,14 +37,8 @@ export const areaSchema = z.object({
     .optional()
 });
 
-/**
- * Tipo inferido do schema
- */
 export type AreaFormData = z.infer<typeof areaSchema>;
 
-/**
- * Valores padrão para nova área
- */
 export const defaultAreaValues: Partial<AreaFormData> = {
   name: '',
   description: '',

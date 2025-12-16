@@ -1,16 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { createMockAdminMaster } from '@/lib/auth/createMockAdminMaster'
 
-import { ScopeType, SystemRole, UserStatus, type User } from '@/modules/shared/types/auth'
-
-interface AuthContextType {
-  user: User | null
-  isLoading: boolean
-  isAuthenticated: boolean
-  login: (email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
-  updateUser: (user: User) => void
-}
+import { type User } from '@/modules/shared/types/auth'
+import type { AuthContextType } from './auth.types'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -47,10 +40,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     loadUser()
   }, [])
 
-  const login = async (email: string, _password: string): Promise<void> => {
+  const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true)
     try {
-      // TODO: Substituir por chamada real à API
+      // TODO: Substituir por chamada real à API com password
+      void password // parameter will be used in API integration
       const mockUser = createMockAdminMaster(email)
       const mockToken = `mock_access_token_${Date.now()}`
       const mockRefreshToken = `mock_refresh_token_${Date.now()}`
@@ -113,66 +107,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
+// Hook exported separately to avoid fast refresh issues
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (context === undefined) {
     throw new Error('useAuth deve ser usado dentro de um AuthProvider')
   }
   return context
-}
-
-function createMockAdminMaster(email: string): User {
-  const now = new Date().toISOString()
-
-  return {
-    id: '1',
-    name: 'Admin Master',
-    email,
-    role: SystemRole.ADMIN_MASTER,
-    status: UserStatus.ACTIVE,
-    scope: { type: ScopeType.GLOBAL },
-    permissions: {
-      canAccessDashboard: true,
-      canViewLive: true,
-      canViewRecordings: true,
-      canViewPlayback: true,
-      canExportVideos: true,
-      canExportReports: true,
-      canManageUsers: true,
-      canManageAdmins: true,
-      canManageTechnicians: true,
-      canResetPasswords: true,
-      canSuspendUsers: true,
-      canViewAllTenants: true,
-      canManageTenants: true,
-      canChangeTenantPlan: true,
-      canSuspendTenants: true,
-      canManageCameras: true,
-      canConfigureStreamProfiles: true,
-      canDeleteCameras: true,
-      canConfigureAI: true,
-      canConfigureAIZones: true,
-      canConfigureAISensitivity: true,
-      canConfigureRecording: true,
-      canDeleteRecordings: true,
-      canConfigureAlerts: true,
-      canAcknowledgeAlerts: true,
-      canManageInfrastructure: true,
-      canAccessGlobalAudit: true,
-      canManageGlobalSettings: true,
-      canForceLogout: true,
-      canGrantTemporaryAccess: true,
-      canAccessDiagnostics: true,
-      canViewLogs: true,
-      maxStreamQuality: '4K',
-      allowedAIModules: ['LPR', 'INTRUSION', 'LINE_CROSSING', 'PEOPLE_COUNTING', 'VEHICLE_COUNTING', 'LOITERING', 'PPE'],
-    },
-    createdAt: now,
-    updatedAt: now,
-    lastLogin: now,
-    tenantId: undefined,
-    tenantName: undefined,
-    phone: undefined,
-    avatar: undefined,
-  }
 }

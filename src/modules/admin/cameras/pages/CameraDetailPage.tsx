@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { 
   useCamera, 
@@ -65,6 +65,66 @@ export const CameraDetailPage: React.FC = () => {
     await captureSnapshotMutation.mutateAsync(id!);
   };
 
+  const getStatusColor = (status: string) => {
+    const colors = {
+      ONLINE: 'text-green-600',
+      OFFLINE: 'text-red-600',
+      ERROR: 'text-orange-600',
+      CONFIGURING: 'text-blue-600',
+      MAINTENANCE: 'text-yellow-600'
+    };
+    return colors[status as keyof typeof colors] || 'text-gray-600';
+  };
+
+  const accessLogs = useMemo(() => [
+    {
+      id: 'log-001',
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      actorUserId: '1',
+      actorUserName: 'Admin Master',
+      actorRole: 'GLOBAL_ADMIN',
+      tenantId: camera?.tenantId || 'N/A',
+      tenantName: camera?.tenantName || 'N/A',
+      action: 'VIEW_CAMERA_LIVE',
+      resourceType: 'CAMERA',
+      resourceId: camera?.id || 'N/A',
+      resourceName: camera?.name || 'N/A',
+      reason: AccessReason.TECHNICAL_SUPPORT,
+      reasonLabel: 'Suporte Técnico',
+      description: 'Verificação de conectividade e qualidade de stream',
+      ticketNumber: 'TICKET-001',
+      ipAddress: '192.168.1.100',
+      durationSeconds: 1200,
+      details: {
+        access_type: 'LIVE_VIEW',
+        stream_quality: '1080p'
+      }
+    },
+    {
+      id: 'log-002',
+      timestamp: new Date(Date.now() - 7200000).toISOString(),
+      actorUserId: '1',
+      actorUserName: 'Admin Master',
+      actorRole: 'GLOBAL_ADMIN',
+      tenantId: camera?.tenantId || 'N/A',
+      tenantName: camera?.tenantName || 'N/A',
+      action: 'CAPTURE_SNAPSHOT',
+      resourceType: 'CAMERA',
+      resourceId: camera?.id || 'N/A',
+      resourceName: camera?.name || 'N/A',
+      reason: AccessReason.INCIDENT_INVESTIGATION,
+      reasonLabel: 'Investigação de Incidente',
+      description: 'Captura de imagem para análise de incidente de segurança',
+      ticketNumber: 'PROTOCOL-002',
+      ipAddress: '192.168.1.100',
+      durationSeconds: 180,
+      details: {
+        access_type: 'SNAPSHOT',
+        timestamp_captured: '2024-01-15T10:30:00Z'
+      }
+    }
+  ], [camera?.id, camera?.tenantId, camera?.tenantName, camera?.name])
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -82,17 +142,6 @@ export const CameraDetailPage: React.FC = () => {
       </div>
     );
   }
-
-  const getStatusColor = (status: string) => {
-    const colors = {
-      ONLINE: 'text-green-600',
-      OFFLINE: 'text-red-600',
-      ERROR: 'text-orange-600',
-      CONFIGURING: 'text-blue-600',
-      MAINTENANCE: 'text-yellow-600'
-    };
-    return colors[status as keyof typeof colors] || 'text-gray-600';
-  };
 
   return (
     <div className="p-6">
@@ -472,54 +521,7 @@ export const CameraDetailPage: React.FC = () => {
               Cada acesso é auditado e registra quem, quando, o motivo e por quanto tempo foi acessada.
             </p>
             <CameraAccessLogViewer 
-              logs={[
-                {
-                  id: 'log-001',
-                  timestamp: new Date(Date.now() - 3600000).toISOString(),
-                  actorUserId: '1',
-                  actorUserName: 'Admin Master',
-                  actorRole: 'GLOBAL_ADMIN',
-                  tenantId: camera.tenantId,
-                  tenantName: camera.tenantName,
-                  action: 'VIEW_CAMERA_LIVE',
-                  resourceType: 'CAMERA',
-                  resourceId: camera.id,
-                  resourceName: camera.name,
-                  reason: AccessReason.TECHNICAL_SUPPORT,
-                  reasonLabel: 'Suporte Técnico',
-                  description: 'Verificação de conectividade e qualidade de stream',
-                  ticketNumber: 'TICKET-001',
-                  ipAddress: '192.168.1.100',
-                  durationSeconds: 1200,
-                  details: {
-                    access_type: 'LIVE_VIEW',
-                    stream_quality: '1080p'
-                  }
-                },
-                {
-                  id: 'log-002',
-                  timestamp: new Date(Date.now() - 7200000).toISOString(),
-                  actorUserId: '1',
-                  actorUserName: 'Admin Master',
-                  actorRole: 'GLOBAL_ADMIN',
-                  tenantId: camera.tenantId,
-                  tenantName: camera.tenantName,
-                  action: 'CAPTURE_SNAPSHOT',
-                  resourceType: 'CAMERA',
-                  resourceId: camera.id,
-                  resourceName: camera.name,
-                  reason: AccessReason.INCIDENT_INVESTIGATION,
-                  reasonLabel: 'Investigação de Incidente',
-                  description: 'Captura de imagem para análise de incidente de segurança',
-                  ticketNumber: 'PROTOCOL-002',
-                  ipAddress: '192.168.1.100',
-                  durationSeconds: 180,
-                  details: {
-                    access_type: 'SNAPSHOT',
-                    timestamp_captured: '2024-01-15T10:30:00Z'
-                  }
-                }
-              ]}
+              logs={accessLogs}
             />
           </div>
         </TabsContent>
