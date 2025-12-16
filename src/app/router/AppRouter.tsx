@@ -23,6 +23,13 @@ import { CamerasListPage } from '@/modules/admin/cameras/pages/CamerasListPage'
 import { CameraCreatePage } from '@/modules/admin/cameras/pages/CameraCreatePage'
 import { CameraEditPage } from '@/modules/admin/cameras/pages/CameraEditPage'
 import { CameraDetailPage } from '@/modules/admin/cameras/pages/CameraDetailPage'
+import { SitesListPage } from '@/modules/admin/sites/pages/SitesListPage'
+import { SiteCreatePage } from '@/modules/admin/sites/pages/SiteCreatePage'
+import { SiteEditPage } from '@/modules/admin/sites/pages/SiteEditPage'
+import { SiteDetailPage } from '@/modules/admin/sites/pages/SiteDetailPage'
+import { AreaCreatePage } from '@/modules/admin/areas/pages/AreaCreatePage'
+import { AreaEditPage } from '@/modules/admin/areas/pages/AreaEditPage'
+import { AreaDetailPage } from '@/modules/admin/areas/pages/AreaDetailPage'
 import { AdminReportsPage } from '@/modules/admin/pages/AdminReportsPage'
 import { AdminSettingsPage } from '@/modules/admin/pages/AdminSettingsPage'
 import { AdminAuditPage } from '@/modules/admin/pages/AdminAuditPage'
@@ -77,6 +84,17 @@ export function AppRoutes() {
           <Route path="new" element={<CameraCreatePage />} />
           <Route path=":id" element={<CameraDetailPage />} />
           <Route path=":id/edit" element={<CameraEditPage />} />
+        </Route>
+        <Route path="sites">
+          <Route index element={<SitesListPage />} />
+          <Route path="new" element={<SiteCreatePage />} />
+          <Route path=":id" element={<SiteDetailPage />} />
+          <Route path=":id/edit" element={<SiteEditPage />} />
+        </Route>
+        <Route path="areas">
+          <Route path="new" element={<AreaCreatePage />} />
+          <Route path=":id" element={<AreaDetailPage />} />
+          <Route path=":id/edit" element={<AreaEditPage />} />
         </Route>
         <Route path="locations" element={<AdminLocationsPage />} />
         <Route path="ai-alerts" element={<AdminAiAlertsPage />} />
