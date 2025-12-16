@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   Brain,
-  Camera,
   FileChartColumn,
   LayoutDashboard,
   ScrollText,
@@ -48,9 +47,9 @@ const adminNavItems: AdminNavItem[] = [
     roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
   },
   {
-    label: 'Locais & Câmeras',
-    icon: Camera,
-    to: '/admin/cameras',
+    label: 'Locais e Áreas',
+    icon: Building2,
+    to: '/admin/sites',
     roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN, SystemRole.CLIENT_MASTER],
   },
   { label: 'IA & Alertas', icon: Brain, to: '/admin/ai-alerts' },
