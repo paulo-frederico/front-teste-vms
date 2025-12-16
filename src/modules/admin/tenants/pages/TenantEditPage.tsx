@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { tenantSchema } from '@/schemas/tenant.schema';
 import type { TenantFormData } from '@/schemas/tenant.schema';
 import { useTenant, useUpdateTenant } from '@/hooks/useTenants';
+import type { UpdateTenantDTO } from '@/services/api/tenants.service';
 import { TenantFormTabs } from '../components/TenantFormTabs';
 import { LoadingButton } from '@/components/form/LoadingButton';
 import { Button } from '@/components/ui/button';
@@ -38,7 +39,7 @@ export const TenantEditPage: React.FC = () => {
 
   const onSubmit = async (data: TenantFormData) => {
     try {
-      await updateMutation.mutateAsync({ id: id!, data: data as any });
+      await updateMutation.mutateAsync({ id: id!, data: data as UpdateTenantDTO });
       navigate('/admin/tenants');
     } catch (error) {
       console.error('Erro ao atualizar tenant:', error);

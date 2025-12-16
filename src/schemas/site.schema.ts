@@ -1,8 +1,5 @@
 import { z } from 'zod';
 
-/**
- * Schema de validação para Site
- */
 export const siteSchema = z.object({
   name: z.string()
     .min(3, 'Nome deve ter no mínimo 3 caracteres')
@@ -21,11 +18,9 @@ export const siteSchema = z.object({
     'DATACENTER',
     'OTHER'
   ], {
-    message: 'Tipo de local é obrigatório'
+    errorMap: () => ({ message: 'Tipo de local é obrigatório' })
   }),
   tenantId: z.string().min(1, 'Cliente é obrigatório'),
-
-  // Endereço
   zipCode: z.string()
     .regex(/^\d{5}-?\d{3}$/, 'CEP inválido (formato: 00000-000)')
     .transform(val => val.replace(/\D/g, '')),
@@ -40,11 +35,9 @@ export const siteSchema = z.object({
   country: z.string().default('Brasil'),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
-
-  // Contato
   contactName: z.string().optional().or(z.literal('')),
   contactPhone: z.string()
-    .regex(/^$|^\d{2}$|\s\d{4,5}-\d{4}$/, 'Telefone inválido (formato: (00) 00000-0000)')
+    .regex(/^|$\d{2}$| \d{4,5}-\d{4}$/, 'Telefone inválido (formato: (00) 00000-0000)')
     .optional()
     .or(z.literal('')),
   contactEmail: z.string()
@@ -53,14 +46,8 @@ export const siteSchema = z.object({
     .or(z.literal(''))
 });
 
-/**
- * Tipo inferido do schema
- */
 export type SiteFormData = z.infer<typeof siteSchema>;
 
-/**
- * Valores padrão para novo site
- */
 export const defaultSiteValues: Partial<SiteFormData> = {
   name: '',
   description: '',

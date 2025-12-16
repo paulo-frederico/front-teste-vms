@@ -1,69 +1,50 @@
-/**
- * Tipos para Areas (Zonas/Setores)
- * Areas são subdivisões de Sites onde câmeras estão instaladas
- */
-
 export enum AreaType {
-  RECEPTION = 'RECEPTION',         // Recepção
-  PARKING = 'PARKING',             // Estacionamento
-  PRODUCTION = 'PRODUCTION',       // Produção
-  WAREHOUSE = 'WAREHOUSE',         // Almoxarifado
-  HALLWAY = 'HALLWAY',             // Corredor
-  ROOM = 'ROOM',                   // Sala
-  EXTERNAL = 'EXTERNAL',           // Área Externa
-  ENTRANCE = 'ENTRANCE',           // Entrada
-  EXIT = 'EXIT',                   // Saída
-  LOADING_DOCK = 'LOADING_DOCK',   // Doca de Carga
-  CAFETERIA = 'CAFETERIA',         // Refeitório
-  RESTROOM = 'RESTROOM',           // Banheiro
-  STAIRS = 'STAIRS',               // Escada
-  ELEVATOR = 'ELEVATOR',           // Elevador
-  OTHER = 'OTHER'                  // Outro
+  RECEPTION = 'RECEPTION',
+  PARKING = 'PARKING',
+  PRODUCTION = 'PRODUCTION',
+  WAREHOUSE = 'WAREHOUSE',
+  HALLWAY = 'HALLWAY',
+  ROOM = 'ROOM',
+  EXTERNAL = 'EXTERNAL',
+  ENTRANCE = 'ENTRANCE',
+  EXIT = 'EXIT',
+  LOADING_DOCK = 'LOADING_DOCK',
+  CAFETERIA = 'CAFETERIA',
+  RESTROOM = 'RESTROOM',
+  STAIRS = 'STAIRS',
+  ELEVATOR = 'ELEVATOR',
+  OTHER = 'OTHER'
 }
 
 export enum AreaStatus {
-  ACTIVE = 'ACTIVE',               // Ativa
-  INACTIVE = 'INACTIVE',           // Inativa
-  UNDER_CONSTRUCTION = 'UNDER_CONSTRUCTION', // Em construção
-  RESTRICTED = 'RESTRICTED'        // Acesso Restrito
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  UNDER_CONSTRUCTION = 'UNDER_CONSTRUCTION',
+  RESTRICTED = 'RESTRICTED'
 }
 
-/**
- * Area (Zona/Setor)
- */
 export interface Area {
   id: string;
   name: string;
   description?: string;
   type: AreaType;
   status: AreaStatus;
-
-  // Relacionamento
   tenantId: string;
   tenantName: string;
   siteId: string;
   siteName: string;
-
-  // Características
-  floor?: string;                  // Andar (ex: "Térreo", "1º Andar", "Subsolo")
-  capacity?: number;               // Capacidade de pessoas
-  squareMeters?: number;           // Área em m²
-
-  // Estatísticas
-  totalCameras: number;            // Total de câmeras
-  onlineCameras: number;           // Câmeras online
-  offlineCameras: number;          // Câmeras offline
-
-  // Auditoria
+  floor?: string;
+  capacity?: number;
+  squareMeters?: number;
+  totalCameras: number;
+  onlineCameras: number;
+  offlineCameras: number;
   createdAt: string;
   updatedAt: string;
   createdBy: string;
   createdByName: string;
 }
 
-/**
- * Helper: Obter label do tipo de área
- */
 export const getAreaTypeLabel = (type: AreaType): string => {
   const labels: Record<AreaType, string> = {
     RECEPTION: 'Recepção',
@@ -85,9 +66,6 @@ export const getAreaTypeLabel = (type: AreaType): string => {
   return labels[type];
 };
 
-/**
- * Helper: Obter label do status da área
- */
 export const getAreaStatusLabel = (status: AreaStatus): string => {
   const labels: Record<AreaStatus, string> = {
     ACTIVE: 'Ativa',
@@ -98,9 +76,6 @@ export const getAreaStatusLabel = (status: AreaStatus): string => {
   return labels[status];
 };
 
-/**
- * Helper: Obter cor do badge de status
- */
 export const getAreaStatusColor = (status: AreaStatus): string => {
   const colors: Record<AreaStatus, string> = {
     ACTIVE: 'bg-green-100 text-green-800 border-green-300',
@@ -111,9 +86,6 @@ export const getAreaStatusColor = (status: AreaStatus): string => {
   return colors[status];
 };
 
-/**
- * Helper: Obter ícone por tipo de área
- */
 export const getAreaTypeIcon = (type: AreaType): string => {
   const icons: Record<AreaType, string> = {
     RECEPTION: '🏢',

@@ -21,7 +21,7 @@ export const TenantCreatePage: React.FC = () => {
 
   const onSubmit = async (data: TenantFormData) => {
     try {
-      await createMutation.mutateAsync(data as any);
+      await createMutation.mutateAsync(data as unknown);
       navigate('/admin/tenants');
     } catch (error) {
       console.error('Erro ao criar tenant:', error);

@@ -1,36 +1,27 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { Button, ButtonProps } from '@/components/ui/button';
 
-interface LoadingButtonProps {
-  isLoading: boolean;
+interface LoadingButtonProps extends ButtonProps {
+  isLoading?: boolean;
   children: React.ReactNode;
-  onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost';
-  disabled?: boolean;
-  className?: string;
 }
 
 export const LoadingButton: React.FC<LoadingButtonProps> = ({
   isLoading,
   children,
-  onClick,
-  type = 'button',
-  variant = 'default',
   disabled,
-  className
+  ...props
 }) => {
   return (
-    <Button
-      type={type}
-      variant={variant}
-      onClick={onClick}
-      disabled={isLoading || disabled}
-      className={className}
-    >
-      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      {children}
+    <Button {...props} disabled={isLoading || disabled}>
+      {isLoading ? (
+        <div className="flex items-center gap-2">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+          <span>Carregando...</span>
+        </div>
+      ) : (
+        children
+      )}
     </Button>
   );
 };

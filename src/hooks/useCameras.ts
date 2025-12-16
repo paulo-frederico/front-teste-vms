@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { camerasService } from '@/services/api/cameras.service';
+import { camerasService, type CreateCameraDTO } from '@/services/api/cameras.service';
 import type { CameraFilters } from '@/services/api/cameras.service';
 import type { CameraStatus } from '@/modules/shared/types/camera';
 import { toast } from 'react-toastify';
@@ -31,7 +31,7 @@ export const useCreateCamera = () => {
       toast.success('Câmera cadastrada com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['cameras'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao cadastrar câmera');
     }
   });
@@ -41,14 +41,14 @@ export const useUpdateCamera = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => 
+    mutationFn: ({ id, data }: { id: string; data: Partial<CreateCameraDTO> }) => 
       camerasService.update(id, data),
     onSuccess: (_, variables) => {
       toast.success('Câmera atualizada com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['cameras'] });
       queryClient.invalidateQueries({ queryKey: ['camera', variables.id] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar câmera');
     }
   });
@@ -63,7 +63,7 @@ export const useDeleteCamera = () => {
       toast.success('Câmera removida com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['cameras'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao remover câmera');
     }
   });
@@ -79,7 +79,7 @@ export const useChangeCameraStatus = () => {
       toast.success('Status alterado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['cameras'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao alterar status');
     }
   });
@@ -98,7 +98,7 @@ export const useTestConnection = () => {
         toast.error(`Falha na conexão: ${result.errorMessage}`);
       }
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao testar conexão');
     }
   });
@@ -116,7 +116,7 @@ export const useCaptureSnapshot = () => {
       toast.success('Snapshot capturado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['camera', cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao capturar snapshot');
     }
   });

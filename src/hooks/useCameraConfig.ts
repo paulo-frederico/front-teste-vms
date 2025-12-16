@@ -30,7 +30,7 @@ export const useUpdateCameraConfig = () => {
       queryClient.invalidateQueries({ queryKey: ['camera-config', variables.cameraId] });
       queryClient.invalidateQueries({ queryKey: ['camera', variables.cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar configuração');
     }
   });
@@ -49,7 +49,7 @@ export const useUpdateCodec = () => {
       toast.success('Configurações de CODEC atualizadas!');
       queryClient.invalidateQueries({ queryKey: ['camera-config', variables.cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar CODEC');
     }
   });
@@ -68,7 +68,7 @@ export const useUpdateImage = () => {
       toast.success('Ajustes de imagem atualizados!');
       queryClient.invalidateQueries({ queryKey: ['camera-config', variables.cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar imagem');
     }
   });
@@ -87,7 +87,7 @@ export const useUpdateAI = () => {
       toast.success('Configurações de IA atualizadas!');
       queryClient.invalidateQueries({ queryKey: ['camera-config', variables.cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar IA');
     }
   });
@@ -106,7 +106,7 @@ export const useUpdateDevice = () => {
       toast.success('Informações de dispositivo atualizadas!');
       queryClient.invalidateQueries({ queryKey: ['camera-config', variables.cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar dispositivo');
     }
   });
@@ -124,7 +124,7 @@ export const useLockCamera = () => {
       toast.success('Câmera bloqueada com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['camera', cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao bloquear câmera');
     }
   });
@@ -142,7 +142,7 @@ export const useRebootCamera = () => {
       toast.success('Câmera reiniciada com sucesso! Aguarde alguns segundos para reconexão.');
       queryClient.invalidateQueries({ queryKey: ['camera', cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao reiniciar câmera');
     }
   });
@@ -160,7 +160,7 @@ export const useResetToFactory = () => {
       toast.success('Configuração resetada para padrão de fábrica!');
       queryClient.invalidateQueries({ queryKey: ['camera-config', cameraId] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao resetar configuração');
     }
   });

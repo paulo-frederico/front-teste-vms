@@ -10,7 +10,7 @@ export interface APIError {
   message: string
   code: string
   statusCode: number
-  details?: Record<string, any>
+  details?: Record<string, unknown>
 }
 
 class APIClient {
@@ -110,12 +110,13 @@ class APIClient {
 
   private normalizeError(error: AxiosError): APIError {
     if (error.response) {
-      const data = error.response.data as any
+      const data = error.response.data as unknown
+      const typedData = data as { message?: string; code?: string; details?: unknown } | null
       return {
-        message: data?.message || 'Erro na requisição',
-        code: data?.code || 'API_ERROR',
+        message: typedData?.message || 'Erro na requisição',
+        code: typedData?.code || 'API_ERROR',
         statusCode: error.response.status,
-        details: data?.details,
+        details: (typedData?.details as Record<string, unknown>) || undefined,
       }
     }
 
@@ -139,17 +140,17 @@ class APIClient {
     return response.data
   }
 
-  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.post<T>(url, data, config)
     return response.data
   }
 
-  async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async put<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.put<T>(url, data, config)
     return response.data
   }
 
-  async patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.patch<T>(url, data, config)
     return response.data
   }

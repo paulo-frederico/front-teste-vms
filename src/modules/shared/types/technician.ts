@@ -99,7 +99,7 @@ export interface TechnicianActivity {
   tenantId: string;
   tenantName: string;
   action: string;                // Ex: "Instalou câmera CAM-001"
-  details?: Record<string, any>; // Dados adicionais
+  details?: Record<string, unknown>; // Dados adicionais
   timestamp: string;             // ISO timestamp
   ipAddress?: string;
 }

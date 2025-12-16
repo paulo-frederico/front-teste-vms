@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { techniciansService } from '@/services/api/technicians.service';
+import { techniciansService, type CreateTechnicianDTO } from '@/services/api/technicians.service';
 import type { TechnicianFilters } from '@/services/api/technicians.service';
 import type { TechnicianStatus } from '@/modules/shared/types/technician';
 import { toast } from 'react-toastify';
@@ -31,7 +31,7 @@ export const useCreateTechnician = () => {
       toast.success('Técnico criado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['technicians'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao criar técnico');
     }
   });
@@ -41,14 +41,14 @@ export const useUpdateTechnician = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => 
+    mutationFn: ({ id, data }: { id: string; data: Partial<CreateTechnicianDTO> }) => 
       techniciansService.update(id, data),
     onSuccess: (_, variables) => {
       toast.success('Técnico atualizado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['technicians'] });
       queryClient.invalidateQueries({ queryKey: ['technician', variables.id] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar técnico');
     }
   });
@@ -63,7 +63,7 @@ export const useDeleteTechnician = () => {
       toast.success('Técnico removido com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['technicians'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao remover técnico');
     }
   });
@@ -79,7 +79,7 @@ export const useChangeTechnicianStatus = () => {
       toast.success('Status alterado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['technicians'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao alterar status');
     }
   });
@@ -104,7 +104,7 @@ export const useGrantTemporaryAccess = () => {
       queryClient.invalidateQueries({ queryKey: ['technicians'] });
       queryClient.invalidateQueries({ queryKey: ['temporary-accesses'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao conceder acesso temporário');
     }
   });
@@ -123,7 +123,7 @@ export const useRevokeTemporaryAccess = () => {
       queryClient.invalidateQueries({ queryKey: ['technicians'] });
       queryClient.invalidateQueries({ queryKey: ['temporary-accesses'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao revogar acesso');
     }
   });

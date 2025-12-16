@@ -15,7 +15,7 @@ export const useRequestCameraAccess = () => {
       toast.success(`Acesso concedido por 30 minutos (expira às ${new Date(session.expiresAt).toLocaleTimeString('pt-BR')})`);
       queryClient.invalidateQueries({ queryKey: ['camera-access-session'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao solicitar acesso');
     }
   });
@@ -46,7 +46,7 @@ export const useEndCameraAccess = () => {
       toast.success('Acesso encerrado com sucesso');
       queryClient.invalidateQueries({ queryKey: ['camera-access-session'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao encerrar acesso');
     }
   });

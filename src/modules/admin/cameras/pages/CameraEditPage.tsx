@@ -364,7 +364,7 @@ export const CameraEditPage: React.FC = () => {
           <FormField label="Protocolo" name="protocol" error={errors.protocol} required>
             <Select
               value={watch('protocol') || 'ONVIF'}
-              onValueChange={(value) => setValue('protocol', value as any)}
+              onValueChange={(value) => setValue('protocol', value as unknown)}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -500,7 +500,7 @@ export const CameraEditPage: React.FC = () => {
           <FormField label="Modo de Gravação" name="recordingMode" error={errors.recordingMode} required>
             <Select
               value={watch('recordingMode') || 'CONTINUOUS'}
-              onValueChange={(value) => setValue('recordingMode', value as any)}
+              onValueChange={(value) => setValue('recordingMode', value as unknown)}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -686,7 +686,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Resolução */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Resolução</label>
-                  <Select value={resolution} onValueChange={(v) => setResolution(v as any)}>
+                  <Select value={resolution} onValueChange={(v) => setResolution(v as unknown)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -704,7 +704,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Encoder */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Encoder</label>
-                  <Select value={encoder} onValueChange={(v) => setEncoder(v as any)}>
+                  <Select value={encoder} onValueChange={(v) => setEncoder(v as unknown)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -756,7 +756,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Stream */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Stream</label>
-                  <Select value={streamType} onValueChange={(v) => setStreamType(v as any)}>
+                  <Select value={streamType} onValueChange={(v) => setStreamType(v as unknown)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -770,7 +770,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Tipo (Bit rate) */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Tipo (Bit rate)</label>
-                  <Select value={bitRateType} onValueChange={(v) => setBitRateType(v as any)}>
+                  <Select value={bitRateType} onValueChange={(v) => setBitRateType(v as unknown)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -903,7 +903,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Informação de dispositivo */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Informação de dispositivo</label>
-                  <Select value={videoStandard} onValueChange={(v) => setVideoStandard(v as any)}>
+                  <Select value={videoStandard} onValueChange={(v) => setVideoStandard(v as unknown)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -934,7 +934,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Modo de operação */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Modo de operação</label>
-                  <Select value={operationMode} onValueChange={(v) => setOperationMode(v as any)}>
+                  <Select value={operationMode} onValueChange={(v) => setOperationMode(v as unknown)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>

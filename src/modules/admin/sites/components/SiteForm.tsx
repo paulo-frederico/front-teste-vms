@@ -7,6 +7,7 @@ import { useCreateSite, useUpdateSite, useAddressByZipCode } from '@/hooks/useSi
 import { LoadingButton } from '@/components/form/LoadingButton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import type { CreateSiteDTO, SiteType } from '@/services/api/sites.service';
 
 interface SiteFormProps {
   initialData?: SiteFormData & { id: string };
@@ -57,7 +58,7 @@ export const SiteForm: React.FC<SiteFormProps> = ({
       const dtoData = {
         name: data.name,
         description: data.description,
-        type: data.type as any, // Type from enum
+        type: data.type as SiteType, // Type from enum
         tenantId: data.tenantId,
         address: {
           zipCode: data.zipCode,
@@ -81,10 +82,10 @@ export const SiteForm: React.FC<SiteFormProps> = ({
       if (isEditing && initialData?.id) {
         await updateMutation.mutateAsync({
           id: initialData.id,
-          data: dtoData as any
+          data: dtoData as Partial<CreateSiteDTO>
         });
       } else {
-        await createMutation.mutateAsync(dtoData as any);
+        await createMutation.mutateAsync(dtoData as CreateSiteDTO);
       }
       onSuccess();
     } catch (error) {
@@ -127,7 +128,7 @@ export const SiteForm: React.FC<SiteFormProps> = ({
                 {...register('type')}
               >
                 <option value="">Selecione um tipo</option>
-                {['HEADQUARTERS', 'BRANCH', 'STORE', 'WAREHOUSE', 'OFFICE', 'FACTORY', 'DATACENTER', 'OTHER'].map((type) => (
+                {(['HEADQUARTERS', 'BRANCH', 'STORE', 'WAREHOUSE', 'OFFICE', 'FACTORY', 'DATACENTER', 'OTHER'] as const).map((type) => (
                   <option key={type} value={type}>{type}</option>
                 ))}
               </select>

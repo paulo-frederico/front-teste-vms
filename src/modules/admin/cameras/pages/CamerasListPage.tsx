@@ -6,7 +6,7 @@ import {
   useTestConnection,
   useCaptureSnapshot
 } from '@/hooks/useCameras';
-import { CameraStatus, CameraProtocol } from '@/modules/shared/types/camera';
+import { CameraStatus, CameraProtocol, type Camera } from '@/modules/shared/types/camera';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -53,7 +53,7 @@ export const CamerasListPage: React.FC = () => {
     }
   };
 
-  const handleTestConnection = async (camera: any) => {
+  const handleTestConnection = async (camera: Camera) => {
     await testConnectionMutation.mutateAsync({
       protocol: camera.protocol,
       ipAddress: camera.ipAddress,

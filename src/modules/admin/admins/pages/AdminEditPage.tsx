@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { adminSchema } from '@/schemas/admin.schema';
 import type { AdminFormData } from '@/schemas/admin.schema';
 import { useAdmin, useUpdateAdmin } from '@/hooks/useAdmins';
+import type { CreateAdminDTO } from '@/services/api/admins.service';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FormField } from '@/components/form/FormField';
@@ -38,7 +39,7 @@ export const AdminEditPage: React.FC = () => {
 
   const onSubmit = async (data: AdminFormData) => {
     try {
-      const updateData: any = {
+      const updateData: Partial<CreateAdminDTO> = {
         name: data.name,
         email: data.email,
         phone: data.phone

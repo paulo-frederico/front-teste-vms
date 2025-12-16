@@ -30,7 +30,7 @@ export const useCreateUser = () => {
       toast.success('Usuário criado com sucesso!')
       queryClient.invalidateQueries({ queryKey: ['users'] })
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao criar usuário')
     },
   })
@@ -47,7 +47,7 @@ export const useUpdateUser = () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       queryClient.invalidateQueries({ queryKey: ['user', variables.id] })
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar usuário')
     },
   })
@@ -62,7 +62,7 @@ export const useDeleteUser = () => {
       toast.success('Usuário removido com sucesso!')
       queryClient.invalidateQueries({ queryKey: ['users'] })
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao remover usuário')
     },
   })
@@ -74,7 +74,7 @@ export const useResetUserPassword = () =>
     onSuccess: () => {
       toast.success('Senha redefinida com sucesso!')
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao redefinir senha')
     },
   })

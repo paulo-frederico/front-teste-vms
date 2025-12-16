@@ -1,100 +1,107 @@
-import type {
-  UseQueryResult,
-  UseMutationResult,
-} from '@tanstack/react-query';
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-import type { Area } from '@/modules/shared/types/area';
-import type {
-  CreateAreaDTO,
-  UpdateAreaDTO,
-  AreasFilters,
-} from '@/services/api/areas.service';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { areasService } from '@/services/api/areas.service';
+import { toast } from 'react-toastify';
 
-export function useAreas(
-  filters?: AreasFilters
-): UseQueryResult<Area[], Error> {
+// Definir as interfaces
+export interface CreateAreaDTO {
+  name: string;
+  type: 'RECEPTION' | 'PARKING' | 'PRODUCTION' | 'WAREHOUSE' | 'OFFICE' | 'FACTORY' | 'DATACENTER' | 'OTHER';
+  tenantId: string;
+  zipCode: string;
+  street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  country: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface UpdateAreaDTO extends Partial<CreateAreaDTO> {
+  id: string;
+}
+
+export interface AreasFilters {
+  search?: string;
+  type?: string;
+  tenantId?: string;
+  page?: number;
+  limit?: number;
+}
+
+// Implementar os hooks
+
+// Hook para listar áreas com filtros opcionais
+export const useAreas = (filters?: AreasFilters) => {
   return useQuery({
     queryKey: ['areas', filters],
     queryFn: () => areasService.list(filters),
-    staleTime: 30000, // 30 segundos
-    retry: 1,
+    staleTime: 30000,
+    retry: 1
   });
-}
+};
 
-export function useArea(id: string): UseQueryResult<Area, Error> {
+// Hook para buscar uma área específica por ID
+export const useArea = (id: string) => {
   return useQuery({
     queryKey: ['area', id],
     queryFn: () => areasService.getById(id),
     enabled: !!id,
     staleTime: 30000,
-    retry: 1,
+    retry: 1
   });
-}
+};
 
-export function useCreateArea(): UseMutationResult<Area, Error, CreateAreaDTO> {
+// Hook para criar nova área
+export const useCreateArea = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateAreaDTO) => areasService.create(data),
-    onSuccess: (newArea) => {
-      console.log('✅ [useCreateArea] Área criada com sucesso:', newArea);
+    mutationFn: areasService.create,
+    onSuccess: () => {
       toast.success('Área cadastrada com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['areas'] });
       queryClient.invalidateQueries({ queryKey: ['sites'] });
     },
-    onError: (error) => {
-      const message = error instanceof Error ? error.message : 'Erro ao cadastrar área';
-      console.error('❌ [useCreateArea] Erro:', message);
-      toast.error(message);
-    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Erro ao cadastrar área');
+    }
   });
-}
+};
 
-export function useUpdateArea(): UseMutationResult<
-  Area,
-  Error,
-  { id: string; data: UpdateAreaDTO }
-> {
+// Hook para atualizar área existente
+export const useUpdateArea = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateAreaDTO }) =>
       areasService.update(id, data),
-    onSuccess: (updatedArea, variables) => {
-      console.log('✅ [useUpdateArea] Área atualizada com sucesso:', updatedArea);
+    onSuccess: (_, variables) => {
       toast.success('Área atualizada com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['areas'] });
       queryClient.invalidateQueries({ queryKey: ['area', variables.id] });
     },
-    onError: (error) => {
-      const message = error instanceof Error ? error.message : 'Erro ao atualizar área';
-      console.error('❌ [useUpdateArea] Erro:', message);
-      toast.error(message);
-    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Erro ao atualizar área');
+    }
   });
-}
+};
 
-export function useDeleteArea(): UseMutationResult<void, Error, string> {
+// Hook para deletar área
+export const useDeleteArea = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => areasService.delete(id),
+    mutationFn: areasService.delete,
     onSuccess: () => {
-      console.log('✅ [useDeleteArea] Área removida com sucesso');
       toast.success('Área removida com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['areas'] });
       queryClient.invalidateQueries({ queryKey: ['sites'] });
     },
-    onError: (error) => {
-      const message = error instanceof Error ? error.message : 'Erro ao remover área';
-      console.error('❌ [useDeleteArea] Erro:', message);
-      toast.error(message);
-    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Erro ao remover área');
+    }
   });
-}
+};
