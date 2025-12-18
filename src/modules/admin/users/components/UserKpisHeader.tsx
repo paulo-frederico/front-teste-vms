@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
+import type { AdminUserRow } from '../mockUsers'
 
 export type UserKpiStats = {
   totalUsers: number
@@ -16,7 +17,29 @@ const KPI_METADATA = [
   { key: 'clientMasters', label: 'Clientes master' },
 ] as const
 
-export function UserKpisHeader({ stats }: { stats: UserKpiStats }) {
+function calculateStats(users: AdminUserRow[] | undefined): UserKpiStats {
+  if (!users) {
+    return {
+      totalUsers: 0,
+      activeUsers: 0,
+      suspendedUsers: 0,
+      technicians: 0,
+      clientMasters: 0,
+    }
+  }
+
+  return {
+    totalUsers: users.length,
+    activeUsers: users.filter(u => u.status === 'ACTIVE').length,
+    suspendedUsers: users.filter(u => u.status === 'SUSPENDED').length,
+    technicians: users.filter(u => u.role === 'TECHNICIAN').length,
+    clientMasters: users.filter(u => u.role === 'CLIENT_MASTER').length,
+  }
+}
+
+export function UserKpisHeader({ users }: { users: AdminUserRow[] | undefined }) {
+  const stats = calculateStats(users)
+
   return (
     <div className="grid gap-4 lg:grid-cols-5">
       {KPI_METADATA.map((kpi) => (

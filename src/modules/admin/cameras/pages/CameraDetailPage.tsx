@@ -346,14 +346,110 @@ export const CameraDetailPage: React.FC = () => {
         {/* ABA STREAM */}
         <TabsContent value="stream" className="space-y-6">
           <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Preview do Stream</h2>
-            <div className="w-full aspect-video bg-gray-900 rounded-lg flex items-center justify-center">
-              <div className="text-center text-white">
-                <CameraIcon className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-lg font-medium">Preview de Stream</p>
-                <p className="text-sm opacity-75 mt-2">Funcionalidade será implementada em breve</p>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Preview do Stream</h2>
+              <div className="flex items-center gap-2">
+                <span className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
+                  camera.status === 'ONLINE' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
+                  <span className={`w-2 h-2 rounded-full ${camera.status === 'ONLINE' ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
+                  {camera.status === 'ONLINE' ? 'AO VIVO' : 'OFFLINE'}
+                </span>
               </div>
             </div>
+
+            {/* Player de Stream Mockado */}
+            <div className="relative w-full aspect-video bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg overflow-hidden">
+              {/* Efeito de linhas de escaneamento */}
+              <div className="absolute inset-0 opacity-5" style={{
+                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)',
+              }}></div>
+
+              {/* Imagem de fundo simulada */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                {camera.status === 'ONLINE' ? (
+                  <div className="w-full h-full bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="relative">
+                        <CameraIcon className="w-20 h-20 text-white/30" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-4 h-4 border-2 border-green-500 rounded-full animate-ping"></div>
+                        </div>
+                      </div>
+                      <p className="text-white/60 text-sm mt-4">Stream simulado para prototipagem</p>
+                      <p className="text-white/40 text-xs mt-1">Conecte a um backend real para visualizar o stream</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center text-white/50">
+                    <CameraIcon className="w-16 h-16 mx-auto mb-2" />
+                    <p className="text-sm">Câmera offline</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Overlay de Informações */}
+              <div className="absolute top-0 left-0 right-0 p-3 bg-gradient-to-b from-black/60 to-transparent">
+                <div className="flex items-center justify-between text-white text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono bg-black/40 px-2 py-0.5 rounded">{camera.name}</span>
+                    <span className="bg-red-600 px-1.5 py-0.5 rounded text-[10px] font-bold">REC</span>
+                  </div>
+                  <span className="font-mono bg-black/40 px-2 py-0.5 rounded">
+                    {new Date().toLocaleTimeString('pt-BR')}
+                  </span>
+                </div>
+              </div>
+
+              {/* Overlay de Rodapé */}
+              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
+                <div className="flex items-center justify-between text-white text-xs">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono">{camera.ipAddress}</span>
+                    <span className="bg-blue-600/80 px-1.5 py-0.5 rounded text-[10px]">{camera.protocol}</span>
+                    {camera.streamProfiles[0] && (
+                      <span className="bg-purple-600/80 px-1.5 py-0.5 rounded text-[10px]">
+                        {camera.streamProfiles[0].resolution} @ {camera.streamProfiles[0].fps}fps
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {camera.enabledAIModules.slice(0, 2).map((mod) => (
+                      <span key={mod} className="bg-yellow-600/80 px-1.5 py-0.5 rounded text-[10px]">
+                        IA: {mod}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Controles de Player (mockados) */}
+              <div className="absolute bottom-14 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/50 rounded-full px-4 py-2">
+                <button className="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <button className="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <div className="w-px h-4 bg-white/30 mx-1"></div>
+                <button className="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white text-xs font-medium">
+                  HD
+                </button>
+                <button className="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Info de Acesso LGPD */}
+            {activeSession?.active && (
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">Acesso ativo:</span>
+                  <span>Visualização autorizada até {new Date(activeSession.expiresAt).toLocaleTimeString('pt-BR')}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">

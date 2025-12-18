@@ -92,7 +92,7 @@ export function UserFiltersBar({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos os clientes</SelectItem>
-            {tenants.map((tenant) => (
+            {(tenants || []).map((tenant) => (
               <SelectItem key={tenant.id} value={tenant.id}>
                 {tenant.name}
               </SelectItem>

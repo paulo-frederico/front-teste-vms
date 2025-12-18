@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Plus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { AiAlertsKpisHeader } from '@/modules/admin/ai-alerts/components/AiAlertsKpisHeader'
@@ -7,6 +8,7 @@ import { AiEventsTimelineChart } from '@/modules/admin/ai-alerts/components/AiEv
 import { AiEventsByTenantTable } from '@/modules/admin/ai-alerts/components/AiEventsByTenantTable'
 import { AlertRuleDetailsDrawer } from '@/modules/admin/ai-alerts/components/AlertRuleDetailsDrawer'
 import { AlertRulesList } from '@/modules/admin/ai-alerts/components/AlertRulesList'
+import { CreateAlertRuleModal } from '@/modules/admin/ai-alerts/components/CreateAlertRuleModal'
 import {
   aggregateEventsByType,
   buildAiAlertsKpis,
@@ -66,6 +68,7 @@ export function AdminAiAlertsPage() {
   const tenantRows = useMemo(() => buildTenantEventStats(aiEvents).slice(0, 6), [aiEvents])
   const [selectedRule, setSelectedRule] = useState<AlertRule | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
   const handleSelectRule = (rule: AlertRule) => {
     setSelectedRule(rule)
@@ -79,6 +82,10 @@ export function AdminAiAlertsPage() {
     }
   }
 
+  const handleCreateRule = (newRule: AlertRule) => {
+    setAlertRules((prev) => [newRule, ...prev])
+  }
+
   return (
     <section className="space-y-8">
       <header className="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
@@ -89,7 +96,12 @@ export function AdminAiAlertsPage() {
             Acompanhe volumes, severidade e templates globais de inteligência artificial sem expor imagens ou gravações.
           </p>
         </div>
-        <Button type="button" className="h-11 rounded-2xl bg-slate-900 text-white" disabled>
+        <Button
+          type="button"
+          className="h-11 gap-2 rounded-2xl bg-slate-900 text-white"
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          <Plus className="h-4 w-4" />
           Nova regra global
         </Button>
       </header>
@@ -116,6 +128,12 @@ export function AdminAiAlertsPage() {
       </div>
 
       <AlertRuleDetailsDrawer rule={selectedRule} open={isDrawerOpen} onOpenChange={handleDrawerChange} />
+
+      <CreateAlertRuleModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        onSave={handleCreateRule}
+      />
     </section>
   )
 }
