@@ -8,7 +8,7 @@ import { AdminTenantsPage } from '@/modules/admin/pages/AdminTenantsPage'
 import { TenantCreatePage } from '@/modules/admin/tenants/pages/TenantCreatePage'
 import { TenantEditPage } from '@/modules/admin/tenants/pages/TenantEditPage'
 import { TenantDetailPage } from '@/modules/admin/tenants/pages/TenantDetailPage'
-import { AdminUsersPage } from '@/modules/admin/pages/AdminUsersPage'
+import { UsersListPage, UserCreatePage, UserEditPage, UserDetailPage } from '@/modules/admin/users/pages'
 import { AdminsListPage } from '@/modules/admin/admins/pages/AdminsListPage'
 import { AdminCreatePage } from '@/modules/admin/admins/pages/AdminCreatePage'
 import { AdminEditPage } from '@/modules/admin/admins/pages/AdminEditPage'
@@ -27,9 +27,8 @@ import { SitesListPage } from '@/modules/admin/sites/pages/SitesListPage'
 import { SiteCreatePage } from '@/modules/admin/sites/pages/SiteCreatePage'
 import { SiteEditPage } from '@/modules/admin/sites/pages/SiteEditPage'
 import { SiteDetailPage } from '@/modules/admin/sites/pages/SiteDetailPage'
-import { AreaCreatePage } from '@/modules/admin/areas/pages/AreaCreatePage'
-import { AreaEditPage } from '@/modules/admin/areas/pages/AreaEditPage'
-import { AreaDetailPage } from '@/modules/admin/areas/pages/AreaDetailPage'
+import { AreasListPage, AreaCreatePage, AreaEditPage, AreaDetailPage } from '@/modules/admin/areas/pages'
+import { InfrastructurePage } from '@/modules/admin/infrastructure/pages'
 import { AdminReportsPage } from '@/modules/admin/pages/AdminReportsPage'
 import { AdminSettingsPage } from '@/modules/admin/pages/AdminSettingsPage'
 import { AdminAuditPage } from '@/modules/admin/pages/AdminAuditPage'
@@ -59,7 +58,12 @@ export function AppRoutes() {
           <Route path=":id" element={<TenantDetailPage />} />
           <Route path=":id/edit" element={<TenantEditPage />} />
         </Route>
-        <Route path="users" element={<AdminUsersPage />} />
+        <Route path="users">
+          <Route index element={<UsersListPage />} />
+          <Route path="new" element={<UserCreatePage />} />
+          <Route path=":id" element={<UserDetailPage />} />
+          <Route path=":id/edit" element={<UserEditPage />} />
+        </Route>
         <Route path="admins">
           <Route index element={<AdminsListPage />} />
           <Route path="new" element={<AdminCreatePage />} />
@@ -92,12 +96,21 @@ export function AppRoutes() {
           <Route path=":id/edit" element={<SiteEditPage />} />
         </Route>
         <Route path="areas">
+          <Route index element={<AreasListPage />} />
           <Route path="new" element={<AreaCreatePage />} />
           <Route path=":id" element={<AreaDetailPage />} />
           <Route path=":id/edit" element={<AreaEditPage />} />
         </Route>
         <Route path="locations" element={<AdminLocationsPage />} />
         <Route path="ai-alerts" element={<AdminAiAlertsPage />} />
+        <Route
+          path="infrastructure"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <InfrastructurePage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="audit"
           element={

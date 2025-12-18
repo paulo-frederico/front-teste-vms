@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Shield,
   Wrench,
+  Camera,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -52,6 +53,7 @@ const adminNavItems: AdminNavItem[] = [
     to: '/admin/sites',
     roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN, SystemRole.CLIENT_MASTER],
   },
+  { label: 'Câmeras', icon: Camera, to: '/admin/cameras' },
   { label: 'IA & Alertas', icon: Brain, to: '/admin/ai-alerts' },
   {
     label: 'Auditoria & Trilhas',

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Plus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { LocationDetailsDrawer } from '@/modules/admin/locations/components/LocationDetailsDrawer'
@@ -6,6 +7,7 @@ import { LocationFiltersBar } from '@/modules/admin/locations/components/Locatio
 import { LocationKpisHeader } from '@/modules/admin/locations/components/LocationKpisHeader'
 import { LocationListTable } from '@/modules/admin/locations/components/LocationListTable'
 import { CameraDetailsDrawer } from '@/modules/admin/locations/components/CameraDetailsDrawer'
+import { CreateLocationModal } from '@/modules/admin/locations/components/CreateLocationModal'
 import type { AdminCamera, AdminCameraStatus } from '@/modules/admin/locations/mockCameras'
 import type { AdminLocation } from '@/modules/admin/locations/mockLocations'
 import { buildLocationKpiStats } from '@/modules/admin/locations/mockLocations'
@@ -37,6 +39,7 @@ export function AdminLocationsPage() {
   const [isLocationDrawerOpen, setIsLocationDrawerOpen] = useState(false)
   const [selectedCamera, setSelectedCamera] = useState<AdminCamera | null>(null)
   const [isCameraDrawerOpen, setIsCameraDrawerOpen] = useState(false)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 
   const [locations, setLocations] = useState<AdminLocation[]>([])
   const [cameras, setCameras] = useState<AdminCamera[]>([])
@@ -153,6 +156,10 @@ export function AdminLocationsPage() {
     }
   }
 
+  const handleCreateLocation = (newLocation: AdminLocation) => {
+    setLocations((prev) => [newLocation, ...prev])
+  }
+
   const locationCameras = selectedLocation ? camerasByLocation[selectedLocation.id] ?? [] : []
 
   return (
@@ -163,7 +170,12 @@ export function AdminLocationsPage() {
           <h1 className="mt-1 text-3xl font-semibold text-slate-900">Mapa completo da operação</h1>
           <p className="text-sm text-slate-500">Estrutura cliente → local → câmeras com status e módulos IA atualizados em tempo real.</p>
         </div>
-        <Button type="button" className="h-11 rounded-2xl bg-slate-900 text-white" disabled>
+        <Button
+          type="button"
+          className="h-11 gap-2 rounded-2xl bg-slate-900 text-white"
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          <Plus className="h-4 w-4" />
           Novo local
         </Button>
       </header>
@@ -203,6 +215,13 @@ export function AdminLocationsPage() {
       />
 
       <CameraDetailsDrawer camera={selectedCamera} open={isCameraDrawerOpen} onOpenChange={handleCameraDrawerChange} />
+
+      <CreateLocationModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        onSave={handleCreateLocation}
+        tenantOptions={tenantOptions}
+      />
     </section>
   )
 }
