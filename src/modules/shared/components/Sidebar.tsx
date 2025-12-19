@@ -12,6 +12,11 @@ import {
   Shield,
   Wrench,
   Camera,
+  AlertTriangle,
+  Bell,
+  Lock,
+  Clock,
+  Ticket,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -59,6 +64,36 @@ const adminNavItems: AdminNavItem[] = [
     label: 'Auditoria & Trilhas',
     icon: ScrollText,
     to: '/admin/audit',
+    roles: [SystemRole.ADMIN_MASTER],
+  },
+  {
+    label: 'Diagnóstico',
+    icon: AlertTriangle,
+    to: '/admin/diagnostics',
+    roles: [SystemRole.ADMIN_MASTER],
+  },
+  {
+    label: 'Notificações',
+    icon: Bell,
+    to: '/admin/notifications',
+    roles: [SystemRole.ADMIN_MASTER],
+  },
+  {
+    label: 'Controle de Acesso',
+    icon: Lock,
+    to: '/admin/access-control',
+    roles: [SystemRole.ADMIN_MASTER],
+  },
+  {
+    label: 'Acesso Temporário',
+    icon: Clock,
+    to: '/admin/technician-access',
+    roles: [SystemRole.ADMIN_MASTER],
+  },
+  {
+    label: 'Incidentes',
+    icon: Ticket,
+    to: '/admin/incidents',
     roles: [SystemRole.ADMIN_MASTER],
   },
   { label: 'Relatórios & Auditoria', icon: FileChartColumn, to: '/admin/reports' },
