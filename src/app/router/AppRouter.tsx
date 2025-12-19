@@ -29,9 +29,16 @@ import { SiteEditPage } from '@/modules/admin/sites/pages/SiteEditPage'
 import { SiteDetailPage } from '@/modules/admin/sites/pages/SiteDetailPage'
 import { AreasListPage, AreaCreatePage, AreaEditPage, AreaDetailPage } from '@/modules/admin/areas/pages'
 import { InfrastructurePage } from '@/modules/admin/infrastructure/pages'
+import { AiConfigPage, CameraAiConfigPage } from '@/modules/admin/ai-config/pages'
+import { RecordingPoliciesPage } from '@/modules/admin/recording-policies/pages'
 import { AdminReportsPage } from '@/modules/admin/pages/AdminReportsPage'
 import { AdminSettingsPage } from '@/modules/admin/pages/AdminSettingsPage'
 import { AdminAuditPage } from '@/modules/admin/pages/AdminAuditPage'
+import { DiagnosticsPage } from '@/modules/admin/diagnostics/pages'
+import { NotificationProfilesPage } from '@/modules/admin/notifications/pages'
+import { AccessControlPage } from '@/modules/admin/access-control/pages'
+import { TemporaryTechnicianAccessPage } from '@/modules/admin/technician-access/pages'
+import { IncidentsPage } from '@/modules/admin/incidents/pages'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 export function AppRoutes() {
@@ -103,6 +110,11 @@ export function AppRoutes() {
         </Route>
         <Route path="locations" element={<AdminLocationsPage />} />
         <Route path="ai-alerts" element={<AdminAiAlertsPage />} />
+        <Route path="ai-config">
+          <Route index element={<AiConfigPage />} />
+          <Route path="camera/:cameraId" element={<CameraAiConfigPage />} />
+        </Route>
+        <Route path="recording-policies" element={<RecordingPoliciesPage />} />
         <Route
           path="infrastructure"
           element={
@@ -116,6 +128,46 @@ export function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
               <AdminAuditPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="diagnostics"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <DiagnosticsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="notifications"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <NotificationProfilesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="access-control"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <AccessControlPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="technician-access"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <TemporaryTechnicianAccessPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="incidents"
+          element={
+            <ProtectedRoute allowedRoles={[SystemRole.ADMIN_MASTER]}>
+              <IncidentsPage />
             </ProtectedRoute>
           }
         />
