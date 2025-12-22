@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenants';
 import { Button } from '@/components/ui/button';

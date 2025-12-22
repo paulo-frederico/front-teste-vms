@@ -7,7 +7,7 @@ import {
   type UserListResponse,
 } from '@/services/api/users.service'
 import { mockUsers } from '@/modules/admin/users/mockUsers'
-import { SystemRole, UserStatus } from '@/modules/shared/types/auth'
+import { UserStatus } from '@/modules/shared/types/auth'
 
 // Fixtures temporários até backend estar pronto
 const mockUsersFixture = async (filters?: UserFilters): Promise<UserListResponse> => {
@@ -20,7 +20,7 @@ const mockUsersFixture = async (filters?: UserFilters): Promise<UserListResponse
   }
 
   if (filters?.status) {
-    filteredUsers = filteredUsers.filter((u) => u.status === filters.status)
+    filteredUsers = filteredUsers.filter((u) => String(u.status) === String(filters.status))
   }
 
   if (filters?.tenantId) {
@@ -105,7 +105,7 @@ export const useDeleteUser = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (_id: string) => {
       await new Promise((resolve) => setTimeout(resolve, 500))
     },
     onSuccess: () => {
@@ -120,7 +120,7 @@ export const useDeleteUser = () => {
 
 export const useResetUserPassword = () =>
   useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (_id: string) => {
       await new Promise((resolve) => setTimeout(resolve, 500))
     },
     onSuccess: () => {

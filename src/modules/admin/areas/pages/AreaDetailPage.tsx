@@ -326,7 +326,7 @@ export const AreaDetailPage: React.FC = () => {
               </table>
               {area.totalCameras > 5 && (
                 <div className="px-4 py-3 border-t border-gray-100 text-center">
-                  <Button variant="link" size="sm">
+                  <Button variant="ghost" size="sm">
                     Ver todas as {area.totalCameras} câmeras
                   </Button>
                 </div>

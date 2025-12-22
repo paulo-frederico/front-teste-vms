@@ -18,7 +18,6 @@ import { Progress } from '@/components/ui/progress'
 import type { StoragePolicy } from '../types/recordingTypes'
 import {
   RECORDING_MODE_LABELS,
-  QUALITY_LABELS,
   STORAGE_TIER_LABELS,
   EXPORT_PERMISSION_LABELS
 } from '../types/recordingTypes'

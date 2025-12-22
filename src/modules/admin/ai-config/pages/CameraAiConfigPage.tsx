@@ -24,7 +24,7 @@ import {
 import { useToast } from '@/hooks/use-toast'
 import { AiModuleCard } from '../components/AiModuleCard'
 import { AiZoneEditor } from '../components/AiZoneEditor'
-import { getCameraAiConfig, CAMERA_AI_CONFIGS } from '../mockAiConfig'
+import { getCameraAiConfig } from '../mockAiConfig'
 import type { AiModuleConfig, AiZone, AiModuleType } from '../types/aiConfigTypes'
 import { AI_MODULE_LABELS, AI_MODULE_COLORS } from '../types/aiConfigTypes'
 

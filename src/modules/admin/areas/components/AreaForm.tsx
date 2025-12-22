@@ -43,13 +43,19 @@ export const AreaForm: React.FC<AreaFormProps> = ({
 
   const onSubmit = async (data: AreaFormData) => {
     try {
+      // Converter o tipo do schema para o tipo do DTO
+      const dtoData = {
+        ...data,
+        type: data.type as AreaType
+      };
+
       if (isEditing && initialData?.id) {
         await updateMutation.mutateAsync({
           id: initialData.id,
-          data
+          data: dtoData
         });
       } else {
-        await createMutation.mutateAsync(data);
+        await createMutation.mutateAsync(dtoData);
       }
       onSuccess();
     } catch (error) {

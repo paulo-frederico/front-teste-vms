@@ -2,13 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { areasService } from '@/services/api/areas.service';
 import { toast } from 'react-toastify';
 
-// ✅ Importar APENAS os tipos do arquivo centralizado
-import type {
-  CreateAreaDTO,
-  UpdateAreaDTO,
-  AreasFilters,
-  Area
-} from '@/types/areas.types';
+// ✅ Importar tipos dos arquivos corretos
+import type { CreateAreaDTO, UpdateAreaDTO, AreasFilters } from '@/services/api/areas.service';
 
 // Hook para listar áreas com filtros opcionais
 export const useAreas = (filters?: AreasFilters) => {

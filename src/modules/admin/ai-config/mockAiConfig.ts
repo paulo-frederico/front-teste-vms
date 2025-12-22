@@ -1,8 +1,7 @@
 import type {
   AiModuleType,
   CameraAiConfig,
-  GlobalAiConfig,
-  AiModuleConfig
+  GlobalAiConfig
 } from './types/aiConfigTypes'
 
 // Configuracoes globais de IA por tenant

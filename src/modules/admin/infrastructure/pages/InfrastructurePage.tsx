@@ -25,9 +25,7 @@ import {
 } from '@/components/ui/select'
 import {
   Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle
+  DialogContent
 } from '@/components/ui/dialog'
 import {
   AlertDialog,
@@ -136,7 +134,7 @@ export function InfrastructurePage() {
       </div>
 
       {/* KPIs */}
-      <InfraKpisHeader kpis={kpis} />
+      <InfraKpisHeader stats={kpis} />
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -153,7 +151,7 @@ export function InfrastructurePage() {
 
         <TabsContent value="servers" className="mt-6 space-y-6">
           {/* Health Summary */}
-          <InfraHealthSummary health={health} />
+          <InfraHealthSummary summary={health} />
 
           {/* Filtros */}
           <Card className="border-0 bg-white shadow-sm ring-1 ring-slate-100">

@@ -73,8 +73,7 @@ export function ServerForm({ server, onSave, onCancel }: ServerFormProps) {
     if (!formData.name || !formData.host || !formData.ip) {
       toast({
         title: 'Erro de validacao',
-        description: 'Preencha todos os campos obrigatorios.',
-        variant: 'destructive'
+        description: 'Preencha todos os campos obrigatorios.'
       })
       return
     }

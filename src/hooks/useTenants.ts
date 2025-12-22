@@ -32,7 +32,7 @@ export const useDeleteTenant = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (_id: string) => {
       await new Promise((resolve) => setTimeout(resolve, 500))
     },
     onSuccess: () => {
