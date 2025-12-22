@@ -102,7 +102,7 @@ export const TechnicianCreatePage: React.FC = () => {
           <FormField label="Especialidade" name="specialty" error={errors.specialty} required>
             <Select
               value={watch('specialty') || ''}
-              onValueChange={(value) => setValue('specialty', value as unknown)}
+              onValueChange={(value: string) => setValue('specialty', value as 'ALL' | 'INSTALLATION' | 'NETWORK' | 'ONVIF_CONFIG' | 'MAINTENANCE' | 'TROUBLESHOOTING')}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Selecione a especialidade" />

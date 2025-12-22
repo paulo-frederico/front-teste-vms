@@ -18,7 +18,7 @@ export const siteSchema = z.object({
     'DATACENTER',
     'OTHER'
   ], {
-    errorMap: () => ({ message: 'Tipo de local é obrigatório' })
+    message: 'Tipo de local é obrigatório'
   }),
   tenantId: z.string().min(1, 'Cliente é obrigatório'),
   zipCode: z.string()

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Plus, Save } from 'lucide-react'
+import { Save } from 'lucide-react'
 import { toast } from 'react-toastify'
 
 import { Button } from '@/components/ui/button'

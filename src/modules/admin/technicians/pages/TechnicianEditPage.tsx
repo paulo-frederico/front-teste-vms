@@ -46,13 +46,13 @@ export const TechnicianEditPage: React.FC = () => {
 
   const onSubmit = async (data: TechnicianFormData) => {
     try {
-      await updateMutation.mutateAsync({ 
-        id: id!, 
+      await updateMutation.mutateAsync({
+        id: id!,
         data: {
           name: data.name,
           email: data.email,
           phone: data.phone,
-          specialty: data.specialty,
+          specialty: data.specialty as import('@/modules/shared/types/technician').TechnicianSpecialty,
           region: data.region,
           assignedTenants: data.assignedTenants
         }
@@ -157,7 +157,7 @@ export const TechnicianEditPage: React.FC = () => {
           <FormField label="Especialidade" name="specialty" error={errors.specialty} required>
             <Select
               value={watch('specialty') || ''}
-              onValueChange={(value) => setValue('specialty', value as unknown)}
+              onValueChange={(value: string) => setValue('specialty', value as 'ALL' | 'INSTALLATION' | 'NETWORK' | 'ONVIF_CONFIG' | 'MAINTENANCE' | 'TROUBLESHOOTING')}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Selecione a especialidade" />

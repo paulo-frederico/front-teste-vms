@@ -25,7 +25,7 @@ export const areaSchema = z.object({
     'ELEVATOR',
     'OTHER'
   ], {
-    errorMap: () => ({ message: 'Tipo de área é obrigatório' })
+    message: 'Tipo de área é obrigatório'
   }),
   siteId: z.string().min(1, 'Local é obrigatório'),
   floor: z.string().optional().or(z.literal('')),

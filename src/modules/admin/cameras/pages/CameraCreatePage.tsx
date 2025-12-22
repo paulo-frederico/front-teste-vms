@@ -167,7 +167,7 @@ export const CameraCreatePage: React.FC = () => {
           <FormField label="Protocolo" name="protocol" error={errors.protocol} required>
             <Select
               value={watch('protocol') || 'ONVIF'}
-              onValueChange={(value) => setValue('protocol', value as unknown)}
+              onValueChange={(value: string) => setValue('protocol', value as 'ONVIF' | 'RTSP' | 'RTMP')}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -273,7 +273,7 @@ export const CameraCreatePage: React.FC = () => {
           <FormField label="Modo de Gravação" name="recordingMode" error={errors.recordingMode} required>
             <Select
               value={watch('recordingMode') || 'CONTINUOUS'}
-              onValueChange={(value) => setValue('recordingMode', value as unknown)}
+              onValueChange={(value: string) => setValue('recordingMode', value as 'CONTINUOUS' | 'EVENT_BASED' | 'SCHEDULED' | 'DISABLED')}
             >
               <SelectTrigger>
                 <SelectValue />

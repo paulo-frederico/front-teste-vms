@@ -1,4 +1,4 @@
-import type { Area, AreaType, AreaStatus } from '@/modules/shared/types/area';
+import { AreaType, AreaStatus, type Area } from '@/modules/shared/types/area';
 
 export interface CreateAreaDTO {
   name: string;
@@ -27,8 +27,8 @@ const MOCK_AREAS: Area[] = [
     id: '1',
     name: 'Recepção Principal',
     description: 'Área de recepção e atendimento',
-    type: 'RECEPTION',
-    status: 'ACTIVE',
+    type: AreaType.RECEPTION,
+    status: AreaStatus.ACTIVE,
     tenantId: '1',
     tenantName: 'Empresa ABC Ltda',
     siteId: '1',
@@ -88,7 +88,7 @@ class AreasService {
       name: data.name,
       description: data.description,
       type: data.type,
-      status: 'ACTIVE',
+      status: AreaStatus.ACTIVE,
       tenantId: '1',
       tenantName: 'Cliente Mock',
       siteId: data.siteId,

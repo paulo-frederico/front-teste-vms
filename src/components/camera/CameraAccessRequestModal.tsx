@@ -6,7 +6,7 @@ import {
   type CameraAccessRequestFormData,
   defaultCameraAccessRequestValues
 } from '@/schemas/camera-access.schema';
-import { AccessReason, type CameraAccessReason } from '@/modules/shared/types/camera-access';
+import { AccessReason } from '@/modules/shared/types/camera-access';
 import { useRequestCameraAccess } from '@/hooks/useCameraAccess';
 import {
   Dialog,
@@ -124,7 +124,7 @@ export const CameraAccessRequestModal: React.FC<CameraAccessRequestModalProps> =
           <FormField label="Motivo do Acesso" name="reason" error={errors.reason} required>
             <Select
               value={watch('reason') || 'TECHNICAL_SUPPORT'}
-              onValueChange={(value) => setValue('reason', value as CameraAccessReason)}
+              onValueChange={(value) => setValue('reason', value as AccessReason)}
             >
               <SelectTrigger>
                 <SelectValue />

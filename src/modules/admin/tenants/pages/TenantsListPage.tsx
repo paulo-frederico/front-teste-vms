@@ -54,8 +54,8 @@ export const TenantsListPage = () => {
   const navigate = useNavigate()
   const [filters, setFilters] = useState<FiltersState>({
     search: '',
-    status: 'ALL' as unknown,
-    plan: 'ALL' as unknown,
+    status: 'ALL',
+    plan: 'ALL',
     page: 1,
     limit: 10,
   })
@@ -233,8 +233,8 @@ export const TenantsListPage = () => {
 
           <Select
             value={String(filters.status)}
-            onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, status: value as unknown, page: 1 }))
+            onValueChange={(value: string) =>
+              setFilters((prev) => ({ ...prev, status: value as '' | TenantStatus | 'ALL', page: 1 }))
             }
           >
             <SelectTrigger>
@@ -251,8 +251,8 @@ export const TenantsListPage = () => {
 
           <Select
             value={String(filters.plan)}
-            onValueChange={(value) =>
-              setFilters((prev) => ({ ...prev, plan: value as unknown, page: 1 }))
+            onValueChange={(value: string) =>
+              setFilters((prev) => ({ ...prev, plan: value as '' | TenantPlan | 'ALL', page: 1 }))
             }
           >
             <SelectTrigger>

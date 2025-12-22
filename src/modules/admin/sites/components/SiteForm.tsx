@@ -29,7 +29,7 @@ export const SiteForm: React.FC<SiteFormProps> = ({
     watch,
     setValue
   } = useForm<SiteFormData>({
-    resolver: zodResolver(siteSchema),
+    resolver: zodResolver(siteSchema) as any,
     defaultValues: initialData || defaultSiteValues
   });
 
@@ -43,10 +43,10 @@ export const SiteForm: React.FC<SiteFormProps> = ({
     if (!zipCode) return;
     try {
       const data = await addressMutation.mutateAsync(zipCode);
-      setValue('street', data.street);
-      setValue('neighborhood', data.neighborhood);
-      setValue('city', data.city);
-      setValue('state', data.state);
+      if (data.street) setValue('street', data.street);
+      if (data.neighborhood) setValue('neighborhood', data.neighborhood);
+      if (data.city) setValue('city', data.city);
+      if (data.state) setValue('state', data.state);
     } catch (error) {
       console.error('Erro ao buscar endereço:', error);
     }

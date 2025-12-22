@@ -9,6 +9,8 @@ interface ViteConfigWithVitest extends UserConfig {
 
 // https://vite.dev/config/
 const config: ViteConfigWithVitest = {
+  // GitHub Pages base path (nome do repositório)
+  base: process.env.GITHUB_ACTIONS ? '/front-teste-vms/' : '/',
   plugins: [react()],
   resolve: {
     alias: {

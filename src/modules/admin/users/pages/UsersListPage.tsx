@@ -31,7 +31,7 @@ export function UsersListPage() {
   })
   
   const { data: tenantsData } = useTenants()
-  const tenants = tenantsData?.items || []
+  const tenants = tenantsData?.tenants || []
 
   const handleSelectUser = (user: AdminUserRow) => {
     setSelectedUser(user)
@@ -41,10 +41,6 @@ export function UsersListPage() {
   const handleCloseDrawer = () => {
     setIsDrawerOpen(false)
     setSelectedUser(null)
-  }
-
-  const handleEditUser = (userId: string) => {
-    navigate(`/admin/users/${userId}/edit`)
   }
 
   const handleCreateUser = () => {
@@ -67,14 +63,14 @@ export function UsersListPage() {
         </Button>
       </div>
 
-      <UserKpisHeader users={users} />
+      <UserKpisHeader users={users as unknown as AdminUserRow[]} />
 
       <UserFiltersBar
         search={search}
         role={role}
         status={status}
         tenantId={tenantId}
-        tenants={tenants.map(t => ({ id: t.id, name: t.name }))}
+        tenants={tenants.map((t: { id: string; name: string }) => ({ id: t.id, name: t.name }))}
         onSearchChange={setSearch}
         onRoleChange={setRole}
         onStatusChange={setStatus}
@@ -93,16 +89,20 @@ export function UsersListPage() {
         </div>
       ) : (
         <UserListTable
-          users={users}
+          users={users as unknown as AdminUserRow[]}
           onSelectUser={handleSelectUser}
         />
       )}
 
       <UserDetailsDrawer
-        user={selectedUser}
-        isOpen={isDrawerOpen}
-        onClose={handleCloseDrawer}
-        onEdit={handleEditUser}
+        userId={selectedUser?.id ?? null}
+        open={isDrawerOpen}
+        onOpenChange={(open) => {
+          if (!open) handleCloseDrawer()
+        }}
+        availableTenants={tenants.map((t: { id: string; name: string }) => ({ id: t.id, name: t.name }))}
+        currentUserRole={'ADMIN_MASTER' as import('@/modules/shared/types/auth').UserRole}
+        onUserUpdated={() => {}}
       />
     </div>
   )

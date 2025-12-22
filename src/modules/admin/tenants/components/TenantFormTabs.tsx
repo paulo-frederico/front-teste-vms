@@ -45,7 +45,7 @@ export const TenantFormTabs: React.FC<TenantFormTabsProps> = ({ form }) => {
         >
           <Select
             value={watch('plan')}
-            onValueChange={(value) => setValue('plan', value as unknown)}
+            onValueChange={(value: string) => setValue('plan', value as 'BASIC' | 'PROFESSIONAL' | 'ENTERPRISE')}
           >
             <SelectTrigger>
               <SelectValue placeholder="Selecione o plano" />
@@ -358,7 +358,7 @@ export const TenantFormTabs: React.FC<TenantFormTabsProps> = ({ form }) => {
         >
           <Select
             value={watch('limits.maxStreamQuality')}
-            onValueChange={(value) => setValue('limits.maxStreamQuality', value as unknown)}
+            onValueChange={(value: string) => setValue('limits.maxStreamQuality', value as 'SD' | 'HD' | 'FULLHD' | '4K')}
           >
             <SelectTrigger>
               <SelectValue />

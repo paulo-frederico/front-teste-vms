@@ -1,4 +1,6 @@
-import type { Site, SiteType, SiteStatus, Address } from '@/modules/shared/types/site';
+import { SiteType, SiteStatus, type Site, type Address } from '@/modules/shared/types/site';
+
+export { SiteType };
 
 export interface CreateSiteDTO {
   name: string;
@@ -37,8 +39,8 @@ const MOCK_SITES: Site[] = [
     id: '1',
     name: 'Matriz São Paulo',
     description: 'Sede principal da empresa',
-    type: 'HEADQUARTERS',
-    status: 'ACTIVE',
+    type: SiteType.HEADQUARTERS,
+    status: SiteStatus.ACTIVE,
     tenantId: '1',
     tenantName: 'Empresa ABC Ltda',
     address: {
@@ -104,7 +106,7 @@ class SitesService {
       name: data.name,
       description: data.description,
       type: data.type,
-      status: 'ACTIVE',
+      status: SiteStatus.ACTIVE,
       tenantId: data.tenantId,
       tenantName: 'Cliente Mock',
       address: data.address,

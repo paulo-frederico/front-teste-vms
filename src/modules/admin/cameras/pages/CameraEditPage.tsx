@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { cameraSchema, defaultCameraValues, generateStreamUrl } from '@/schemas/camera.schema';
 import type { CameraFormData } from '@/schemas/camera.schema';
 import { useCamera, useUpdateCamera, useTestConnection } from '@/hooks/useCameras';
-import { CameraProtocol } from '@/modules/shared/types/camera';
+import { CameraProtocol, RecordingMode } from '@/modules/shared/types/camera';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -122,14 +122,14 @@ export const CameraEditPage: React.FC = () => {
         data: {
           name: data.name,
           description: data.description,
-          protocol: data.protocol,
+          protocol: data.protocol as CameraProtocol,
           ipAddress: data.ipAddress,
           port: data.port,
           username: data.username,
           password: data.password,
           mainStreamUrl: data.mainStreamUrl,
           subStreamUrl: data.subStreamUrl,
-          recordingMode: data.recordingMode,
+          recordingMode: data.recordingMode as RecordingMode,
           retentionDays: data.retentionDays
         }
       });
@@ -364,7 +364,7 @@ export const CameraEditPage: React.FC = () => {
           <FormField label="Protocolo" name="protocol" error={errors.protocol} required>
             <Select
               value={watch('protocol') || 'ONVIF'}
-              onValueChange={(value) => setValue('protocol', value as unknown)}
+              onValueChange={(value: string) => setValue('protocol', value as 'ONVIF' | 'RTSP' | 'RTMP')}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -500,7 +500,7 @@ export const CameraEditPage: React.FC = () => {
           <FormField label="Modo de Gravação" name="recordingMode" error={errors.recordingMode} required>
             <Select
               value={watch('recordingMode') || 'CONTINUOUS'}
-              onValueChange={(value) => setValue('recordingMode', value as unknown)}
+              onValueChange={(value: string) => setValue('recordingMode', value as 'CONTINUOUS' | 'EVENT_BASED' | 'SCHEDULED' | 'DISABLED')}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -686,7 +686,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Resolução */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Resolução</label>
-                  <Select value={resolution} onValueChange={(v) => setResolution(v as unknown)}>
+                  <Select value={resolution} onValueChange={(v: string) => setResolution(v as 'HD' | 'CIF' | 'D1' | 'FULL_HD' | 'QHD' | 'UHD_4K')}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -704,7 +704,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Encoder */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Encoder</label>
-                  <Select value={encoder} onValueChange={(v) => setEncoder(v as unknown)}>
+                  <Select value={encoder} onValueChange={(v: string) => setEncoder(v as 'H264' | 'H265' | 'MJPEG')}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -756,7 +756,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Stream */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Stream</label>
-                  <Select value={streamType} onValueChange={(v) => setStreamType(v as unknown)}>
+                  <Select value={streamType} onValueChange={(v: string) => setStreamType(v as 'MAIN_STREAM' | 'SUB_STREAM')}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -770,7 +770,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Tipo (Bit rate) */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Tipo (Bit rate)</label>
-                  <Select value={bitRateType} onValueChange={(v) => setBitRateType(v as unknown)}>
+                  <Select value={bitRateType} onValueChange={(v: string) => setBitRateType(v as 'CBR' | 'VBR')}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -903,7 +903,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Informação de dispositivo */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Informação de dispositivo</label>
-                  <Select value={videoStandard} onValueChange={(v) => setVideoStandard(v as unknown)}>
+                  <Select value={videoStandard} onValueChange={(v: string) => setVideoStandard(v as 'NTSC' | 'PAL')}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -934,7 +934,7 @@ export const CameraEditPage: React.FC = () => {
                 {/* Modo de operação */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Modo de operação</label>
-                  <Select value={operationMode} onValueChange={(v) => setOperationMode(v as unknown)}>
+                  <Select value={operationMode} onValueChange={(v: string) => setOperationMode(v as 'SCHEDULED' | 'ALL_DAYS')}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>

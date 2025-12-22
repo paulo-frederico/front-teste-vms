@@ -30,8 +30,8 @@ function calculateStats(users: AdminUserRow[] | undefined): UserKpiStats {
 
   return {
     totalUsers: users.length,
-    activeUsers: users.filter(u => u.status === 'ACTIVE').length,
-    suspendedUsers: users.filter(u => u.status === 'SUSPENDED').length,
+    activeUsers: users.filter(u => u.status === 'active').length,
+    suspendedUsers: users.filter(u => u.status === 'suspended').length,
     technicians: users.filter(u => u.role === 'TECHNICIAN').length,
     clientMasters: users.filter(u => u.role === 'CLIENT_MASTER').length,
   }

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { sitesService } from '@/services/api/sites.service';
-import type { CreateSiteDTO, UpdateSiteDTO, SitesFilters } from '@/services/api/sites.service';
+import type { UpdateSiteDTO, SitesFilters } from '@/services/api/sites.service';
 import { toast } from 'react-toastify';
 
 export const useSites = (filters?: SitesFilters) => {

@@ -122,7 +122,7 @@ export const AdminsListPage: React.FC = () => {
 
           <Select
             value={filters.status || 'ALL'}
-            onValueChange={(value) => setFilters({ ...filters, status: value === 'ALL' ? undefined : value as unknown, page: 1 })}
+            onValueChange={(value: string) => setFilters({ ...filters, status: value === 'ALL' ? undefined : value as 'ACTIVE' | 'SUSPENDED' | 'INACTIVE', page: 1 })}
           >
             <SelectTrigger>
               <SelectValue placeholder="Todos os status" />
