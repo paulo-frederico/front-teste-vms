@@ -7,19 +7,18 @@ interface ViteConfigWithVitest extends UserConfig {
   test?: InlineConfig
 }
 
-// https://vite.dev/config/
 const config: ViteConfigWithVitest = {
-  // GitHub Pages base path (nome do repositório)
-  base: process.env.GITHUB_ACTIONS ? '/front-teste-vms/' : '/',
   plugins: [react()],
+
+  // GitHub Pages: precisa ser o nome do repositório entre barras
+  base: '/front-teste-vms/',
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-  build: {
-    // Fixtures are bundled since they contain mock data used at runtime
-  },
+
   test: {
     globals: true,
     environment: 'jsdom',
