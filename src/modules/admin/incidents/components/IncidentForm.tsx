@@ -80,12 +80,12 @@ export function IncidentForm({ incident, onSave, onCancel }: IncidentFormProps) 
     )
 
     const newIncident: Incident = {
-      id: incident?.id || `incident-${Date.now()}`,
+      id: incident?.id || `incident-${crypto.randomUUID()}`,
       title,
       description,
-      type: type as any,
-      priority: priority as any,
-      status: status as any,
+      type: type as Incident['type'],
+      priority: priority as Incident['priority'],
+      status: status as Incident['status'],
       cameraId: cameraId || undefined,
       cameraName: selectedCamera?.name,
       assignedTechnicianId: assignedTechnicianId || undefined,

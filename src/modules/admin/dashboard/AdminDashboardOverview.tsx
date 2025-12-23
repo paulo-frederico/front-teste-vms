@@ -7,7 +7,7 @@ import {
   getTenantAdminDashboardData,
   type AdminDashboardData,
 } from '@/modules/admin/dashboard/adminDashboardMocks'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 export function AdminDashboardOverview() {

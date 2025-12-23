@@ -21,6 +21,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { PageIntro } from '@/modules/shared/components/PageIntro'
 
+// Pre-generated static heights for chart bars (avoid Math.random during render)
+const CHART_BAR_HEIGHTS = [
+  68, 42, 85, 31, 74, 93, 27, 56, 79, 38,
+  62, 88, 35, 71, 49, 82, 44, 67, 91, 29,
+  55, 86, 41, 73, 97, 33, 64, 77, 46, 89
+]
+
 const REPORT_TEMPLATES = [
   {
     id: 'executive',
@@ -290,17 +297,14 @@ export function AdminReportsPage() {
 
           {/* Gráfico mockado */}
           <div className="h-48 rounded-lg bg-gradient-to-br from-gray-50 to-gray-100 flex items-end justify-between px-4 pb-4 gap-1">
-            {Array.from({ length: 30 }).map((_, idx) => {
-              const height = 20 + Math.random() * 80
-              return (
-                <div
-                  key={idx}
-                  className="flex-1 bg-blue-400 rounded-t hover:bg-blue-500 transition-colors cursor-pointer"
-                  style={{ height: `${height}%` }}
-                  title={`Dia ${idx + 1}`}
-                />
-              )
-            })}
+            {CHART_BAR_HEIGHTS.map((height, idx) => (
+              <div
+                key={idx}
+                className="flex-1 bg-blue-400 rounded-t hover:bg-blue-500 transition-colors cursor-pointer"
+                style={{ height: `${height}%` }}
+                title={`Dia ${idx + 1}`}
+              />
+            ))}
           </div>
           <div className="flex justify-between mt-2 text-xs text-gray-500">
             <span>1 dez</span>

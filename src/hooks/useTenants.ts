@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
-import { tenantsService, type TenantFilters, type UpdateTenantDTO } from '@/services/api/tenants.service'
+import { tenantsService, type TenantFilters, type UpdateTenantDTO, type CreateTenantDTO } from '@/services/api/tenants.service'
 import { mockTenants } from '@/fixtures/tenants.fixture'
 import { TenantStatus, TenantPlan, type TenantLimits } from '@/modules/shared/types/tenant'
 
@@ -32,7 +32,8 @@ export const useDeleteTenant = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (_id: string) => {
+    mutationFn: async (id: string) => {
+      void id
       await new Promise((resolve) => setTimeout(resolve, 500))
     },
     onSuccess: () => {
@@ -107,7 +108,7 @@ export const useCreateTenant = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: CreateTenantDTO) => {
       await new Promise((resolve) => setTimeout(resolve, 500))
       return { id: `tnt-${Date.now()}`, ...data }
     },

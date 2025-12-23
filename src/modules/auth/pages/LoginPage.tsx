@@ -5,7 +5,7 @@ import type { Location } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 
 export function LoginPage() {
   const navigate = useNavigate()

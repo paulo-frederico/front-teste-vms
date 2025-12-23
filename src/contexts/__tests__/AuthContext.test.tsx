@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { AuthProvider, useAuth } from '@/contexts/AuthContext'
+import { AuthProvider, useAuth } from '@/contexts'
 import { SystemRole } from '@/modules/shared/types/auth'
 import type { User } from '@/types/user.types'
 

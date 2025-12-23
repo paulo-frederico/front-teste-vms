@@ -12,7 +12,7 @@ import { createCameraMock, listCamerasMock } from '@/modules/admin/cameras/camer
 import type { Camera, CameraStatus } from '@/modules/admin/cameras/cameraTypes'
 import { listSitesMock } from '@/modules/admin/sites/siteMocks'
 import { listTenantsMock } from '@/modules/admin/tenants/tenantMocks'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 const statusConfig: Record<CameraStatus, { label: string; badge: string }> = {

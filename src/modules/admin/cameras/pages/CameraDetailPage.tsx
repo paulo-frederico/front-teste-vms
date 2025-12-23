@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { 
-  useCamera, 
-  useDeleteCamera, 
+import {
+  useCamera,
+  useDeleteCamera,
   useTestConnection,
   useCaptureSnapshot,
   useCameraStats
@@ -15,16 +15,22 @@ import { CameraAccessRequestModal } from '@/components/camera/CameraAccessReques
 import { CameraAccessBanner } from '@/components/camera/CameraAccessBanner';
 import { CameraAccessLogViewer } from '@/components/camera/CameraAccessLogViewer';
 import { AccessReason } from '@/modules/shared/types/camera-access';
-import { 
-  ArrowLeft, 
-  Edit, 
-  Trash2, 
+import {
+  ArrowLeft,
+  Edit,
+  Trash2,
   Wifi,
   Image as ImageIcon,
   Camera as CameraIcon,
   HardDrive,
   Activity
 } from 'lucide-react';
+
+// Static mock timestamps (generated once at module load, not during render)
+const MOCK_TIMESTAMPS = {
+  log1: new Date(Date.now() - 3600000).toISOString(),
+  log2: new Date(Date.now() - 7200000).toISOString(),
+};
 
 export const CameraDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -79,10 +85,10 @@ export const CameraDetailPage: React.FC = () => {
   const accessLogs = useMemo(() => [
     {
       id: 'log-001',
-      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      timestamp: MOCK_TIMESTAMPS.log1,
       actorUserId: '1',
       actorUserName: 'Admin Master',
-      actorRole: 'GLOBAL_ADMIN',
+      actorRole: 'GLOBAL_ADMIN' as const,
       tenantId: camera?.tenantId || 'N/A',
       tenantName: camera?.tenantName || 'N/A',
       action: 'VIEW_CAMERA_LIVE' as const,
@@ -102,10 +108,10 @@ export const CameraDetailPage: React.FC = () => {
     },
     {
       id: 'log-002',
-      timestamp: new Date(Date.now() - 7200000).toISOString(),
+      timestamp: MOCK_TIMESTAMPS.log2,
       actorUserId: '1',
       actorUserName: 'Admin Master',
-      actorRole: 'GLOBAL_ADMIN',
+      actorRole: 'GLOBAL_ADMIN' as const,
       tenantId: camera?.tenantId || 'N/A',
       tenantName: camera?.tenantName || 'N/A',
       action: 'CAPTURE_SNAPSHOT' as const,

@@ -79,7 +79,7 @@ export function CameraLogViewer({ logs = MOCK_CAMERA_LOGS }: CameraLogViewerProp
               <label className="mb-2 block text-xs font-medium text-slate-500">
                 Nivel de Log
               </label>
-              <Select value={levelFilter} onValueChange={(value: any) => setLevelFilter(value)}>
+              <Select value={levelFilter} onValueChange={(value) => setLevelFilter(value as CameraLogLevel | 'ALL')}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>

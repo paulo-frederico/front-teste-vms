@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { SystemRole } from '@/modules/shared/types/auth'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: vi.fn(),

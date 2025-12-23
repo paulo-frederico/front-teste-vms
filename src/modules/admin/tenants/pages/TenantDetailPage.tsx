@@ -6,6 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Edit, Ban, CheckCircle, Trash2, Users, Camera, Video, HardDrive, Activity, TrendingUp, AlertTriangle, Clock } from 'lucide-react';
 
+// Pre-generated static heights for storage chart bars (avoid Math.random during render)
+const STORAGE_BAR_HEIGHTS = [
+  72, 45, 88, 34, 67, 91, 28, 55, 79, 42,
+  63, 87, 31, 76, 49, 85, 38, 71, 94, 26,
+  58, 82, 47, 69, 93, 35, 61, 78, 44, 89
+];
+
 export const TenantDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -449,16 +456,13 @@ export const TenantDetailPage: React.FC = () => {
               <CardContent className="p-6">
                 <h3 className="text-sm font-semibold text-gray-700 mb-4">Uso de Storage (últimos 30 dias)</h3>
                 <div className="flex items-end justify-between h-32 gap-1">
-                  {Array.from({ length: 30 }).map((_, idx) => {
-                    const height = 20 + Math.random() * 80;
-                    return (
-                      <div
-                        key={idx}
-                        className="flex-1 bg-blue-400 rounded-t"
-                        style={{ height: `${height}%` }}
-                      />
-                    );
-                  })}
+                  {STORAGE_BAR_HEIGHTS.map((height, idx) => (
+                    <div
+                      key={idx}
+                      className="flex-1 bg-blue-400 rounded-t"
+                      style={{ height: `${height}%` }}
+                    />
+                  ))}
                 </div>
                 <div className="flex justify-between mt-2 text-xs text-gray-500">
                   <span>1</span>

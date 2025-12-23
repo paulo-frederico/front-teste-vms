@@ -92,7 +92,7 @@ export function CameraAiConfigPage() {
 
   const handleAddModule = (moduleType: AiModuleType) => {
     const newModule: AiModuleConfig = {
-      id: `mod-${Date.now()}`,
+      id: `mod-${crypto.randomUUID()}`,
       type: moduleType,
       enabled: true,
       sensitivity: globalSensitivity,

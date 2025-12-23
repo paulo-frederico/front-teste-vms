@@ -31,7 +31,7 @@ export const useCreateSite = () => {
       toast.success('Local cadastrado com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['sites'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao cadastrar local');
     }
   });
@@ -48,7 +48,7 @@ export const useUpdateSite = () => {
       queryClient.invalidateQueries({ queryKey: ['sites'] });
       queryClient.invalidateQueries({ queryKey: ['site', variables.id] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar local');
     }
   });
@@ -63,7 +63,7 @@ export const useDeleteSite = () => {
       toast.success('Local removido com sucesso!');
       queryClient.invalidateQueries({ queryKey: ['sites'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao remover local');
     }
   });
@@ -75,7 +75,7 @@ export const useAddressByZipCode = () => {
     onSuccess: () => {
       toast.success('Endereço encontrado!');
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'CEP não encontrado');
     }
   });

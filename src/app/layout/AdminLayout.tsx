@@ -5,7 +5,7 @@ import { Header } from '@/components/layout/Header'
 import { Button } from '@/components/ui/button'
 import { Sidebar } from '@/modules/shared/components/Sidebar'
 import { cn } from '@/lib/utils'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 
 export function AdminLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)

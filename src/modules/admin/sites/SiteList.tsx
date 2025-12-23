@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { listSitesMock } from '@/modules/admin/sites/siteMocks'
 import type { Site, SiteStatus } from '@/modules/admin/sites/siteTypes'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 const statusLabel: Record<SiteStatus, string> = {
