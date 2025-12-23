@@ -333,7 +333,7 @@ export function TemporaryAccessForm({
                 </Label>
                 <Select
                   value={accessLevel}
-                  onValueChange={(value: any) => setAccessLevel(value)}
+                  onValueChange={(value) => setAccessLevel(value as 'view-only' | 'view-livestream' | 'full-control')}
                   disabled={isExpired}
                 >
                   <SelectTrigger className="mt-2">

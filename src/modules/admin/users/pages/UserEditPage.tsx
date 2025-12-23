@@ -2,11 +2,51 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 import { useUser, useUpdateUser } from '@/hooks/useUsers'
 import { useTenants } from '@/hooks/useTenants'
 import { UserForm } from '../UserForm'
 import type { User } from '../userTypes'
+import type { UpdateUserDTO } from '@/services/api/users.service'
+import { ScopeType, UserStatus, type UserPermissions } from '@/modules/shared/types/auth'
+
+// Default permissions for users
+const getDefaultPermissions = (): UserPermissions => ({
+  canAccessDashboard: true,
+  canViewLive: true,
+  canViewRecordings: true,
+  canViewPlayback: true,
+  canExportVideos: false,
+  canExportReports: false,
+  canManageUsers: false,
+  canManageAdmins: false,
+  canManageTechnicians: false,
+  canResetPasswords: false,
+  canSuspendUsers: false,
+  canViewAllTenants: false,
+  canManageTenants: false,
+  canChangeTenantPlan: false,
+  canSuspendTenants: false,
+  canManageCameras: false,
+  canConfigureStreamProfiles: false,
+  canDeleteCameras: false,
+  canConfigureAI: false,
+  canConfigureAIZones: false,
+  canConfigureAISensitivity: false,
+  canConfigureRecording: false,
+  canDeleteRecordings: false,
+  canConfigureAlerts: false,
+  canAcknowledgeAlerts: false,
+  canManageInfrastructure: false,
+  canAccessGlobalAudit: false,
+  canManageGlobalSettings: false,
+  canForceLogout: false,
+  canGrantTemporaryAccess: false,
+  canAccessDiagnostics: false,
+  canViewLogs: false,
+  maxStreamQuality: 'HD',
+  allowedAIModules: [],
+})
 
 export function UserEditPage() {
   const { id } = useParams<{ id: string }>()
@@ -23,7 +63,21 @@ export function UserEditPage() {
 
   const handleSubmit = async (data: Omit<User, 'id' | 'createdAt' | 'lastLoginAt'>) => {
     if (!id) return
-    await updateUser.mutateAsync({ id, data: data as any })
+    // Transform UserForm data to UpdateUserDTO format
+    const updateData: UpdateUserDTO = {
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      tenantId: data.tenantId,
+      scope: {
+        type: ScopeType.GLOBAL,
+        tenantId: data.tenantId,
+      },
+      permissions: getDefaultPermissions(),
+      phone: data.phone,
+      status: data.status === 'ACTIVE' ? UserStatus.ACTIVE : UserStatus.SUSPENDED,
+    }
+    await updateUser.mutateAsync({ id, data: updateData })
     navigate('/admin/users')
   }
 
@@ -49,6 +103,32 @@ export function UserEditPage() {
     )
   }
 
+  // Map userData to User type for the form
+  const initialData: User = {
+    id: userData.id,
+    name: userData.name,
+    email: userData.email,
+    phone: userData.phone,
+    role: userData.role,
+    status: userData.status as User['status'],
+    tenantId: userData.tenantId,
+    tenantName: userData.tenantName,
+    createdAt: userData.createdAt,
+    lastLoginAt: userData.lastLogin,
+    permissions: {
+      canViewLive: userData.permissions?.canViewLive ?? true,
+      canViewRecordings: userData.permissions?.canViewRecordings ?? true,
+      canExportVideos: userData.permissions?.canExportVideos ?? false,
+      canManageCameras: userData.permissions?.canManageCameras ?? false,
+      canManageIA: userData.permissions?.canConfigureAI ?? false,
+      canManageUsers: userData.permissions?.canManageUsers ?? false,
+    },
+    scope: userData.scope ? {
+      sitesIds: userData.scope.siteIds,
+      camerasIds: userData.scope.cameraIds,
+    } : undefined,
+  }
+
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
@@ -66,7 +146,7 @@ export function UserEditPage() {
       <div className="mx-auto max-w-4xl">
         <UserForm
           mode="edit"
-          initialData={userData as any}
+          initialData={initialData}
           availableTenants={availableTenants}
           currentUserRole={currentUser.role}
           currentUserTenantId={currentUser.tenantId}

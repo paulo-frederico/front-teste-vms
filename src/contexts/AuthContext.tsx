@@ -1,11 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import React, { useState, useEffect, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createMockAdminMaster } from '@/lib/auth/createMockAdminMaster'
 
 import { type User } from '@/modules/shared/types/auth'
 import type { AuthContextType } from './auth.types'
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+import { AuthContext } from './auth.context'
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
@@ -22,7 +21,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           const parsedUser = JSON.parse(storedUser) as User
 
           if (!parsedUser.role || !parsedUser.scope) {
-            console.error('❌ Usuário com estrutura inválida')
+            console.error('Usuário com estrutura inválida')
             clearAuthData()
             return
           }
@@ -30,7 +29,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           setUser(parsedUser)
         }
       } catch (error) {
-        console.error('❌ Erro ao carregar usuário:', error)
+        console.error('Erro ao carregar usuário:', error)
         clearAuthData()
       } finally {
         setIsLoading(false)
@@ -56,7 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(mockUser)
       navigate('/admin-master/dashboard', { replace: true })
     } catch (error) {
-      console.error('❌ Erro no login:', error)
+      console.error('Erro no login:', error)
       throw error
     } finally {
       setIsLoading(false)
@@ -66,12 +65,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = async (): Promise<void> => {
     setIsLoading(true)
     try {
-      console.log('🚪 Fazendo logout completo...')
+      console.log('Fazendo logout completo...')
       clearAuthData()
       setUser(null)
       navigate('/login', { replace: true })
     } catch (error) {
-      console.error('❌ Erro no logout:', error)
+      console.error('Erro no logout:', error)
       clearAuthData()
       setUser(null)
       navigate('/login', { replace: true })
@@ -105,13 +104,4 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
-
-// Hook exported separately to avoid fast refresh issues
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider')
-  }
-  return context
 }

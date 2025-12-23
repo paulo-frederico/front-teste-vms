@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { areasService } from '@/services/api/areas.service';
 import { toast } from 'react-toastify';
 
-// ✅ Importar tipos dos arquivos corretos
+// Importar tipos dos arquivos corretos
 import type { CreateAreaDTO, UpdateAreaDTO, AreasFilters } from '@/services/api/areas.service';
 
 // Hook para listar áreas com filtros opcionais
@@ -37,7 +37,7 @@ export const useCreateArea = () => {
       queryClient.invalidateQueries({ queryKey: ['areas'] });
       queryClient.invalidateQueries({ queryKey: ['sites'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao cadastrar área');
     }
   });
@@ -55,7 +55,7 @@ export const useUpdateArea = () => {
       queryClient.invalidateQueries({ queryKey: ['areas'] });
       queryClient.invalidateQueries({ queryKey: ['area', variables.id] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao atualizar área');
     }
   });
@@ -72,7 +72,7 @@ export const useDeleteArea = () => {
       queryClient.invalidateQueries({ queryKey: ['areas'] });
       queryClient.invalidateQueries({ queryKey: ['sites'] });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast.error(error.message || 'Erro ao remover área');
     }
   });

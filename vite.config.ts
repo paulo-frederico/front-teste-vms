@@ -18,14 +18,7 @@ const config: ViteConfigWithVitest = {
     },
   },
   build: {
-    rollupOptions: {
-      external: (id) => {
-        if (process.env.NODE_ENV === 'production') {
-          return id.includes('/fixtures/') || id.includes('\\fixtures\\')
-        }
-        return false
-      },
-    },
+    // Fixtures are bundled since they contain mock data used at runtime
   },
   test: {
     globals: true,

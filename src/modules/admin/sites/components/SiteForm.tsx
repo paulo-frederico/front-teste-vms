@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { siteSchema, defaultSiteValues } from '@/schemas/site.schema';
 import type { SiteFormData } from '@/schemas/site.schema';
@@ -29,7 +29,7 @@ export const SiteForm: React.FC<SiteFormProps> = ({
     watch,
     setValue
   } = useForm<SiteFormData>({
-    resolver: zodResolver(siteSchema) as any,
+    resolver: zodResolver(siteSchema) as Resolver<SiteFormData>,
     defaultValues: initialData || defaultSiteValues
   });
 

@@ -2,12 +2,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 import {
+  type CreateUserDTO,
   type UpdateUserDTO,
   type UserFilters,
   type UserListResponse,
 } from '@/services/api/users.service'
 import { mockUsers } from '@/modules/admin/users/mockUsers'
-import { UserStatus } from '@/modules/shared/types/auth'
+import { UserStatus, type User } from '@/modules/shared/types/auth'
 
 // Fixtures temporários até backend estar pronto
 const mockUsersFixture = async (filters?: UserFilters): Promise<UserListResponse> => {
@@ -38,7 +39,7 @@ const mockUsersFixture = async (filters?: UserFilters): Promise<UserListResponse
   }
 
   return {
-    users: filteredUsers as any,
+    users: filteredUsers as unknown as User[],
     total: filteredUsers.length,
     page: filters?.page || 1,
     totalPages: Math.ceil(filteredUsers.length / (filters?.limit || 10)),
@@ -59,7 +60,7 @@ export const useUser = (id: string) =>
       await new Promise((resolve) => setTimeout(resolve, 200))
       const user = mockUsers.find((u) => u.id === id)
       if (!user) throw new Error('Usuário não encontrado')
-      return user as any
+      return user as unknown as User
     },
     enabled: Boolean(id),
   })
@@ -68,7 +69,7 @@ export const useCreateUser = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: CreateUserDTO) => {
       await new Promise((resolve) => setTimeout(resolve, 500))
       return { id: `usr-${Date.now()}`, ...data }
     },
@@ -105,7 +106,8 @@ export const useDeleteUser = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (_id: string) => {
+    mutationFn: async (id: string) => {
+      void id
       await new Promise((resolve) => setTimeout(resolve, 500))
     },
     onSuccess: () => {
@@ -120,7 +122,8 @@ export const useDeleteUser = () => {
 
 export const useResetUserPassword = () =>
   useMutation({
-    mutationFn: async (_id: string) => {
+    mutationFn: async (id: string) => {
+      void id
       await new Promise((resolve) => setTimeout(resolve, 500))
     },
     onSuccess: () => {

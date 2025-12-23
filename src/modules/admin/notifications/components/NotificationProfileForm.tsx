@@ -228,7 +228,7 @@ export function NotificationProfileForm({
                       <Label className="text-xs">Formato</Label>
                       <Select
                         value={formData.settings?.email?.format || 'html'}
-                        onValueChange={(value: any) =>
+                        onValueChange={(value: 'html' | 'text') =>
                           setFormData({
                             ...formData,
                             settings: {

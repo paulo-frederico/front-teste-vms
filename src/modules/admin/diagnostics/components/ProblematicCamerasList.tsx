@@ -127,7 +127,7 @@ export function ProblematicCamerasList({
               <label className="mb-2 block text-xs font-medium text-slate-500">Status</label>
               <Select
                 value={statusFilter}
-                onValueChange={(value: any) => setStatusFilter(value)}
+                onValueChange={(value) => setStatusFilter(value as 'ALL' | 'offline' | 'error' | 'degraded')}
               >
                 <SelectTrigger>
                   <SelectValue />

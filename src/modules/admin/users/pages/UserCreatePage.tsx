@@ -2,11 +2,51 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 import { useCreateUser } from '@/hooks/useUsers'
 import { useTenants } from '@/hooks/useTenants'
 import { UserForm } from '../UserForm'
 import type { User } from '../userTypes'
+import type { CreateUserDTO } from '@/services/api/users.service'
+import { ScopeType, type UserPermissions } from '@/modules/shared/types/auth'
+
+// Default permissions for new users
+const getDefaultPermissions = (): UserPermissions => ({
+  canAccessDashboard: true,
+  canViewLive: true,
+  canViewRecordings: true,
+  canViewPlayback: true,
+  canExportVideos: false,
+  canExportReports: false,
+  canManageUsers: false,
+  canManageAdmins: false,
+  canManageTechnicians: false,
+  canResetPasswords: false,
+  canSuspendUsers: false,
+  canViewAllTenants: false,
+  canManageTenants: false,
+  canChangeTenantPlan: false,
+  canSuspendTenants: false,
+  canManageCameras: false,
+  canConfigureStreamProfiles: false,
+  canDeleteCameras: false,
+  canConfigureAI: false,
+  canConfigureAIZones: false,
+  canConfigureAISensitivity: false,
+  canConfigureRecording: false,
+  canDeleteRecordings: false,
+  canConfigureAlerts: false,
+  canAcknowledgeAlerts: false,
+  canManageInfrastructure: false,
+  canAccessGlobalAudit: false,
+  canManageGlobalSettings: false,
+  canForceLogout: false,
+  canGrantTemporaryAccess: false,
+  canAccessDiagnostics: false,
+  canViewLogs: false,
+  maxStreamQuality: 'HD',
+  allowedAIModules: [],
+})
 
 export function UserCreatePage() {
   const navigate = useNavigate()
@@ -20,7 +60,21 @@ export function UserCreatePage() {
   })) || []
 
   const handleSubmit = async (data: Omit<User, 'id' | 'createdAt' | 'lastLoginAt'>) => {
-    await createUser.mutateAsync(data as any)
+    // Transform UserForm data to CreateUserDTO format
+    const createData: CreateUserDTO = {
+      name: data.name,
+      email: data.email,
+      password: crypto.randomUUID(), // Temporary password, user should reset
+      role: data.role,
+      tenantId: data.tenantId,
+      scope: {
+        type: ScopeType.GLOBAL,
+        tenantId: data.tenantId,
+      },
+      permissions: getDefaultPermissions(),
+      phone: data.phone,
+    }
+    await createUser.mutateAsync(createData)
     navigate('/admin/users')
   }
 

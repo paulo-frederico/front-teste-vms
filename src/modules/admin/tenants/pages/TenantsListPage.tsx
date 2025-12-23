@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Ban, CheckCircle, Edit, Eye, Loader2, Plus, Search, Trash2 } from 'lucide-react'
 
@@ -95,18 +95,11 @@ export const TenantsListPage = () => {
   const tenants = data?.tenants ?? []
   const total = data?.total ?? 0
   const totalPages = Math.max(data?.totalPages ?? 1, 1)
-  const showingFrom = total ? (filters.page - 1) * filters.limit + 1 : 0
-  const showingTo = total ? Math.min(filters.page * filters.limit, total) : 0
 
-  // Reset page if it exceeds totalPages
-  useEffect(() => {
-    if (filters.page > totalPages && totalPages > 0) {
-      const newPage = Math.min(filters.page, totalPages)
-      if (newPage !== filters.page) {
-        setFilters((prev) => ({ ...prev, page: newPage }))
-      }
-    }
-  }, [totalPages])
+  // Derive effective page - clamp to valid range without setState
+  const effectivePage = Math.min(Math.max(1, filters.page), totalPages || 1)
+  const showingFrom = total ? (effectivePage - 1) * filters.limit + 1 : 0
+  const showingTo = total ? Math.min(effectivePage * filters.limit, total) : 0
 
   const handlePageChange = (direction: 'prev' | 'next') => {
     setFilters((prev) => {
@@ -417,16 +410,16 @@ export const TenantsListPage = () => {
           Mostrando {showingFrom} a {showingTo} de {total} clientes
         </span>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" disabled={filters.page === 1} onClick={() => handlePageChange('prev')}>
+          <Button variant="outline" size="sm" disabled={effectivePage === 1} onClick={() => handlePageChange('prev')}>
             Anterior
           </Button>
           <span>
-            Página {filters.page} de {totalPages}
+            Página {effectivePage} de {totalPages}
           </span>
           <Button
             variant="outline"
             size="sm"
-            disabled={filters.page >= totalPages}
+            disabled={effectivePage >= totalPages}
             onClick={() => handlePageChange('next')}
           >
             Próxima

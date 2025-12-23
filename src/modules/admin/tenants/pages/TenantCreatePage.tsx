@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { tenantSchema, defaultTenantValues } from '@/schemas/tenant.schema';
 import type { TenantFormData } from '@/schemas/tenant.schema';
 import { useCreateTenant } from '@/hooks/useTenants';
+import type { CreateTenantDTO } from '@/services/api/tenants.service';
 import { TenantFormTabs } from '../components/TenantFormTabs';
 import { LoadingButton } from '@/components/form/LoadingButton';
 import { Button } from '@/components/ui/button';
@@ -21,7 +22,7 @@ export const TenantCreatePage: React.FC = () => {
 
   const onSubmit = async (data: TenantFormData) => {
     try {
-      await createMutation.mutateAsync(data as unknown);
+      await createMutation.mutateAsync(data as unknown as CreateTenantDTO);
       navigate('/admin/tenants');
     } catch (error) {
       console.error('Erro ao criar tenant:', error);

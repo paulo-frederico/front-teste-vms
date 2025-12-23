@@ -6,7 +6,7 @@ import { StatusDistribution } from '@/modules/admin/dashboard/components/StatusD
 import { StorageDonutChart } from '@/modules/admin/dashboard/components/StorageDonutChart'
 import { TrendCard } from '@/modules/admin/dashboard/components/TrendCard'
 import { AdminMasterDashboard } from '@/modules/admin/dashboard/pages/AdminMasterDashboard'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 const dashboardMock = {
