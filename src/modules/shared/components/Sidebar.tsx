@@ -17,6 +17,8 @@ import {
   Lock,
   Clock,
   Ticket,
+  Search,
+  LayoutGrid,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -33,6 +35,8 @@ type AdminNavItem = {
 
 const adminNavItems: AdminNavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/admin/dashboard' },
+  { label: 'Investigação', icon: Search, to: '/admin/investigacao' },
+  { label: 'Video Wall', icon: LayoutGrid, to: '/admin/videowall' },
   {
     label: 'Clientes',
     icon: Building2,

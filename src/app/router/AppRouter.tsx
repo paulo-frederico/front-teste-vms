@@ -39,6 +39,8 @@ import { NotificationProfilesPage } from '@/modules/admin/notifications/pages'
 import { AccessControlPage } from '@/modules/admin/access-control/pages'
 import { TemporaryTechnicianAccessPage } from '@/modules/admin/technician-access/pages'
 import { IncidentsPage } from '@/modules/admin/incidents/pages'
+import { InvestigationPage } from '@/modules/investigation/pages/InvestigationPage'
+import { VideoWallPage } from '@/modules/videowall/pages/VideoWallPage'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 export function AppRoutes() {
@@ -174,6 +176,9 @@ export function AppRoutes() {
         <Route path="analytics-notifications" element={<Navigate to="ai-alerts" replace />} />
         <Route path="reports" element={<AdminReportsPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />
+        {/* Módulos Premium */}
+        <Route path="investigacao" element={<InvestigationPage />} />
+        <Route path="videowall" element={<VideoWallPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
