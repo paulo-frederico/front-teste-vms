@@ -530,8 +530,27 @@ export const CameraEditPage: React.FC = () => {
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
               />
               <div className="flex items-center justify-center gap-2 p-3 bg-blue-50 rounded-lg">
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={watch('retentionDays')?.toString() ?? ''}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/\D/g, '');
+                    if (raw === '') {
+                      setValue('retentionDays', 0 as unknown as number);
+                    } else {
+                      setValue('retentionDays', parseInt(raw));
+                    }
+                  }}
+                  onBlur={(e) => {
+                    const value = parseInt(e.target.value) || 1;
+                    setValue('retentionDays', Math.min(365, Math.max(1, value)));
+                  }}
+                  className="w-20 text-center text-lg font-semibold text-blue-900 bg-transparent border-none focus:ring-0"
+                />
                 <span className="text-lg font-semibold text-blue-900">
-                  {retentionDays} {retentionDays === 1 ? 'dia' : 'dias'}
+                  {retentionDays === 1 ? 'dia' : 'dias'}
                 </span>
               </div>
             </div>

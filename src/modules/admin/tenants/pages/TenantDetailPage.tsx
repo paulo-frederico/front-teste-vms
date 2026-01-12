@@ -91,124 +91,145 @@ export const TenantDetailPage: React.FC = () => {
         </TabsList>
 
         {/* ABA GERAL */}
-        <TabsContent value="geral" className="space-y-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Informações Gerais</h2>
-            <dl className="grid grid-cols-2 gap-4">
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Plano</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.plan}</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Status</dt>
-                <dd className="mt-1">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    tenant.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                    tenant.status === 'TRIAL' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {tenant.status}
-                  </span>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Data de Contrato</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {new Date(tenant.contractDate).toLocaleDateString('pt-BR')}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Data de Expiração</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {new Date(tenant.expirationDate).toLocaleDateString('pt-BR')}
-                </dd>
-              </div>
-            </dl>
-          </div>
+        <TabsContent value="geral">
+          <div className="bg-white rounded-lg shadow">
+            <Tabs defaultValue="info" className="w-full">
+              <TabsList className="w-full justify-start border-b rounded-none bg-gray-50 px-4">
+                <TabsTrigger value="info" className="data-[state=active]:bg-white">Informações</TabsTrigger>
+                <TabsTrigger value="fiscal" className="data-[state=active]:bg-white">Dados Fiscais</TabsTrigger>
+                <TabsTrigger value="contato" className="data-[state=active]:bg-white">Contato</TabsTrigger>
+                <TabsTrigger value="limites" className="data-[state=active]:bg-white">Limites</TabsTrigger>
+              </TabsList>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Dados Fiscais</h2>
-            <dl className="grid grid-cols-2 gap-4">
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Razão Social</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.fiscalData.companyName}</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">CNPJ</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.fiscalData.cnpj}</dd>
-              </div>
-              <div className="col-span-2">
-                <dt className="text-sm font-medium text-gray-500">Endereço</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {tenant.fiscalData.address.street}, {tenant.fiscalData.address.number}
-                  {tenant.fiscalData.address.complement && `, ${tenant.fiscalData.address.complement}`}
-                  <br />
-                  {tenant.fiscalData.address.neighborhood} - {tenant.fiscalData.address.city}/{tenant.fiscalData.address.state}
-                  <br />
-                  CEP: {tenant.fiscalData.address.zipCode}
-                </dd>
-              </div>
-            </dl>
-          </div>
+              <TabsContent value="info" className="p-6 mt-0">
+                <dl className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Plano</dt>
+                    <dd className="mt-1 text-sm text-gray-900 font-medium">{tenant.plan}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Status</dt>
+                    <dd className="mt-1">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        tenant.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
+                        tenant.status === 'TRIAL' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {tenant.status}
+                      </span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Data de Contrato</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      {new Date(tenant.contractDate).toLocaleDateString('pt-BR')}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Data de Expiração</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      {new Date(tenant.expirationDate).toLocaleDateString('pt-BR')}
+                    </dd>
+                  </div>
+                </dl>
+              </TabsContent>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Contato Principal</h2>
-            <dl className="grid grid-cols-2 gap-4">
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Nome</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.name}</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Cargo</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.position || '-'}</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Email</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.email}</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Telefone</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.phone}</dd>
-              </div>
-            </dl>
-          </div>
+              <TabsContent value="fiscal" className="p-6 mt-0">
+                <dl className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Razão Social</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.fiscalData.companyName}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">CNPJ</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.fiscalData.cnpj}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Endereço</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      {tenant.fiscalData.address.street}, {tenant.fiscalData.address.number}
+                      {tenant.fiscalData.address.complement && ` - ${tenant.fiscalData.address.complement}`}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Bairro</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.fiscalData.address.neighborhood}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Cidade/Estado</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      {tenant.fiscalData.address.city}/{tenant.fiscalData.address.state}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">CEP</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.fiscalData.address.zipCode}</dd>
+                  </div>
+                </dl>
+              </TabsContent>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Limites</h2>
-            <dl className="grid grid-cols-3 gap-4">
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Câmeras</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {tenant.stats?.activeCameras || 0} / {tenant.limits.maxCameras}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Sites</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {tenant.stats?.sites || 0} / {tenant.limits.maxSites}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Usuários</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {tenant.stats?.users || 0} / {tenant.limits.maxUsers}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Retenção</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.limits.retentionDays} dias</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Storage</dt>
-                <dd className="mt-1 text-sm text-gray-900">
-                  {tenant.stats?.storageUsedGB || 0}GB / {tenant.limits.storageGB}GB
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-gray-500">Qualidade Máxima</dt>
-                <dd className="mt-1 text-sm text-gray-900">{tenant.limits.maxStreamQuality}</dd>
-              </div>
-            </dl>
+              <TabsContent value="contato" className="p-6 mt-0">
+                <dl className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Nome</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.name}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Cargo</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.position || '-'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Email</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.email}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Telefone</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.primaryContact.phone}</dd>
+                  </div>
+                </dl>
+              </TabsContent>
+
+              <TabsContent value="limites" className="p-6 mt-0">
+                <dl className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Câmeras</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      <span className="font-medium">{tenant.stats?.activeCameras || 0}</span>
+                      <span className="text-gray-400"> / {tenant.limits.maxCameras}</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Sites</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      <span className="font-medium">{tenant.stats?.sites || 0}</span>
+                      <span className="text-gray-400"> / {tenant.limits.maxSites}</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Usuários</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      <span className="font-medium">{tenant.stats?.users || 0}</span>
+                      <span className="text-gray-400"> / {tenant.limits.maxUsers}</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Retenção</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.limits.retentionDays} dias</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Storage</dt>
+                    <dd className="mt-1 text-sm text-gray-900">
+                      <span className="font-medium">{tenant.stats?.storageUsedGB || 0}GB</span>
+                      <span className="text-gray-400"> / {tenant.limits.storageGB}GB</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Qualidade Máx.</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{tenant.limits.maxStreamQuality}</dd>
+                  </div>
+                </dl>
+              </TabsContent>
+            </Tabs>
           </div>
         </TabsContent>
 
