@@ -42,6 +42,7 @@ import { VideoTile } from '../components/VideoTile'
 import { CameraSidebar } from '../components/CameraSidebar'
 
 import { videoWallService } from '@/services/api/videowall.service'
+import { useTenantFilter } from '@/hooks/useTenantData'
 
 import type {
   CameraForWall,
@@ -61,6 +62,9 @@ const PRESET_OPTIONS: { value: LayoutPreset; label: string; tiles: number }[] = 
 ]
 
 export function VideoWallPage() {
+  // LGPD: Filtrar por tenant do usuário logado (clientes só veem suas câmeras)
+  const tenantFilter = useTenantFilter()
+
   // Estado de layout
   const [currentLayout, setCurrentLayout] = useState<LayoutConfig | null>(null)
   const [savedLayouts, setSavedLayouts] = useState<LayoutConfig[]>([])
@@ -80,17 +84,33 @@ export function VideoWallPage() {
   const [isLoadingCameras, setIsLoadingCameras] = useState(true)
   const [isLoadingLayouts, setIsLoadingLayouts] = useState(true)
 
-  // Carregar câmeras e grupos
+  // Carregar câmeras e grupos - FILTRANDO POR TENANT (LGPD)
   useEffect(() => {
     const loadCameras = async () => {
       setIsLoadingCameras(true)
       try {
+        // Passar tenantId para filtrar câmeras (clientes só veem suas câmeras)
         const [camerasData, groupsData] = await Promise.all([
-          videoWallService.listCameras(),
+          videoWallService.listCameras({ tenantId: tenantFilter.tenantId }),
           videoWallService.listCameraGroups(),
         ])
+
+        // Filtrar grupos também por tenant se necessário
+        let filteredGroups = groupsData
+        if (tenantFilter.tenantId) {
+          const cameraIds = new Set(camerasData.map((c) => c.id))
+          filteredGroups = groupsData
+            .map((g) => ({
+              ...g,
+              cameras: g.cameras.filter((c) => cameraIds.has(c.id)),
+              cameraCount: g.cameras.filter((c) => cameraIds.has(c.id)).length,
+              onlineCount: g.cameras.filter((c) => cameraIds.has(c.id) && c.status === 'online').length,
+            }))
+            .filter((g) => g.cameraCount > 0)
+        }
+
         setCameras(camerasData)
-        setGroups(groupsData)
+        setGroups(filteredGroups)
       } catch (error) {
         console.error('Erro ao carregar câmeras:', error)
       } finally {
@@ -98,7 +118,7 @@ export function VideoWallPage() {
       }
     }
     loadCameras()
-  }, [])
+  }, [tenantFilter.tenantId])
 
   // Carregar layouts salvos
   useEffect(() => {

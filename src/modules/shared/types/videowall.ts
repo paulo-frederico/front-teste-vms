@@ -68,6 +68,7 @@ export interface CameraForWall {
   siteName?: string
   areaName?: string
   groupName?: string
+  tenantId?: string // ID do tenant para filtrar por cliente (LGPD)
   status: CameraWallStatus
   thumbnailUrl?: string
   streamUrl?: string
@@ -98,6 +99,7 @@ export interface CameraWallFilters {
   groupIds?: string[]
   status?: CameraWallStatus[]
   hasRecording?: boolean
+  tenantId?: string // Filtrar por tenant (LGPD - cada cliente só vê suas câmeras)
 }
 
 // =============================================================================

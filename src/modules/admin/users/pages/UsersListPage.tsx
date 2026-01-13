@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { useUsers } from '@/hooks/useUsers'
 import { useTenants } from '@/hooks/useTenants'
+import { useTenantFilter } from '@/hooks/useTenantData'
 import { UserFiltersBar } from '../components/UserFiltersBar'
 import { UserKpisHeader } from '../components/UserKpisHeader'
 import { UserListTable } from '../components/UserListTable'
@@ -18,15 +19,26 @@ export function UsersListPage() {
   const [search, setSearch] = useState('')
   const [role, setRole] = useState<SystemRole | 'all'>('all')
   const [status, setStatus] = useState<AdminUserStatus | 'all'>('all')
-  const [tenantId, setTenantId] = useState<string | 'all'>('all')
+  const [tenantIdFilter, setTenantIdFilter] = useState<string | 'all'>('all')
 
   const [selectedUser, setSelectedUser] = useState<AdminUserRow | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
+  // LGPD: Se for cliente, força filtro pelo seu próprio tenant
+  const tenantFilter = useTenantFilter()
+  const effectiveTenantId = useMemo(() => {
+    // Se o usuário é cliente, força o filtro pelo tenant dele
+    if (tenantFilter.tenantId) {
+      return tenantFilter.tenantId
+    }
+    // Se é admin e selecionou um tenant específico
+    return tenantIdFilter === 'all' ? undefined : tenantIdFilter
+  }, [tenantFilter.tenantId, tenantIdFilter])
+
   const { data, isLoading } = useUsers({
     role: role === 'all' ? undefined : role,
     status: status === 'all' ? undefined : (status as UserStatus),
-    tenantId: tenantId === 'all' ? undefined : tenantId,
+    tenantId: effectiveTenantId,
     search,
   })
   
@@ -69,18 +81,19 @@ export function UsersListPage() {
         search={search}
         role={role}
         status={status}
-        tenantId={tenantId}
+        tenantId={tenantIdFilter}
         tenants={tenants.map((t: { id: string; name: string }) => ({ id: t.id, name: t.name }))}
         onSearchChange={setSearch}
         onRoleChange={setRole}
         onStatusChange={setStatus}
-        onTenantChange={setTenantId}
+        onTenantChange={setTenantIdFilter}
         onClear={() => {
           setSearch('')
           setRole('all')
           setStatus('all')
-          setTenantId('all')
+          setTenantIdFilter('all')
         }}
+        hideTenantFilter={Boolean(tenantFilter.tenantId)} // LGPD: Esconder filtro de tenant para clientes
       />
 
       {isLoading ? (

@@ -1,11 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import type { Location } from 'react-router-dom'
+import { ChevronDown, Shield, Building2, Users, Eye } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { useAuth } from '@/contexts'
+import { DEMO_CREDENTIALS } from '@/lib/auth/mockAuthService'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -34,6 +44,12 @@ export function LoginPage() {
     }
   }
 
+  const handleSelectCredential = (selectedEmail: string, selectedPassword: string) => {
+    setEmail(selectedEmail)
+    setPassword(selectedPassword)
+    setError(null)
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-brand-pale px-4 py-8">
       <Card className="w-full max-w-lg border border-primary/5 shadow-2xl">
@@ -44,12 +60,97 @@ export function LoginPage() {
         </CardHeader>
         <CardContent>
           <form className="space-y-5" onSubmit={handleSubmit}>
+            {/* Seletor de credenciais para demo */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Acesso rápido (demo)</label>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between">
+                    Selecionar usuário de teste
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-[400px]">
+                  <DropdownMenuLabel className="flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-primary" />
+                    Administrador Master
+                  </DropdownMenuLabel>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      handleSelectCredential(
+                        DEMO_CREDENTIALS.adminMaster.email,
+                        DEMO_CREDENTIALS.adminMaster.password
+                      )
+                    }
+                  >
+                    <div className="flex flex-col">
+                      <span className="font-medium">Admin Master Unifique</span>
+                      <span className="text-xs text-muted-foreground">
+                        {DEMO_CREDENTIALS.adminMaster.email}
+                      </span>
+                    </div>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuLabel className="flex items-center gap-2">
+                    <Building2 className="h-4 w-4 text-blue-500" />
+                    Clientes Master (por Tenant)
+                  </DropdownMenuLabel>
+                  {DEMO_CREDENTIALS.clientMasters.map((cred) => (
+                    <DropdownMenuItem
+                      key={cred.email}
+                      onClick={() => handleSelectCredential(cred.email, cred.password)}
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-medium">{cred.tenant}</span>
+                        <span className="text-xs text-muted-foreground">{cred.email}</span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuLabel className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-green-500" />
+                    Gerentes (por Tenant)
+                  </DropdownMenuLabel>
+                  {DEMO_CREDENTIALS.managers.map((cred) => (
+                    <DropdownMenuItem
+                      key={cred.email}
+                      onClick={() => handleSelectCredential(cred.email, cred.password)}
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-medium">{cred.tenant}</span>
+                        <span className="text-xs text-muted-foreground">{cred.email}</span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuLabel className="flex items-center gap-2">
+                    <Eye className="h-4 w-4 text-orange-500" />
+                    Visualizadores (por Tenant)
+                  </DropdownMenuLabel>
+                  {DEMO_CREDENTIALS.viewers.map((cred) => (
+                    <DropdownMenuItem
+                      key={cred.email}
+                      onClick={() => handleSelectCredential(cred.email, cred.password)}
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-medium">{cred.tenant}</span>
+                        <span className="text-xs text-muted-foreground">{cred.email}</span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">E-mail</label>
               <Input value={email} onChange={(event) => setEmail(event.target.value)} type="email" autoComplete="off" />
-              <p className="text-xs text-muted-foreground">
-                Para testes, use um e-mail válido. Os dados ficam apenas no seu navegador.
-              </p>
             </div>
 
             <div className="space-y-2">

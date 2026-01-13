@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { AdminLayout } from '@/app/layout/AdminLayout'
+import { ClientLayout } from '@/app/layout/ClientLayout'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { LoginPage } from '@/modules/auth/pages/LoginPage'
 import { AdminDashboardPage } from '@/modules/admin/pages/AdminDashboardPage'
@@ -41,13 +42,14 @@ import { TemporaryTechnicianAccessPage } from '@/modules/admin/technician-access
 import { IncidentsPage } from '@/modules/admin/incidents/pages'
 import { InvestigationPage } from '@/modules/investigation/pages/InvestigationPage'
 import { VideoWallPage } from '@/modules/videowall/pages/VideoWallPage'
+import { ClientMasterDashboard } from '@/modules/client/dashboard/pages/ClientMasterDashboard'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
       <Route
         path="/admin"
@@ -181,7 +183,41 @@ export function AppRoutes() {
         <Route path="videowall" element={<VideoWallPage />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+      {/* Rotas do Cliente Master */}
+      <Route
+        path="/client"
+        element={
+          <ProtectedRoute allowedRoles={[SystemRole.CLIENT_MASTER, SystemRole.MANAGER, SystemRole.VIEWER]}>
+            <ClientLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<ClientMasterDashboard />} />
+        <Route path="videowall" element={<VideoWallPage />} />
+        <Route path="investigacao" element={<InvestigationPage />} />
+        <Route path="cameras" element={<CamerasListPage />} />
+        <Route path="cameras/:id" element={<CameraDetailPage />} />
+        <Route path="cameras/:id/edit" element={<CameraEditPage />} />
+        <Route path="live" element={<VideoWallPage />} />
+        <Route path="playback" element={<InvestigationPage />} />
+        <Route path="sites" element={<SitesListPage />} />
+        <Route path="sites/:id" element={<SiteDetailPage />} />
+        <Route path="users" element={<UsersListPage />} />
+        <Route path="users/new" element={<UserCreatePage />} />
+        <Route path="users/:id" element={<UserDetailPage />} />
+        <Route path="users/:id/edit" element={<UserEditPage />} />
+        <Route path="ai-config" element={<AiConfigPage />} />
+        <Route path="ai-config/camera/:cameraId" element={<CameraAiConfigPage />} />
+        <Route path="notifications" element={<NotificationProfilesPage />} />
+        <Route path="reports" element={<AdminReportsPage />} />
+        <Route path="technician-access" element={<TemporaryTechnicianAccessPage />} />
+        <Route path="support" element={<IncidentsPage />} />
+        <Route path="settings" element={<AdminSettingsPage />} />
+      </Route>
+
+      {/* Redirect padrão baseado no role - vai para login */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   )
 }

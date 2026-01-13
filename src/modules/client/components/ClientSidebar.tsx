@@ -1,29 +1,25 @@
+/**
+ * Sidebar do Cliente (Cliente Master, Gerente e Visualizador)
+ * Mostra apenas os menus permitidos para cada role
+ */
+
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
-  Brain,
-  FileChartColumn,
   LayoutDashboard,
-  ScrollText,
-  Settings2,
-  Users2,
-  Building2,
-  ShieldCheck,
-  Shield,
-  Wrench,
   Camera,
-  AlertTriangle,
-  Bell,
-  Lock,
-  Clock,
-  Ticket,
-  Search,
-  LayoutGrid,
   Video,
   Play,
+  Users,
   MapPin,
-  Server,
-  HardDrive,
+  Bell,
+  Brain,
+  Settings,
+  HelpCircle,
+  Clock,
+  FileText,
+  Search,
+  LayoutGrid,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -32,153 +28,130 @@ import { ROLE_LABELS } from '@/modules/shared/types/roleLabels'
 import logoFull from '@/assets/logo-unifique-full.svg'
 import logoMark from '@/assets/logo-unifique-mark.svg'
 
-type AdminNavItem = {
+type ClientNavItem = {
   label: string
   icon: typeof LayoutDashboard
   to: string
-  roles?: SystemRole[]
   section: string
+  roles?: SystemRole[] // Se não definido, aparece para todos
 }
 
-const adminNavItems: AdminNavItem[] = [
+const clientNavItems: ClientNavItem[] = [
   // ============ PRINCIPAL ============
-  { label: 'Dashboard', icon: LayoutDashboard, to: '/admin/dashboard', section: 'Principal' },
-  { label: 'Investigação', icon: Search, to: '/admin/investigacao', section: 'Principal' },
+  {
+    label: 'Dashboard',
+    icon: LayoutDashboard,
+    to: '/client/dashboard',
+    section: 'Principal',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER], // Visualizador não vê dashboard
+  },
+  { label: 'Video Wall', icon: LayoutGrid, to: '/client/videowall', section: 'Principal' },
+  {
+    label: 'Investigação',
+    icon: Search,
+    to: '/client/investigacao',
+    section: 'Principal',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER], // Visualizador não investiga
+  },
 
   // ============ MONITORAMENTO ============
-  { label: 'Câmeras', icon: Camera, to: '/admin/cameras', section: 'Monitoramento' },
-  { label: 'Ao Vivo', icon: Video, to: '/admin/videowall', section: 'Monitoramento' },
-  { label: 'Gravações', icon: Play, to: '/admin/investigacao', section: 'Monitoramento' },
+  {
+    label: 'Câmeras',
+    icon: Camera,
+    to: '/client/cameras',
+    section: 'Monitoramento',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+  },
+  { label: 'Ao Vivo', icon: Video, to: '/client/live', section: 'Monitoramento' },
+  {
+    label: 'Gravações',
+    icon: Play,
+    to: '/client/playback',
+    section: 'Monitoramento',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+  },
 
   // ============ ESTRUTURA ============
   {
-    label: 'Clientes',
-    icon: Building2,
-    to: '/admin/tenants',
-    roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
-    section: 'Estrutura',
-  },
-  {
-    label: 'Locais e Áreas',
+    label: 'Locais',
     icon: MapPin,
-    to: '/admin/sites',
-    roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN, SystemRole.CLIENT_MASTER],
+    to: '/client/sites',
     section: 'Estrutura',
-  },
-
-  // ============ GESTÃO DE USUÁRIOS ============
-  { label: 'Usuários', icon: Users2, to: '/admin/users', section: 'Gestão de Usuários' },
-  {
-    label: 'Administradores',
-    icon: Shield,
-    to: '/admin/admins',
-    roles: [SystemRole.ADMIN_MASTER],
-    section: 'Gestão de Usuários',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
   },
   {
-    label: 'Técnicos',
-    icon: Wrench,
-    to: '/admin/technicians',
-    roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
-    section: 'Gestão de Usuários',
-  },
-  {
-    label: 'Níveis de Acesso',
-    icon: ShieldCheck,
-    to: '/admin/access-levels',
-    roles: [SystemRole.ADMIN_MASTER],
-    section: 'Gestão de Usuários',
-  },
-  {
-    label: 'Controle de Acesso',
-    icon: Lock,
-    to: '/admin/access-control',
-    roles: [SystemRole.ADMIN_MASTER],
-    section: 'Gestão de Usuários',
+    label: 'Usuários',
+    icon: Users,
+    to: '/client/users',
+    section: 'Estrutura',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER], // Visualizador não gerencia usuários
   },
 
   // ============ INTELIGÊNCIA ============
-  { label: 'IA & Alertas', icon: Brain, to: '/admin/ai-alerts', section: 'Inteligência' },
+  {
+    label: 'IA & Alertas',
+    icon: Brain,
+    to: '/client/ai-config',
+    section: 'Inteligência',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+  },
   {
     label: 'Notificações',
     icon: Bell,
-    to: '/admin/notifications',
-    roles: [SystemRole.ADMIN_MASTER],
+    to: '/client/notifications',
     section: 'Inteligência',
-  },
-
-  // ============ INFRAESTRUTURA ============
-  {
-    label: 'Infraestrutura',
-    icon: Server,
-    to: '/admin/infrastructure',
-    roles: [SystemRole.ADMIN_MASTER],
-    section: 'Infraestrutura',
-  },
-  {
-    label: 'Políticas de Gravação',
-    icon: HardDrive,
-    to: '/admin/recording-policies',
-    roles: [SystemRole.ADMIN_MASTER, SystemRole.ADMIN],
-    section: 'Infraestrutura',
-  },
-  {
-    label: 'Diagnóstico',
-    icon: AlertTriangle,
-    to: '/admin/diagnostics',
-    roles: [SystemRole.ADMIN_MASTER],
-    section: 'Infraestrutura',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
   },
 
   // ============ SUPORTE ============
   {
-    label: 'Acesso Temporário',
+    label: 'Relatórios',
+    icon: FileText,
+    to: '/client/reports',
+    section: 'Suporte',
+    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+  },
+  {
+    label: 'Acesso Técnico',
     icon: Clock,
-    to: '/admin/technician-access',
-    roles: [SystemRole.ADMIN_MASTER],
+    to: '/client/technician-access',
     section: 'Suporte',
+    roles: [SystemRole.CLIENT_MASTER], // Apenas Cliente Master
   },
-  {
-    label: 'Incidentes',
-    icon: Ticket,
-    to: '/admin/incidents',
-    roles: [SystemRole.ADMIN_MASTER],
-    section: 'Suporte',
-  },
-  { label: 'Relatórios', icon: FileChartColumn, to: '/admin/reports', section: 'Suporte' },
-  {
-    label: 'Auditoria',
-    icon: ScrollText,
-    to: '/admin/audit',
-    roles: [SystemRole.ADMIN_MASTER],
-    section: 'Suporte',
-  },
+  { label: 'Ajuda', icon: HelpCircle, to: '/client/support', section: 'Suporte' },
 
   // ============ SISTEMA ============
-  { label: 'Configurações', icon: Settings2, to: '/admin/settings', section: 'Sistema' },
+  {
+    label: 'Configurações',
+    icon: Settings,
+    to: '/client/settings',
+    section: 'Sistema',
+    roles: [SystemRole.CLIENT_MASTER],
+  },
 ]
 
-export type SidebarProps = {
+export type ClientSidebarProps = {
   onNavigate?: () => void
-  role?: SystemRole
+  tenantName?: string
   isCompact?: boolean
+  role?: SystemRole
 }
 
-export function Sidebar({ onNavigate, role, isCompact = false }: SidebarProps) {
+export function ClientSidebar({ onNavigate, tenantName, isCompact = false, role }: ClientSidebarProps) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null)
   const logoSrc = isCompact ? logoMark : logoFull
   const logoFailed = failedSrc === logoSrc
   const logoWrapperClass = cn(
     'mx-auto flex items-center justify-center transition-all duration-200 ease-out',
-    !isCompact && 'rounded-lg bg-white px-3 py-2 shadow-sm',
+    !isCompact && 'rounded-lg bg-white px-3 py-2 shadow-sm'
   )
   const fallbackTextClass = cn(
     'font-semibold uppercase tracking-wide',
-    isCompact ? 'text-[10px] text-white' : 'text-base text-[#212492]',
+    isCompact ? 'text-[10px] text-white' : 'text-base text-[#212492]'
   )
 
   // Filtrar itens baseado no role
-  const items = adminNavItems.filter((item) => !item.roles || (role && item.roles.includes(role)))
+  const items = clientNavItems.filter((item) => !item.roles || (role && item.roles.includes(role)))
 
   // Agrupar items por seção
   const sections = items.reduce(
@@ -188,11 +161,11 @@ export function Sidebar({ onNavigate, role, isCompact = false }: SidebarProps) {
       acc[section].push(item)
       return acc
     },
-    {} as Record<string, AdminNavItem[]>,
+    {} as Record<string, ClientNavItem[]>
   )
 
   // Label do role para o footer
-  const roleLabel = role ? ROLE_LABELS[role] : 'Usuário'
+  const roleLabel = role ? ROLE_LABELS[role] : 'Cliente'
 
   return (
     <div className={cn('flex h-full flex-col text-sm', isCompact && 'items-center px-0 text-xs')}>
@@ -218,6 +191,18 @@ export function Sidebar({ onNavigate, role, isCompact = false }: SidebarProps) {
         </div>
       </div>
 
+      {/* Tenant Name */}
+      {!isCompact && tenantName && (
+        <div className="px-4 pb-4">
+          <div className="rounded-lg bg-white/5 px-3 py-2 text-center">
+            <p className="text-[10px] uppercase tracking-wider text-white/50">Seu Ambiente</p>
+            <p className="text-xs font-medium text-white truncate" title={tenantName}>
+              {tenantName}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Navigation com seções */}
       <nav className={cn('flex-1 space-y-4 overflow-y-auto px-2 pb-4', isCompact && 'px-1 space-y-2')}>
         {Object.entries(sections).map(([section, sectionItems]) => (
@@ -230,7 +215,7 @@ export function Sidebar({ onNavigate, role, isCompact = false }: SidebarProps) {
             <div className="space-y-1">
               {sectionItems.map((item) => (
                 <NavLink
-                  key={item.to + item.label}
+                  key={item.to}
                   to={item.to}
                   onClick={onNavigate}
                   className={({ isActive }) =>
@@ -239,7 +224,7 @@ export function Sidebar({ onNavigate, role, isCompact = false }: SidebarProps) {
                       isActive
                         ? 'bg-white/10 text-white shadow-inner'
                         : 'text-white/70 hover:bg-white/5 hover:text-white',
-                      isCompact && 'px-2 justify-center',
+                      isCompact && 'px-2 justify-center'
                     )
                   }
                   title={item.label}
@@ -248,7 +233,7 @@ export function Sidebar({ onNavigate, role, isCompact = false }: SidebarProps) {
                   <span
                     className={cn(
                       'origin-left overflow-hidden whitespace-nowrap text-sm font-medium transition-all duration-200 ease-out',
-                      isCompact ? 'max-w-0 opacity-0' : 'ml-1 max-w-[160px] opacity-100',
+                      isCompact ? 'max-w-0 opacity-0' : 'ml-1 max-w-[160px] opacity-100'
                     )}
                   >
                     {item.label}
@@ -264,7 +249,7 @@ export function Sidebar({ onNavigate, role, isCompact = false }: SidebarProps) {
       <div
         className={cn(
           'mt-auto border-t border-white/10 px-4 py-4 text-xs text-white/60',
-          isCompact && 'px-0 text-center text-[10px]',
+          isCompact && 'px-0 text-center text-[10px]'
         )}
       >
         <p>VMS Unifique v0.1.0</p>

@@ -89,6 +89,7 @@ class VideoWallService {
 
   /**
    * Listar câmeras para o Video Wall com filtros
+   * IMPORTANTE: O filtro tenantId é obrigatório para clientes (LGPD)
    */
   async listCameras(filters?: CameraWallFilters): Promise<CameraForWall[]> {
     await simulateLatency()
@@ -96,6 +97,11 @@ class VideoWallService {
     let cameras = [...mockCamerasForWall]
 
     if (filters) {
+      // LGPD: Filtrar por tenant PRIMEIRO (cada cliente só vê suas câmeras)
+      if (filters.tenantId) {
+        cameras = cameras.filter((c) => c.tenantId === filters.tenantId)
+      }
+
       // Filtrar por busca textual
       if (filters.search) {
         const searchLower = filters.search.toLowerCase()

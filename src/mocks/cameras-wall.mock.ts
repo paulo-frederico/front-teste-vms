@@ -12,15 +12,16 @@ const getRecentTimestamp = (minutesAgo: number): string => {
   return date.toISOString()
 }
 
-// Mock de câmeras para Video Wall
+// Mock de câmeras para Video Wall - COM tenantId para filtrar por cliente
 export const mockCamerasForWall: CameraForWall[] = [
-  // Unifique NOC
+  // Unifique NOC - tnt-001
   {
     id: 'cam-0001',
     name: 'NOC - Hall Principal',
     siteName: 'Unifique NOC',
     areaName: 'Hall Principal',
     groupName: 'NOC',
+    tenantId: 'tnt-001',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0001/live',
@@ -36,6 +37,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Unifique NOC',
     areaName: 'Porta de Serviço',
     groupName: 'NOC',
+    tenantId: 'tnt-001',
     status: 'maintenance',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0002/live',
@@ -45,13 +47,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 15,
     bitrate: 2048,
   },
-  // Unifique Florianópolis
+  // Unifique Florianópolis - tnt-001
   {
     id: 'cam-0003',
     name: 'Florianópolis - Recepção',
     siteName: 'Unifique Florianópolis',
     areaName: 'Recepção',
     groupName: 'Florianópolis',
+    tenantId: 'tnt-001',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0003/live',
@@ -67,6 +70,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Unifique Florianópolis',
     areaName: 'Garagem',
     groupName: 'Florianópolis',
+    tenantId: 'tnt-001',
     status: 'offline',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0004/live',
@@ -76,13 +80,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 15,
     bitrate: 2048,
   },
-  // Retail Mega Sul
+  // Retail Mega Sul - tnt-002
   {
     id: 'cam-0005',
     name: 'Retail Sul - Entrada A',
     siteName: 'Retail Mega Sul',
     areaName: 'Entrada A',
     groupName: 'Retail',
+    tenantId: 'tnt-002',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0005/live',
@@ -98,6 +103,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Retail Mega Sul',
     areaName: 'Docas 02',
     groupName: 'Retail',
+    tenantId: 'tnt-002',
     status: 'unstable',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0006/live',
@@ -107,13 +113,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 25,
     bitrate: 6000,
   },
-  // Logística Campinas
+  // Logística Campinas - tnt-002
   {
     id: 'cam-0007',
     name: 'Logística Campinas - Docas',
     siteName: 'Logística Campinas',
     areaName: 'Docas',
     groupName: 'Logística',
+    tenantId: 'tnt-002',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0007/live',
@@ -129,6 +136,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Logística Campinas',
     areaName: 'Portaria',
     groupName: 'Logística',
+    tenantId: 'tnt-002',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0008/live',
@@ -138,13 +146,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 30,
     bitrate: 4096,
   },
-  // Hospital Vida Plena
+  // Hospital Vida Plena - tnt-003
   {
     id: 'cam-0009',
     name: 'Hospital - UTI Adulto 01',
     siteName: 'Hospital Vida Plena',
     areaName: 'UTI Adulto',
     groupName: 'Hospital',
+    tenantId: 'tnt-003',
     status: 'unstable',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0009/live',
@@ -160,6 +169,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Hospital Vida Plena',
     areaName: 'Acesso Cirúrgico',
     groupName: 'Hospital',
+    tenantId: 'tnt-003',
     status: 'offline',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0010/live',
@@ -169,13 +179,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 30,
     bitrate: 4096,
   },
-  // Colégio Horizonte
+  // Colégio Horizonte - tnt-004
   {
     id: 'cam-0011',
     name: 'Horizonte - Playground',
     siteName: 'Colégio Horizonte',
     areaName: 'Playground',
     groupName: 'Educação',
+    tenantId: 'tnt-004',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0011/live',
@@ -191,6 +202,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Colégio Horizonte',
     areaName: 'Portaria',
     groupName: 'Educação',
+    tenantId: 'tnt-004',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0012/live',
@@ -200,13 +212,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 30,
     bitrate: 8192,
   },
-  // Inova CD Goiânia
+  // Inova CD Goiânia - tnt-005
   {
     id: 'cam-0013',
     name: 'Inova - Portão Principal',
     siteName: 'Inova CD Goiânia',
     areaName: 'Portão Principal',
     groupName: 'Inova',
+    tenantId: 'tnt-005',
     status: 'offline',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0013/live',
@@ -222,6 +235,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Inova CD Goiânia',
     areaName: 'Galpão 02',
     groupName: 'Inova',
+    tenantId: 'tnt-005',
     status: 'unstable',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0014/live',
@@ -231,13 +245,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 15,
     bitrate: 2048,
   },
-  // Vila Olímpica
+  // Vila Olímpica - tnt-006
   {
     id: 'cam-0015',
     name: 'Vila Olímpica - Lobby',
     siteName: 'Vila Olímpica',
     areaName: 'Lobby',
     groupName: 'Residencial',
+    tenantId: 'tnt-006',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0015/live',
@@ -247,13 +262,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 30,
     bitrate: 4096,
   },
-  // Ferrovia Terminal Campinas
+  // Ferrovia Terminal Campinas - tnt-007
   {
     id: 'cam-0016',
     name: 'Ferrovia - Pátio Leste',
     siteName: 'Ferrovia Terminal Campinas',
     areaName: 'Pátio Leste',
     groupName: 'Ferrovia',
+    tenantId: 'tnt-007',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0016/live',
@@ -269,6 +285,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Ferrovia Terminal Campinas',
     areaName: 'Gate A',
     groupName: 'Ferrovia',
+    tenantId: 'tnt-007',
     status: 'offline',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0017/live',
@@ -278,13 +295,14 @@ export const mockCamerasForWall: CameraForWall[] = [
     fps: 30,
     bitrate: 4096,
   },
-  // Ferrovia COE SP
+  // Ferrovia COE SP - tnt-007
   {
     id: 'cam-0018',
     name: 'Ferrovia - COE Sala 4',
     siteName: 'Ferrovia COE SP',
     areaName: 'Sala 4',
     groupName: 'Ferrovia',
+    tenantId: 'tnt-007',
     status: 'online',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0018/live',
@@ -300,6 +318,7 @@ export const mockCamerasForWall: CameraForWall[] = [
     siteName: 'Ferrovia COE SP',
     areaName: 'Rooftop',
     groupName: 'Ferrovia',
+    tenantId: 'tnt-007',
     status: 'maintenance',
     thumbnailUrl: '/api/placeholder/320/180',
     streamUrl: 'rtsp://mock/cam-0019/live',

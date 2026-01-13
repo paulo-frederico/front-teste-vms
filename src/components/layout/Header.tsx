@@ -16,12 +16,10 @@ import { cn } from '@/lib/utils'
 import type { UserSummary } from '@/modules/shared/types/auth'
 import { SystemRole } from '@/modules/shared/types/auth'
 import { ROLE_LABELS } from '@/modules/shared/types/roleLabels'
-import logoMark from '@/assets/logo-unifique-mark.svg'
+import logoFull from '@/assets/logo-unifique-full.svg'
 
 type HeaderProps = {
   user: UserSummary
-  sectionTitle?: string
-  sectionSubtitle?: string
   notificationsCount?: number
   onToggleSidebar?: () => void
   onLogout?: () => void
@@ -38,8 +36,6 @@ const roleAccent: Record<SystemRole, string> = {
 
 export function Header({
   user,
-  sectionTitle = 'Portal Operacional',
-  sectionSubtitle = 'Monitoramento inteligente',
   notificationsCount = 4,
   onToggleSidebar,
   onLogout,
@@ -69,24 +65,8 @@ export function Header({
                 <Menu className="h-5 w-5" />
               </Button>
             ) : null}
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-black/5 bg-white shadow-sm">
-                <img src={logoMark} alt="VMS Unifique" className="h-6 w-6" />
-              </div>
-              <div className="flex flex-col text-slate-500">
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-400">
-                  <span>VMS</span>
-                  <span className="tracking-[0.2em] text-slate-500">Unifique</span>
-                </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-base font-semibold text-slate-900">{sectionTitle}</p>
-                  {sectionSubtitle ? (
-                    <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-slate-500">
-                      {sectionSubtitle}
-                    </span>
-                  ) : null}
-                </div>
-              </div>
+            <div className="flex items-center">
+              <img src={logoFull} alt="VMS Unifique" className="h-10" />
             </div>
           </div>
 
@@ -117,7 +97,9 @@ export function Header({
                 >
                   <div className="hidden text-right md:block">
                     <p className="text-sm font-semibold text-slate-900">{user.name}</p>
-                    <span className="text-xs font-medium uppercase tracking-wide text-slate-500">{roleLabel}</span>
+                    <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                      {user.tenantName ? `${roleLabel} · ${user.tenantName}` : roleLabel}
+                    </span>
                   </div>
                   <div
                     className={cn(

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createMockAdminMaster } from '@/lib/auth/createMockAdminMaster'
+import { authenticateUser } from '@/lib/auth/mockAuthService'
+import { getRedirectPathByRole } from '@/lib/auth/getRedirectPathByRole'
 
 import { type User } from '@/modules/shared/types/auth'
 import type { AuthContextType } from './auth.types'
@@ -42,18 +43,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true)
     try {
-      // TODO: Substituir por chamada real à API com password
-      void password // parameter will be used in API integration
-      const mockUser = createMockAdminMaster(email)
+      // Autentica usando o serviço mock que valida Admin Master e Cliente Master
+      const authenticatedUser = authenticateUser(email, password)
+
+      if (!authenticatedUser) {
+        throw new Error('Credenciais inválidas')
+      }
+
       const mockToken = `mock_access_token_${Date.now()}`
       const mockRefreshToken = `mock_refresh_token_${Date.now()}`
 
-      localStorage.setItem('vms_user', JSON.stringify(mockUser))
+      localStorage.setItem('vms_user', JSON.stringify(authenticatedUser))
       localStorage.setItem('vms_access_token', mockToken)
       localStorage.setItem('vms_refresh_token', mockRefreshToken)
 
-      setUser(mockUser)
-      navigate('/admin-master/dashboard', { replace: true })
+      setUser(authenticatedUser)
+
+      // Redireciona para o dashboard apropriado baseado no role
+      const redirectPath = getRedirectPathByRole(authenticatedUser.role)
+      navigate(redirectPath, { replace: true })
     } catch (error) {
       console.error('Erro no login:', error)
       throw error

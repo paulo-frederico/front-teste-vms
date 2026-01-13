@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSites } from '@/hooks/useSites';
 import { useAreas } from '@/hooks/useAreas';
 import { useDeleteSite } from '@/hooks/useSites';
+import { useTenantFilter } from '@/hooks/useTenantData';
 import {
   getSiteTypeLabel,
   getSiteStatusLabel,
@@ -40,6 +41,9 @@ export const SitesListPage: React.FC = () => {
   const navigate = useNavigate();
   const deleteSiteMutation = useDeleteSite();
 
+  // LGPD: Filtrar por tenant do usuário logado (clientes só veem seus locais)
+  const tenantFilter = useTenantFilter();
+
   // Filtros
   const [filters, setFilters] = useState({
     search: '',
@@ -50,11 +54,12 @@ export const SitesListPage: React.FC = () => {
   // Sites expandidos (controle de expansão)
   const [expandedSites, setExpandedSites] = useState<Set<string>>(new Set());
 
-  // Buscar sites
+  // Buscar sites - FILTRANDO POR TENANT (LGPD)
   const { data: sites = [], isLoading: isLoadingSites } = useSites({
     search: filters.search || undefined,
     type: filters.type === 'ALL_TYPES' ? undefined : filters.type,
-    status: filters.status === 'ALL' ? undefined : filters.status
+    status: filters.status === 'ALL' ? undefined : filters.status,
+    tenantId: tenantFilter.tenantId, // LGPD: Filtrar por tenant do cliente
   });
 
   // Buscar todas as áreas (para exibir nas expansões)

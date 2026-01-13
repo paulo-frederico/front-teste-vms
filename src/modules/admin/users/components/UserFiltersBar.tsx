@@ -36,6 +36,7 @@ export type UserFiltersBarProps = {
   onStatusChange: (value: AdminUserStatus | 'all') => void
   onTenantChange: (value: string | 'all') => void
   onClear: () => void
+  hideTenantFilter?: boolean // LGPD: Esconder filtro de tenant para clientes
 }
 
 export function UserFiltersBar({
@@ -49,6 +50,7 @@ export function UserFiltersBar({
   onStatusChange,
   onTenantChange,
   onClear,
+  hideTenantFilter = false,
 }: UserFiltersBarProps) {
   return (
     <div className="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm">
@@ -86,19 +88,22 @@ export function UserFiltersBar({
             ))}
           </SelectContent>
         </Select>
-        <Select value={tenantId} onValueChange={(value) => onTenantChange(value as string | 'all')}>
-          <SelectTrigger className="h-11 w-full rounded-2xl border-slate-200 xl:w-[240px]">
-            <SelectValue placeholder="Cliente" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os clientes</SelectItem>
-            {(tenants || []).map((tenant) => (
-              <SelectItem key={tenant.id} value={tenant.id}>
-                {tenant.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* LGPD: Esconder filtro de tenant para clientes (eles só veem seus próprios dados) */}
+        {!hideTenantFilter && (
+          <Select value={tenantId} onValueChange={(value) => onTenantChange(value as string | 'all')}>
+            <SelectTrigger className="h-11 w-full rounded-2xl border-slate-200 xl:w-[240px]">
+              <SelectValue placeholder="Cliente" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os clientes</SelectItem>
+              {(tenants || []).map((tenant) => (
+                <SelectItem key={tenant.id} value={tenant.id}>
+                  {tenant.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
         <Button type="button" variant="ghost" className="h-11 rounded-2xl border border-slate-200 text-slate-600" onClick={onClear}>
           Limpar filtros
         </Button>

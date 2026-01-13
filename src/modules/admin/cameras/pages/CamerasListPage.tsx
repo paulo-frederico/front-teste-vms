@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  useCameras, 
-  useDeleteCamera, 
+import {
+  useCameras,
+  useDeleteCamera,
   useTestConnection,
   useCaptureSnapshot
 } from '@/hooks/useCameras';
+import { useTenantFilter } from '@/hooks/useTenantData';
 import { CameraStatus, CameraProtocol, type Camera } from '@/modules/shared/types/camera';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Plus, 
-  Search, 
+import {
+  Plus,
+  Search,
   Eye,
-  Edit, 
-  Trash2, 
+  Edit,
+  Trash2,
   Camera as CameraIcon,
   Wifi,
   WifiOff,
@@ -27,6 +28,9 @@ import {
 export const CamerasListPage: React.FC = () => {
   const navigate = useNavigate();
 
+  // LGPD: Filtrar por tenant do usuário logado (clientes só veem suas câmeras)
+  const tenantFilter = useTenantFilter();
+
   // ⚠️ Usar valores sentinel ao invés de string vazia
   const [filters, setFilters] = useState({
     search: '',
@@ -37,10 +41,12 @@ export const CamerasListPage: React.FC = () => {
   });
 
   // ⚠️ Converter valores sentinel para undefined no filtro
+  // LGPD: Adicionar tenantId se o usuário for cliente
   const { data, isLoading, isError, error } = useCameras({
     ...filters,
     status: filters.status === 'ALL' ? undefined : filters.status,
-    protocol: filters.protocol === 'ALL_PROTOCOLS' ? undefined : filters.protocol
+    protocol: filters.protocol === 'ALL_PROTOCOLS' ? undefined : filters.protocol,
+    tenantId: tenantFilter.tenantId, // LGPD: Filtrar por tenant do cliente
   });
 
   const deleteMutation = useDeleteCamera();
