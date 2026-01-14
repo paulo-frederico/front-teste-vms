@@ -1,141 +1,97 @@
 /**
- * Sidebar do Cliente (Cliente Master, Gerente e Visualizador)
- * Mostra apenas os menus permitidos para cada role
+ * Sidebar do Técnico
+ * Menu específico para técnicos de campo
  */
 
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   LayoutDashboard,
-  Camera,
+  Ticket,
+  KeyRound,
+  Wrench,
   Video,
-  Play,
-  Users,
-  MapPin,
-  Bell,
-  Brain,
-  Settings,
   HelpCircle,
-  Clock,
-  FileText,
-  Search,
+  History,
+  Camera,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-import { SystemRole } from '@/modules/shared/types/auth'
-import { ROLE_LABELS } from '@/modules/shared/types/roleLabels'
 import logoFull from '@/assets/logo-unifique-full.svg'
 import logoMark from '@/assets/logo-unifique-mark.svg'
 
-type ClientNavItem = {
+type TechnicianNavItem = {
   label: string
   icon: typeof LayoutDashboard
   to: string
   section: string
-  roles?: SystemRole[] // Se não definido, aparece para todos
 }
 
-const clientNavItems: ClientNavItem[] = [
+const technicianNavItems: TechnicianNavItem[] = [
   // ============ PRINCIPAL ============
   {
     label: 'Dashboard',
     icon: LayoutDashboard,
-    to: '/client/dashboard',
+    to: '/technician/dashboard',
     section: 'Principal',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER], // Visualizador não vê dashboard
   },
   {
-    label: 'Investigação',
-    icon: Search,
-    to: '/client/investigacao',
+    label: 'Meus Chamados',
+    icon: Ticket,
+    to: '/technician/tickets',
     section: 'Principal',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER], // Visualizador não investiga
   },
 
-  // ============ MONITORAMENTO ============
+  // ============ ACESSO ============
   {
-    label: 'Câmeras',
+    label: 'Acessos Ativos',
+    icon: KeyRound,
+    to: '/technician/access',
+    section: 'Acesso',
+  },
+  {
+    label: 'Câmeras Autorizadas',
     icon: Camera,
-    to: '/client/cameras',
-    section: 'Monitoramento',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+    to: '/technician/cameras',
+    section: 'Acesso',
   },
-  { label: 'Ao Vivo', icon: Video, to: '/client/live', section: 'Monitoramento' },
   {
-    label: 'Gravações',
-    icon: Play,
-    to: '/client/playback',
-    section: 'Monitoramento',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+    label: 'Ao Vivo',
+    icon: Video,
+    to: '/technician/live',
+    section: 'Acesso',
   },
 
-  // ============ ESTRUTURA ============
+  // ============ FERRAMENTAS ============
   {
-    label: 'Locais',
-    icon: MapPin,
-    to: '/client/sites',
-    section: 'Estrutura',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+    label: 'Diagnóstico',
+    icon: Wrench,
+    to: '/technician/diagnostics',
+    section: 'Ferramentas',
   },
   {
-    label: 'Usuários',
-    icon: Users,
-    to: '/client/users',
-    section: 'Estrutura',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER], // Visualizador não gerencia usuários
-  },
-
-  // ============ INTELIGÊNCIA ============
-  {
-    label: 'IA & Alertas',
-    icon: Brain,
-    to: '/client/ai-config',
-    section: 'Inteligência',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
-  },
-  {
-    label: 'Notificações',
-    icon: Bell,
-    to: '/client/notifications',
-    section: 'Inteligência',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
+    label: 'Histórico',
+    icon: History,
+    to: '/technician/history',
+    section: 'Ferramentas',
   },
 
   // ============ SUPORTE ============
   {
-    label: 'Relatórios',
-    icon: FileText,
-    to: '/client/reports',
+    label: 'Ajuda',
+    icon: HelpCircle,
+    to: '/technician/help',
     section: 'Suporte',
-    roles: [SystemRole.CLIENT_MASTER, SystemRole.MANAGER],
-  },
-  {
-    label: 'Acesso Técnico',
-    icon: Clock,
-    to: '/client/technician-access',
-    section: 'Suporte',
-    roles: [SystemRole.CLIENT_MASTER], // Apenas Cliente Master
-  },
-  { label: 'Ajuda', icon: HelpCircle, to: '/client/support', section: 'Suporte' },
-
-  // ============ SISTEMA ============
-  {
-    label: 'Configurações',
-    icon: Settings,
-    to: '/client/settings',
-    section: 'Sistema',
-    roles: [SystemRole.CLIENT_MASTER],
   },
 ]
 
-export type ClientSidebarProps = {
+export type TechnicianSidebarProps = {
   onNavigate?: () => void
-  tenantName?: string
+  technicianName?: string
   isCompact?: boolean
-  role?: SystemRole
 }
 
-export function ClientSidebar({ onNavigate, tenantName, isCompact = false, role }: ClientSidebarProps) {
+export function TechnicianSidebar({ onNavigate, technicianName, isCompact = false }: TechnicianSidebarProps) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null)
   const logoSrc = isCompact ? logoMark : logoFull
   const logoFailed = failedSrc === logoSrc
@@ -148,22 +104,16 @@ export function ClientSidebar({ onNavigate, tenantName, isCompact = false, role 
     isCompact ? 'text-[10px] text-white' : 'text-base text-[#212492]'
   )
 
-  // Filtrar itens baseado no role
-  const items = clientNavItems.filter((item) => !item.roles || (role && item.roles.includes(role)))
-
   // Agrupar items por seção
-  const sections = items.reduce(
+  const sections = technicianNavItems.reduce(
     (acc, item) => {
       const section = item.section
       if (!acc[section]) acc[section] = []
       acc[section].push(item)
       return acc
     },
-    {} as Record<string, ClientNavItem[]>
+    {} as Record<string, TechnicianNavItem[]>
   )
-
-  // Label do role para o footer
-  const roleLabel = role ? ROLE_LABELS[role] : 'Cliente'
 
   return (
     <div className={cn('flex h-full flex-col text-sm', isCompact && 'items-center px-0 text-xs')}>
@@ -189,13 +139,13 @@ export function ClientSidebar({ onNavigate, tenantName, isCompact = false, role 
         </div>
       </div>
 
-      {/* Tenant Name */}
-      {!isCompact && tenantName && (
+      {/* Technician Name */}
+      {!isCompact && technicianName && (
         <div className="px-4 pb-4">
           <div className="rounded-lg bg-white/5 px-3 py-2 text-center">
-            <p className="text-[10px] uppercase tracking-wider text-white/50">Seu Ambiente</p>
-            <p className="text-xs font-medium text-white truncate" title={tenantName}>
-              {tenantName}
+            <p className="text-[10px] uppercase tracking-wider text-white/50">Técnico</p>
+            <p className="text-xs font-medium text-white truncate" title={technicianName}>
+              {technicianName}
             </p>
           </div>
         </div>
@@ -251,7 +201,7 @@ export function ClientSidebar({ onNavigate, tenantName, isCompact = false, role 
         )}
       >
         <p>VMS Unifique v0.1.0</p>
-        <p className="text-white/40">{roleLabel}</p>
+        <p className="text-white/40">Técnico</p>
       </div>
     </div>
   )

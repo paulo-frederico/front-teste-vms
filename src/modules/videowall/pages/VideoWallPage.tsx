@@ -369,21 +369,21 @@ export function VideoWallPage() {
       .map((t) => t.cameraId as string)
   }, [currentLayout])
 
-  // Grid classes baseado no preset
+  // Grid classes baseado no preset (apenas colunas, rows são automáticas com aspect-video)
   const gridClasses = useMemo(() => {
     switch (selectedPreset) {
       case '1x1':
-        return 'grid-cols-1 grid-rows-1'
+        return 'grid-cols-1'
       case '2x2':
-        return 'grid-cols-2 grid-rows-2'
+        return 'grid-cols-2'
       case '3x3':
-        return 'grid-cols-3 grid-rows-3'
+        return 'grid-cols-3'
       case '4x4':
-        return 'grid-cols-4 grid-rows-4'
+        return 'grid-cols-4'
       case '5x5':
-        return 'grid-cols-5 grid-rows-5'
+        return 'grid-cols-5'
       default:
-        return 'grid-cols-2 grid-rows-2'
+        return 'grid-cols-2'
     }
   }, [selectedPreset])
 
@@ -543,7 +543,7 @@ export function VideoWallPage() {
         </div>
 
         {/* Grid de tiles */}
-        <div className={cn('flex-1 p-3 bg-muted/30', isFullscreen && 'pt-16')}>
+        <div className={cn('flex-1 p-3 bg-muted/30 overflow-auto flex items-start justify-center', isFullscreen && 'pt-16')}>
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
@@ -563,7 +563,7 @@ export function VideoWallPage() {
               </div>
             </div>
           ) : (
-            <div className={cn('grid gap-2 h-full', gridClasses)}>
+            <div className={cn('grid gap-2 w-full max-h-full place-content-center', gridClasses)}>
               {currentLayout.tiles.map((tile) => {
                 const camera = tile.cameraId
                   ? cameras.find((c) => c.id === tile.cameraId)
@@ -573,8 +573,8 @@ export function VideoWallPage() {
                   <div
                     key={tile.id}
                     className={cn(
-                      'relative',
-                      maximizedTile === tile.position && 'fixed inset-4 z-50'
+                      'relative aspect-video',
+                      maximizedTile === tile.position && 'fixed inset-4 z-50 aspect-auto'
                     )}
                     onDrop={(e) => handleDrop(e, tile.position)}
                     onDragOver={handleDragOver}

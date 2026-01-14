@@ -42,7 +42,18 @@ import { TemporaryTechnicianAccessPage } from '@/modules/admin/technician-access
 import { IncidentsPage } from '@/modules/admin/incidents/pages'
 import { InvestigationPage } from '@/modules/investigation/pages/InvestigationPage'
 import { VideoWallPage } from '@/modules/videowall/pages/VideoWallPage'
+import { PlaybackPage } from '@/modules/playback/pages'
 import { ClientMasterDashboard } from '@/modules/client/dashboard/pages/ClientMasterDashboard'
+import { TechnicianLayout } from '@/app/layout/TechnicianLayout'
+import {
+  TechnicianDashboard,
+  TicketsPage,
+  MyAccessPage,
+  TechnicianDiagnosticsPage,
+  TechnicianCamerasPage,
+  HistoryPage,
+  HelpPage,
+} from '@/modules/technician/pages'
 import { SystemRole } from '@/modules/shared/types/auth'
 
 export function AppRoutes() {
@@ -200,7 +211,7 @@ export function AppRoutes() {
         <Route path="cameras/:id" element={<CameraDetailPage />} />
         <Route path="cameras/:id/edit" element={<CameraEditPage />} />
         <Route path="live" element={<VideoWallPage />} />
-        <Route path="playback" element={<InvestigationPage />} />
+        <Route path="playback" element={<PlaybackPage />} />
         <Route path="sites" element={<SitesListPage />} />
         <Route path="sites/:id" element={<SiteDetailPage />} />
         <Route path="users" element={<UsersListPage />} />
@@ -214,6 +225,26 @@ export function AppRoutes() {
         <Route path="technician-access" element={<TemporaryTechnicianAccessPage />} />
         <Route path="support" element={<IncidentsPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />
+      </Route>
+
+      {/* Rotas do Técnico */}
+      <Route
+        path="/technician"
+        element={
+          <ProtectedRoute allowedRoles={[SystemRole.TECHNICIAN]}>
+            <TechnicianLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<TechnicianDashboard />} />
+        <Route path="tickets" element={<TicketsPage />} />
+        <Route path="access" element={<MyAccessPage />} />
+        <Route path="cameras" element={<TechnicianCamerasPage />} />
+        <Route path="live" element={<VideoWallPage />} />
+        <Route path="diagnostics" element={<TechnicianDiagnosticsPage />} />
+        <Route path="history" element={<HistoryPage />} />
+        <Route path="help" element={<HelpPage />} />
       </Route>
 
       {/* Redirect padrão baseado no role - vai para login */}

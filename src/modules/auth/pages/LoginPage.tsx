@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import type { Location } from 'react-router-dom'
-import { ChevronDown, Shield, Building2, Users, Eye } from 'lucide-react'
+import { ChevronDown, Shield, Building2, Users, Eye, Wrench } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -70,7 +70,7 @@ export function LoginPage() {
                     <ChevronDown className="h-4 w-4 opacity-50" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[400px]">
+                <DropdownMenuContent className="w-[400px] max-h-[400px] overflow-y-auto">
                   <DropdownMenuLabel className="flex items-center gap-2">
                     <Shield className="h-4 w-4 text-primary" />
                     Administrador Master
@@ -140,6 +140,24 @@ export function LoginPage() {
                     >
                       <div className="flex flex-col">
                         <span className="font-medium">{cred.tenant}</span>
+                        <span className="text-xs text-muted-foreground">{cred.email}</span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuLabel className="flex items-center gap-2">
+                    <Wrench className="h-4 w-4 text-purple-500" />
+                    Técnicos
+                  </DropdownMenuLabel>
+                  {DEMO_CREDENTIALS.technicians.map((cred) => (
+                    <DropdownMenuItem
+                      key={cred.email}
+                      onClick={() => handleSelectCredential(cred.email, cred.password)}
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-medium">{cred.name}</span>
                         <span className="text-xs text-muted-foreground">{cred.email}</span>
                       </div>
                     </DropdownMenuItem>

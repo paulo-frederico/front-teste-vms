@@ -7,6 +7,7 @@ import { type User } from '@/modules/shared/types/auth'
 import { createMockAdminMaster } from './createMockAdminMaster'
 import { validateClientMasterCredentials } from '@/fixtures/client-master-users.fixture'
 import { validateManagerViewerCredentials } from '@/fixtures/manager-viewer-users.fixture'
+import { validateTechnicianCredentials, TECHNICIAN_CREDENTIALS } from '@/fixtures/technician-users.fixture'
 
 /**
  * Credenciais do Admin Master para teste
@@ -38,6 +39,12 @@ export function authenticateUser(email: string, password: string): User | null {
   const managerViewerUser = validateManagerViewerCredentials(email, password)
   if (managerViewerUser) {
     return managerViewerUser
+  }
+
+  // Tenta autenticar como Técnico
+  const technicianUser = validateTechnicianCredentials(email, password)
+  if (technicianUser) {
+    return technicianUser
   }
 
   // Credenciais inválidas
@@ -76,4 +83,5 @@ export const DEMO_CREDENTIALS = {
     { email: 'portaria@vilaolimpica.com', password: 'operador123', tenant: 'Vila Olímpica Residencial' },
     { email: 'operador@novaferrovia.com.br', password: 'operador123', tenant: 'Nova Ferrovia Paulista' },
   ],
+  technicians: TECHNICIAN_CREDENTIALS,
 }
