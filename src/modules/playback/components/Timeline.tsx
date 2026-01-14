@@ -9,8 +9,6 @@ import { ptBR } from 'date-fns/locale'
 import {
   ZoomIn,
   ZoomOut,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -41,7 +39,7 @@ export function Timeline({
 }: TimelineProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [zoomLevel, setZoomLevel] = useState(2) // Índice do ZOOM_LEVELS (6h)
-  const [viewRange, setViewRange] = useState<TimeRange>(() => {
+  const [, setViewRange] = useState<TimeRange>(() => {
     const start = new Date(date)
     start.setHours(0, 0, 0, 0)
     const end = new Date(date)
@@ -207,7 +205,6 @@ export function Timeline({
         {/* Marcadores de hora */}
         <div className="absolute inset-x-0 top-0 h-6 border-b border-border/50">
           {hourMarkers.map((time, i) => {
-            const x = timeToX(time)
             const isMainHour = i % 3 === 0
             return (
               <div

@@ -7,13 +7,11 @@ import { useState } from 'react'
 import {
   Ticket,
   Search,
-  Filter,
   Calendar,
   MapPin,
   Building2,
   Clock,
   CheckCircle2,
-  AlertCircle,
   ChevronRight,
   Phone,
   Mail,
@@ -22,7 +20,7 @@ import {
   Camera,
 } from 'lucide-react'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
@@ -172,15 +170,6 @@ export function TicketsPage() {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  }
-
-  const formatDateShort = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
     })

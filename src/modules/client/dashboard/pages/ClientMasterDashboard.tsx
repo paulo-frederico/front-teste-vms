@@ -9,7 +9,6 @@ import {
   Activity,
   BellRing,
   Camera,
-  HardDrive,
   MapPin,
   Shield,
   Users,

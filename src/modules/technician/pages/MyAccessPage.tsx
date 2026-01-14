@@ -13,7 +13,6 @@ import {
   AlertTriangle,
   CheckCircle2,
   User,
-  Calendar,
   Video,
   Shield,
   Info,
@@ -23,12 +22,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 
 // Mock data

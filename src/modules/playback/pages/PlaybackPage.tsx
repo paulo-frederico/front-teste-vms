@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback, useMemo } from 'react'
-import { format, startOfDay, endOfDay, subDays, addDays } from 'date-fns'
+import { format, startOfDay, subDays, addDays } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import {
   Camera,
@@ -12,29 +12,16 @@ import {
   ChevronLeft,
   ChevronRight,
   Search,
-  Filter,
-  List,
-  Grid,
   Clock,
-  HardDrive,
   AlertTriangle,
   Play,
-  Download,
   Bookmark,
 } from 'lucide-react'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import {
   Popover,
@@ -42,7 +29,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 
 import { Timeline } from '../components/Timeline'
@@ -273,8 +259,6 @@ export function PlaybackPage() {
                 mode="single"
                 selected={selectedDate}
                 onSelect={(date) => date && setSelectedDate(date)}
-                disabled={(date) => date > new Date()}
-                locale={ptBR}
               />
             </PopoverContent>
           </Popover>

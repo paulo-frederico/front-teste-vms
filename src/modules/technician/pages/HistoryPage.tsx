@@ -7,11 +7,9 @@ import { useState } from 'react'
 import {
   History,
   Search,
-  Calendar,
   Building2,
   CheckCircle2,
   Clock,
-  Filter,
   ChevronDown,
   MapPin,
   Wrench,
@@ -20,7 +18,6 @@ import {
 } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import {

@@ -12,10 +12,7 @@ import {
   MapPin,
   Signal,
   Video,
-  Settings,
   Wrench,
-  Filter,
-  RefreshCw,
 } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'

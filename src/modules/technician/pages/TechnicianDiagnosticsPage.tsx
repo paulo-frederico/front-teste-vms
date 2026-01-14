@@ -6,7 +6,6 @@
 import { useState } from 'react'
 import {
   Wrench,
-  Camera,
   Wifi,
   HardDrive,
   Thermometer,

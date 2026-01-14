@@ -18,7 +18,6 @@ import {
   Clock,
   Ticket,
   Search,
-  LayoutGrid,
   Video,
   Play,
   MapPin,

@@ -65,7 +65,7 @@ const managerPermissions: UserPermissions = {
   canViewLogs: true,
 
   // Limitações
-  maxStreamQuality: '1080p',
+  maxStreamQuality: 'FULLHD',
   allowedAIModules: ['LPR', 'INTRUSION', 'LINE_CROSSING', 'PEOPLE_COUNTING'],
 }
 
@@ -127,7 +127,7 @@ const viewerPermissions: UserPermissions = {
   canViewLogs: false,
 
   // Limitações
-  maxStreamQuality: '720p',
+  maxStreamQuality: 'HD',
   allowedAIModules: [],
 }
 

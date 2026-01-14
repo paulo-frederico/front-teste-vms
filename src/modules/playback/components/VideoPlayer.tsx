@@ -18,9 +18,6 @@ import {
   Camera,
   Download,
   Bookmark,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
   Rewind,
   FastForward,
 } from 'lucide-react'
@@ -83,7 +80,7 @@ export function VideoPlayer({
   className,
 }: VideoPlayerProps) {
   const [showControls, setShowControls] = useState(true)
-  const controlsTimeoutRef = useRef<NodeJS.Timeout>()
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleMouseMove = useCallback(() => {
     setShowControls(true)
