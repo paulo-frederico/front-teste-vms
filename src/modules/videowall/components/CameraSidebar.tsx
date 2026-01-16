@@ -30,7 +30,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import type { CameraForWall, CameraGroup, CameraWallStatus } from '@/modules/shared/types/videowall'
 import { cameraStatusLabels, cameraStatusColors } from '@/mocks/cameras-wall.mock'
@@ -113,9 +112,9 @@ const CameraItem = memo(function CameraItem({
           </Badge>
         ) : (
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
-            className="h-6 w-6 opacity-0 group-hover:opacity-100"
+            className="h-6 w-6 text-primary hover:bg-primary hover:text-primary-foreground"
             onClick={(e) => {
               e.stopPropagation()
               onAdd()
@@ -304,7 +303,7 @@ export const CameraSidebar = memo(function CameraSidebar({
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
       <div className="p-3 border-b space-y-2">
         {/* Stats rápidos */}
@@ -421,8 +420,8 @@ export const CameraSidebar = memo(function CameraSidebar({
         </div>
       </div>
 
-      {/* Lista de câmeras */}
-      <ScrollArea className="flex-1">
+      {/* Lista de câmeras - área com scroll independente */}
+      <div className="flex-1 overflow-y-auto min-h-0">
         <div className="p-2 space-y-1">
           {filteredCameras.length === 0 ? (
             <div className="py-8 text-center text-muted-foreground">
@@ -467,12 +466,12 @@ export const CameraSidebar = memo(function CameraSidebar({
             ))
           )}
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Footer com dica */}
       <div className="p-2 border-t bg-muted/30">
         <p className="text-[10px] text-muted-foreground text-center">
-          Arraste câmeras para o mosaico ou clique em <Plus className="inline h-3 w-3" /> para adicionar
+          Clique em <Plus className="inline h-3 w-3" /> para adicionar ao mosaico
         </p>
       </div>
     </div>

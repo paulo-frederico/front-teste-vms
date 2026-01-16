@@ -369,7 +369,7 @@ export function VideoWallPage() {
       .map((t) => t.cameraId as string)
   }, [currentLayout])
 
-  // Grid classes baseado no preset (apenas colunas, rows são automáticas com aspect-video)
+  // Grid classes baseado no preset (apenas colunas, aspect-video define altura)
   const gridClasses = useMemo(() => {
     switch (selectedPreset) {
       case '1x1':
@@ -391,10 +391,10 @@ export function VideoWallPage() {
 
   return (
     <div className="h-full flex overflow-hidden">
-      {/* Sidebar de câmeras */}
+      {/* Sidebar de câmeras - apenas esta área tem scroll */}
       <div
         className={cn(
-          'w-72 shrink-0 border-r bg-card transition-all duration-300',
+          'w-72 shrink-0 border-r bg-card transition-all duration-300 flex flex-col h-full overflow-hidden',
           isFullscreen && 'hidden'
         )}
       >
@@ -542,8 +542,8 @@ export function VideoWallPage() {
           </div>
         </div>
 
-        {/* Grid de tiles */}
-        <div className={cn('flex-1 p-3 bg-muted/30 overflow-auto flex items-start justify-center', isFullscreen && 'pt-16')}>
+        {/* Grid de tiles - área fixa no topo sem scroll */}
+        <div className={cn('flex-1 p-3 bg-muted/30 overflow-hidden flex flex-col', isFullscreen && 'pt-16')}>
           {isLoading ? (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
@@ -563,7 +563,7 @@ export function VideoWallPage() {
               </div>
             </div>
           ) : (
-            <div className={cn('grid gap-2 w-full max-h-full place-content-center', gridClasses)}>
+            <div className={cn('grid gap-2 w-full', gridClasses)}>
               {currentLayout.tiles.map((tile) => {
                 const camera = tile.cameraId
                   ? cameras.find((c) => c.id === tile.cameraId)
