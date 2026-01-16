@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { Bell, ChevronDown, CreditCard, LogOut, Menu, Settings, UserRound } from 'lucide-react'
 
@@ -71,19 +72,27 @@ export function Header({
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Notifications */}
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-transparent bg-white/70 text-slate-500 shadow-sm transition hover:border-slate-200 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40"
+                  className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-transparent bg-white/70 text-slate-500 shadow-sm transition-all duration-200 hover:border-slate-200 hover:text-slate-900 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40 active:scale-95"
                   aria-label="Abrir notificações"
                 >
                   <Bell className="h-5 w-5" />
-                  {hasNotifications ? (
-                    <span className="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-semibold text-white shadow-sm">
-                      {notificationsCount > 9 ? '9+' : notificationsCount}
-                    </span>
-                  ) : null}
+                  <AnimatePresence>
+                    {hasNotifications && (
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        className="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-semibold text-white shadow-sm"
+                      >
+                        {notificationsCount > 9 ? '9+' : notificationsCount}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </button>
               </TooltipTrigger>
               <TooltipContent sideOffset={12}>Notificações do sistema</TooltipContent>
@@ -93,7 +102,7 @@ export function Header({
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  className="group flex items-center gap-3 rounded-full border border-slate-200/80 bg-white/80 px-3 py-1.5 text-left shadow-sm transition hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40"
+                  className="group flex items-center gap-3 rounded-full border border-slate-200/80 bg-white/80 px-3 py-1.5 text-left shadow-sm transition-all duration-200 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40 active:scale-[0.98]"
                 >
                   <div className="hidden text-right md:block">
                     <p className="text-sm font-semibold text-slate-900">{user.name}</p>
@@ -101,14 +110,16 @@ export function Header({
                       {user.tenantName ? `${roleLabel} · ${user.tenantName}` : roleLabel}
                     </span>
                   </div>
-                  <div
+                  <motion.div
                     className={cn(
                       'flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold uppercase',
                       roleAccent[user.role],
                     )}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {initials}
-                  </div>
+                  </motion.div>
                   <ChevronDown className="hidden h-4 w-4 text-slate-400 transition group-hover:text-slate-600 md:block" />
                 </button>
               </DropdownMenuTrigger>

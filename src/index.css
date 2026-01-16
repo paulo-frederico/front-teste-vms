@@ -38,6 +38,15 @@
   --chart-4: 12 90% 58%;
   --chart-5: 308 70% 55%;
   --radius: 0.75rem;
+
+  /* Surface colors for layered UI */
+  --surface-1: 0 0% 100%;
+  --surface-2: 210 40% 98%;
+  --surface-3: 210 40% 96%;
+
+  /* Gradient colors */
+  --gradient-start: 215 100% 34%;
+  --gradient-end: 184 65% 46%;
 }
 
 .dark {
@@ -65,6 +74,15 @@
   --chart-3: 42 85% 70%;
   --chart-4: 12 80% 65%;
   --chart-5: 308 70% 65%;
+
+  /* Dark mode surface colors */
+  --surface-1: 222 50% 9%;
+  --surface-2: 222 50% 12%;
+  --surface-3: 222 50% 15%;
+
+  /* Dark mode gradient colors */
+  --gradient-start: 215 100% 60%;
+  --gradient-end: 184 70% 50%;
 }
 
 @layer base {
@@ -87,5 +105,337 @@
 
   a:hover {
     @apply text-primary/80;
+  }
+
+  /* Better focus styles for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-background;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Glassmorphism effect */
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+    box-shadow: 0 8px 32px rgba(0, 40, 90, 0.12);
+  }
+
+  .glass-dark {
+    @apply bg-slate-900/70 backdrop-blur-md border border-white/10;
+    box-shadow: 0 8px 32px rgba(0, 40, 90, 0.12);
+  }
+
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--gradient-start)) 0%, hsl(var(--gradient-end)) 100%);
+  }
+
+  .gradient-primary-subtle {
+    background: linear-gradient(135deg, hsl(var(--gradient-start) / 0.1) 0%, hsl(var(--gradient-end) / 0.1) 100%);
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(135deg, hsl(var(--gradient-start)) 0%, hsl(var(--gradient-end)) 100%);
+  }
+
+  /* Gradient border */
+  .border-gradient {
+    position: relative;
+    background: hsl(var(--card));
+  }
+
+  .border-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, hsl(var(--gradient-start)) 0%, hsl(var(--gradient-end)) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-300 ease-smooth;
+  }
+
+  .card-hover:hover {
+    @apply -translate-y-1 shadow-glass-lg;
+  }
+
+  /* Button press effect */
+  .btn-press {
+    @apply transition-transform duration-150 active:scale-[0.98];
+  }
+
+  /* Shimmer loading effect */
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  .dark .shimmer::after {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+  }
+
+  /* Glow effect on hover */
+  .glow-hover {
+    @apply transition-shadow duration-300;
+  }
+
+  .glow-hover:hover {
+    @apply shadow-glow-primary;
+  }
+
+  /* Staggered animation delay utilities */
+  .stagger-1 { animation-delay: 50ms; }
+  .stagger-2 { animation-delay: 100ms; }
+  .stagger-3 { animation-delay: 150ms; }
+  .stagger-4 { animation-delay: 200ms; }
+  .stagger-5 { animation-delay: 250ms; }
+  .stagger-6 { animation-delay: 300ms; }
+  .stagger-7 { animation-delay: 350ms; }
+  .stagger-8 { animation-delay: 400ms; }
+
+  /* Notification badge pulse */
+  .notification-pulse {
+    @apply relative;
+  }
+
+  .notification-pulse::after {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-current animate-pulse-ring;
+  }
+
+  /* Bottom navigation styles */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-t border-slate-200/50 safe-area-bottom;
+  }
+
+  .dark .bottom-nav {
+    @apply bg-slate-900/90 border-slate-800/50;
+  }
+
+  /* Safe area for mobile devices */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* Bento grid layout */
+  .bento-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(120px, auto);
+  }
+
+  .bento-item-sm {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .bento-item-md {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .bento-item-lg {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .bento-item-xl {
+    grid-column: span 3;
+    grid-row: span 2;
+  }
+
+  .bento-item-full {
+    grid-column: span 4;
+    grid-row: span 1;
+  }
+
+  @media (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bento-item-xl,
+    .bento-item-full {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bento-item-sm,
+    .bento-item-md,
+    .bento-item-lg,
+    .bento-item-xl,
+    .bento-item-full {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+  }
+
+  /* Interactive card styles */
+  .interactive-card {
+    @apply relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all duration-300;
+  }
+
+  .interactive-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, hsl(var(--gradient-start) / 0.05) 0%, hsl(var(--gradient-end) / 0.05) 100%);
+  }
+
+  .interactive-card:hover {
+    @apply -translate-y-1 shadow-glass border-slate-200;
+  }
+
+  .interactive-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .dark .interactive-card {
+    @apply border-slate-800 bg-slate-900;
+  }
+
+  .dark .interactive-card:hover {
+    @apply border-slate-700;
+  }
+
+  /* Status indicator */
+  .status-dot {
+    @apply relative inline-flex h-2.5 w-2.5 rounded-full;
+  }
+
+  .status-dot.online {
+    @apply bg-emerald-500;
+  }
+
+  .status-dot.online::after {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-emerald-500 animate-ping;
+  }
+
+  .status-dot.offline {
+    @apply bg-rose-500;
+  }
+
+  .status-dot.warning {
+    @apply bg-amber-500;
+  }
+
+  .status-dot.warning::after {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-amber-500 animate-pulse;
+  }
+}
+
+@layer utilities {
+  /* Text balance for better readability */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
