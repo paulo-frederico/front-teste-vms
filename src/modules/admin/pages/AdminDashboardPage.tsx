@@ -1,13 +1,19 @@
 import { Activity, BellRing, Camera, HardDrive, Layers, Shield, Users } from 'lucide-react'
 
 import { EventsTable } from '@/modules/admin/dashboard/components/EventsTable'
-import { KpiCard } from '@/modules/admin/dashboard/components/KpiCard'
 import { StatusDistribution } from '@/modules/admin/dashboard/components/StatusDistribution'
 import { StorageDonutChart } from '@/modules/admin/dashboard/components/StorageDonutChart'
-import { TrendCard } from '@/modules/admin/dashboard/components/TrendCard'
 import { AdminMasterDashboard } from '@/modules/admin/dashboard/pages/AdminMasterDashboard'
 import { useAuth } from '@/contexts'
 import { SystemRole } from '@/modules/shared/types/auth'
+import {
+  BentoGrid,
+  BentoCard,
+  BentoCardHeader,
+  BentoCardContent,
+  BentoMetric,
+  BentoSparkline,
+} from '@/components/ui/bento-grid'
 
 const dashboardMock = {
   onlineCameras: 212,
@@ -89,37 +95,6 @@ export function AdminDashboardPage() {
     ? 'Visão geral consolidada de todos os clientes.'
     : `Visão geral do cliente: ${user.tenantName || 'Ambiente dedicado'}`
 
-  const kpis = [
-    {
-      title: 'Câmeras online',
-      value: String(dashboardMock.onlineCameras),
-      helper: `${dashboardMock.totalCameras} totais`,
-      trend: { value: 3.2, label: 'vs ontem' },
-      icon: <Camera className="h-5 w-5" />, 
-    },
-    {
-      title: 'Gravações ativas',
-      value: String(dashboardMock.recordingsActive),
-      helper: 'Streams monitorados',
-      trend: { value: 1.8, label: 'últ. 24h' },
-      icon: <HardDrive className="h-5 w-5" />, 
-    },
-    {
-      title: 'Eventos hoje',
-      value: String(dashboardMock.eventsToday),
-      helper: 'IA + sensores',
-      trend: { value: 5.1, label: 'vs média' },
-      icon: <Activity className="h-5 w-5" />, 
-    },
-    {
-      title: 'Clientes ativos',
-      value: String(dashboardMock.activeClients),
-      helper: 'Instâncias monitoradas',
-      trend: { value: 0.8, label: 'mês' },
-      icon: <Users className="h-5 w-5" />, 
-    },
-  ]
-
   const statusItems = [
     {
       label: 'Online',
@@ -148,88 +123,178 @@ export function AdminDashboardPage() {
   ]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Header */}
       <header className="rounded-3xl border border-slate-100 bg-white/90 px-6 py-6 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Painel principal</p>
         <h1 className="mt-2 text-3xl font-semibold text-slate-900">Dashboard</h1>
         <p className="text-sm text-slate-500">{subtitle}</p>
       </header>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {kpis.map((kpi) => (
-          <KpiCard key={kpi.title} {...kpi} />
-        ))}
-      </section>
+      {/* Bento Grid Layout */}
+      <BentoGrid columns={4} gap="md">
+        {/* KPI - Câmeras Online */}
+        <BentoCard size="sm" variant="elevated" delay={0}>
+          <BentoCardHeader
+            title="Câmeras online"
+            icon={<Camera className="h-5 w-5" />}
+          />
+          <BentoCardContent>
+            <BentoMetric
+              value={dashboardMock.onlineCameras}
+              label={`de ${dashboardMock.totalCameras} totais`}
+              trend={{ value: 3.2, label: 'vs ontem' }}
+            />
+          </BentoCardContent>
+        </BentoCard>
 
-      <section className="grid gap-6 lg:grid-cols-2">
-        <div className="space-y-6">
+        {/* KPI - Gravações Ativas */}
+        <BentoCard size="sm" variant="elevated" delay={1}>
+          <BentoCardHeader
+            title="Gravações ativas"
+            icon={<HardDrive className="h-5 w-5" />}
+          />
+          <BentoCardContent>
+            <BentoMetric
+              value={dashboardMock.recordingsActive}
+              label="Streams monitorados"
+              trend={{ value: 1.8, label: 'últ. 24h' }}
+            />
+          </BentoCardContent>
+        </BentoCard>
+
+        {/* KPI - Eventos Hoje */}
+        <BentoCard size="sm" variant="elevated" delay={2}>
+          <BentoCardHeader
+            title="Eventos hoje"
+            icon={<Activity className="h-5 w-5" />}
+          />
+          <BentoCardContent>
+            <BentoMetric
+              value={dashboardMock.eventsToday}
+              label="IA + sensores"
+              trend={{ value: 5.1, label: 'vs média' }}
+            />
+          </BentoCardContent>
+        </BentoCard>
+
+        {/* KPI - Clientes Ativos */}
+        <BentoCard size="sm" variant="elevated" delay={3}>
+          <BentoCardHeader
+            title="Clientes ativos"
+            icon={<Users className="h-5 w-5" />}
+          />
+          <BentoCardContent>
+            <BentoMetric
+              value={dashboardMock.activeClients}
+              label="Instâncias monitoradas"
+              trend={{ value: 0.8, label: 'mês' }}
+            />
+          </BentoCardContent>
+        </BentoCard>
+
+        {/* Storage Chart - Larger card */}
+        <BentoCard size="md" variant="glass" delay={4}>
           <StorageDonutChart usedGb={dashboardMock.storage.used} totalGb={dashboardMock.storage.total} />
+        </BentoCard>
+
+        {/* Status Distribution - Larger card */}
+        <BentoCard size="md" variant="default" delay={5}>
           <StatusDistribution items={statusItems} />
-          <TrendCard
+        </BentoCard>
+
+        {/* Events Table - Full width */}
+        <BentoCard size="full" variant="default" delay={6}>
+          <EventsTable events={dashboardMock.events} />
+        </BentoCard>
+
+        {/* Trend Card - IA Distribution */}
+        <BentoCard size="md" variant="gradient" delay={7}>
+          <BentoCardHeader
             title="Distribuição de IA"
             description="Maior incidência nas monitorias externas"
-            value="213 insights"
-            trendValue={6.2}
-            trendLabel="vs última semana"
-            dataPoints={[68, 72, 74, 80, 77, 85]}
             icon={<Shield className="h-5 w-5" />}
           />
-        </div>
+          <BentoCardContent className="flex items-end justify-between">
+            <BentoMetric
+              value="213"
+              label="insights"
+              trend={{ value: 6.2, label: 'vs semana' }}
+              size="lg"
+            />
+            <div className="h-16 w-32">
+              <BentoSparkline
+                data={[68, 72, 74, 80, 77, 85]}
+                color="hsl(var(--primary))"
+                height={64}
+              />
+            </div>
+          </BentoCardContent>
+        </BentoCard>
 
-        <div className="space-y-6">
-          <EventsTable events={dashboardMock.events} />
-          <TrendCard
+        {/* Trend Card - Câmeras Instáveis */}
+        <BentoCard size="sm" variant="default" delay={8}>
+          <BentoCardHeader
             title="Câmeras instáveis"
-            description="Monitoramento proativo de quedas"
-            value="6 unidades"
-            trendValue={-2.4}
-            trendLabel="vs ontem"
-            dataPoints={[9, 8, 7, 7, 6, 6]}
-            trendDirection="down"
             icon={<Layers className="h-5 w-5" />}
           />
-          <TrendCard
+          <BentoCardContent>
+            <BentoMetric
+              value="6"
+              label="unidades"
+              trend={{ value: -2.4, label: 'vs ontem' }}
+            />
+            <div className="mt-3 h-10">
+              <BentoSparkline
+                data={[9, 8, 7, 7, 6, 6]}
+                color="hsl(var(--destructive))"
+                height={40}
+              />
+            </div>
+          </BentoCardContent>
+        </BentoCard>
+
+        {/* Trend Card - Alertas */}
+        <BentoCard size="sm" variant="default" delay={9}>
+          <BentoCardHeader
             title="Alertas priorizados"
-            description="Fila de atendimento do SOC"
-            value="14 ativos"
-            trendValue={3.9}
-            trendLabel="nas últimas 4h"
-            dataPoints={[10, 11, 12, 13, 14, 15]}
             icon={<BellRing className="h-5 w-5" />}
           />
-        </div>
-      </section>
-
-      <section className="rounded-3xl border border-slate-100 bg-white/90 p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-semibold text-slate-900">Distribuição de IA</p>
-            <p className="text-xs text-slate-500">Modelos aplicados nos últimos 7 dias</p>
-          </div>
-        </div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {dashboardMock.aiDistribution.map((item) => (
-            <div
-              key={item.label}
-              className="rounded-2xl border border-slate-100 bg-white/80 p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-slate-900">{item.label}</p>
-                <Shield className="h-4 w-4 text-slate-300" />
-              </div>
-              <p className="mt-4 text-2xl font-semibold text-slate-900">{item.value}</p>
-              <div className="mt-2 flex items-center gap-1 text-xs font-medium text-slate-500">
-                {item.direction === 'down' ? (
-                  <span className="text-rose-500">↓ {Math.abs(item.trend)}%</span>
-                ) : (
-                  <span className="text-emerald-500">↑ {item.trend}%</span>
-                )}
-                <span className="text-slate-400">vs semana</span>
-              </div>
+          <BentoCardContent>
+            <BentoMetric
+              value="14"
+              label="ativos"
+              trend={{ value: 3.9, label: 'nas últimas 4h' }}
+            />
+            <div className="mt-3 h-10">
+              <BentoSparkline
+                data={[10, 11, 12, 13, 14, 15]}
+                color="hsl(var(--warning))"
+                height={40}
+              />
             </div>
-          ))}
-        </div>
-      </section>
+          </BentoCardContent>
+        </BentoCard>
+
+        {/* AI Distribution Cards */}
+        {dashboardMock.aiDistribution.map((item, index) => (
+          <BentoCard key={item.label} size="sm" variant="elevated" delay={10 + index}>
+            <BentoCardHeader
+              title={item.label}
+              icon={<Shield className="h-4 w-4" />}
+            />
+            <BentoCardContent>
+              <BentoMetric
+                value={item.value}
+                trend={{
+                  value: item.direction === 'down' ? -Math.abs(item.trend) : item.trend,
+                  label: 'vs semana',
+                }}
+              />
+            </BentoCardContent>
+          </BentoCard>
+        ))}
+      </BentoGrid>
     </div>
   )
 }
