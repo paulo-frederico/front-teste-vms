@@ -13,20 +13,12 @@ import type { AdminLocation } from '@/modules/admin/locations/mockLocations'
 import { buildLocationKpiStats } from '@/modules/admin/locations/mockLocations'
 type LocationsFixturesModule = typeof import('@/fixtures')
 
-let loadLocationsFixtures: () => Promise<LocationsFixturesModule>
-
-if (import.meta.env.DEV) {
-  let locationsFixturesPromise: Promise<LocationsFixturesModule> | null = null
-  loadLocationsFixtures = async () => {
-    if (!locationsFixturesPromise) {
-      locationsFixturesPromise = import('@/fixtures')
-    }
-    return locationsFixturesPromise
+let locationsFixturesPromise: Promise<LocationsFixturesModule> | null = null
+const loadLocationsFixtures = async () => {
+  if (!locationsFixturesPromise) {
+    locationsFixturesPromise = import('@/fixtures')
   }
-} else {
-  loadLocationsFixtures = async () => {
-    throw new Error('Fixtures não estão disponíveis em produção')
-  }
+  return locationsFixturesPromise
 }
 
 export function AdminLocationsPage() {
@@ -45,10 +37,6 @@ export function AdminLocationsPage() {
   const [cameras, setCameras] = useState<AdminCamera[]>([])
 
   useEffect(() => {
-    if (import.meta.env.PROD) {
-      return
-    }
-
     let isMounted = true
 
     loadLocationsFixtures()

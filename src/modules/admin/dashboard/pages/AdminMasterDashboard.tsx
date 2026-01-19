@@ -16,25 +16,17 @@ import {
 } from 'recharts'
 import { AlertTriangle, Camera, HardDrive, Server, TrendingUp, Users } from 'lucide-react'
 
-import { dashboardService, type AlertaCritico, type ClientesPorPlano, type DashboardMetrics, type EventosIA, type ServidorIA, type TopCliente } from '@/services/api/dashboard.service'
+import type { AlertaCritico, ClientesPorPlano, DashboardMetrics, EventosIA, ServidorIA, TopCliente } from '@/services/api/dashboard.service'
 
 type DashboardFixturesModule = typeof import('@/fixtures/dashboard.fixture')
 type ChartDatum = Record<string, string | number>
 
-let loadDashboardFixtures: () => Promise<DashboardFixturesModule>
-
-if (import.meta.env.DEV) {
-  let dashboardFixturesPromise: Promise<DashboardFixturesModule> | null = null
-  loadDashboardFixtures = async () => {
-    if (!dashboardFixturesPromise) {
-      dashboardFixturesPromise = import('@/fixtures/dashboard.fixture')
-    }
-    return dashboardFixturesPromise
+let dashboardFixturesPromise: Promise<DashboardFixturesModule> | null = null
+const loadDashboardFixtures = async () => {
+  if (!dashboardFixturesPromise) {
+    dashboardFixturesPromise = import('@/fixtures/dashboard.fixture')
   }
-} else {
-  loadDashboardFixtures = async () => {
-    throw new Error('Fixtures não estão disponíveis em produção')
-  }
+  return dashboardFixturesPromise
 }
 
 export const AdminMasterDashboard = () => {
@@ -44,9 +36,6 @@ export const AdminMasterDashboard = () => {
   const { data: metricas } = useQuery<DashboardMetrics>({
     queryKey: ['dashboard-metricas'],
     queryFn: async () => {
-      if (import.meta.env.PROD) {
-        return dashboardService.obterMetricas()
-      }
       const { mockDashboardMetrics } = await loadDashboardFixtures()
       return mockDashboardMetrics
     },
@@ -56,9 +45,6 @@ export const AdminMasterDashboard = () => {
   const { data: clientesPorPlano } = useQuery<ClientesPorPlano[]>({
     queryKey: ['dashboard-clientes-plano'],
     queryFn: async () => {
-      if (import.meta.env.PROD) {
-        return dashboardService.obterClientesPorPlano()
-      }
       const { mockClientesPorPlano } = await loadDashboardFixtures()
       return mockClientesPorPlano
     },
@@ -68,9 +54,6 @@ export const AdminMasterDashboard = () => {
   const { data: eventosIA } = useQuery<EventosIA[]>({
     queryKey: ['dashboard-eventos-ia'],
     queryFn: async () => {
-      if (import.meta.env.PROD) {
-        return dashboardService.obterEventosIA(7)
-      }
       const { mockEventosIA } = await loadDashboardFixtures()
       return mockEventosIA
     },
@@ -80,9 +63,6 @@ export const AdminMasterDashboard = () => {
   const { data: topClientes } = useQuery<TopCliente[]>({
     queryKey: ['dashboard-top-clientes'],
     queryFn: async () => {
-      if (import.meta.env.PROD) {
-        return dashboardService.obterTopClientes(5)
-      }
       const { mockTopClientes } = await loadDashboardFixtures()
       return mockTopClientes
     },
@@ -92,9 +72,6 @@ export const AdminMasterDashboard = () => {
   const { data: alertasCriticos } = useQuery<AlertaCritico[]>({
     queryKey: ['dashboard-alertas'],
     queryFn: async () => {
-      if (import.meta.env.PROD) {
-        return dashboardService.obterAlertasCriticos()
-      }
       const { mockAlertasCriticos } = await loadDashboardFixtures()
       return mockAlertasCriticos
     },
@@ -104,9 +81,6 @@ export const AdminMasterDashboard = () => {
   const { data: servidoresIA } = useQuery<ServidorIA[]>({
     queryKey: ['dashboard-servidores'],
     queryFn: async () => {
-      if (import.meta.env.PROD) {
-        return dashboardService.obterServidoresIA()
-      }
       const { mockServidoresIA } = await loadDashboardFixtures()
       return mockServidoresIA
     },

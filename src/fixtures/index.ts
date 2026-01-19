@@ -1,11 +1,7 @@
 /**
- * ⚠️ FIXTURES - APENAS DESENVOLVIMENTO
- * Este arquivo NÃO deve ser importado em produção
+ * FIXTURES - Dados de demonstração
+ * Usado para demonstração no GitHub Pages
  */
-
-if (import.meta.env.PROD) {
-  throw new Error('❌ Fixtures não devem ser importados em produção!')
-}
 
 // Re-exportar todos os fixtures
 export { mockTenants } from './tenants.fixture'

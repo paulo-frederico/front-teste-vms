@@ -16,20 +16,12 @@ import { AuditSeverityBadge } from '@/modules/admin/audit/components/AuditSeveri
 import type { SystemRole } from '@/modules/shared/types/auth'
 type AuditFixturesModule = typeof import('@/fixtures')
 
-let loadAuditFixtures: () => Promise<AuditFixturesModule>
-
-if (import.meta.env.DEV) {
-  let auditFixturesPromise: Promise<AuditFixturesModule> | null = null
-  loadAuditFixtures = async () => {
-    if (!auditFixturesPromise) {
-      auditFixturesPromise = import('@/fixtures')
-    }
-    return auditFixturesPromise
+let auditFixturesPromise: Promise<AuditFixturesModule> | null = null
+const loadAuditFixtures = async () => {
+  if (!auditFixturesPromise) {
+    auditFixturesPromise = import('@/fixtures')
   }
-} else {
-  loadAuditFixtures = async () => {
-    throw new Error('Fixtures não estão disponíveis em produção')
-  }
+  return auditFixturesPromise
 }
 
 const DATE_RANGE_MS: Record<Exclude<AuditDateRange, 'custom'>, number> = {
@@ -51,10 +43,6 @@ export function AdminAuditPage() {
   const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([])
 
   useEffect(() => {
-    if (import.meta.env.PROD) {
-      return
-    }
-
     let isMounted = true
 
     loadAuditFixtures()

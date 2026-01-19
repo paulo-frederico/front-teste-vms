@@ -19,20 +19,12 @@ import {
 import type { AlertRule } from '@/modules/admin/ai-alerts/mockAlertRules'
 type AiAlertsFixturesModule = typeof import('@/fixtures')
 
-let loadAiAlertsFixtures: () => Promise<AiAlertsFixturesModule>
-
-if (import.meta.env.DEV) {
-  let aiAlertsFixturesPromise: Promise<AiAlertsFixturesModule> | null = null
-  loadAiAlertsFixtures = async () => {
-    if (!aiAlertsFixturesPromise) {
-      aiAlertsFixturesPromise = import('@/fixtures')
-    }
-    return aiAlertsFixturesPromise
+let aiAlertsFixturesPromise: Promise<AiAlertsFixturesModule> | null = null
+const loadAiAlertsFixtures = async () => {
+  if (!aiAlertsFixturesPromise) {
+    aiAlertsFixturesPromise = import('@/fixtures')
   }
-} else {
-  loadAiAlertsFixtures = async () => {
-    throw new Error('Fixtures não estão disponíveis em produção')
-  }
+  return aiAlertsFixturesPromise
 }
 
 export function AdminAiAlertsPage() {
@@ -40,10 +32,6 @@ export function AdminAiAlertsPage() {
   const [alertRules, setAlertRules] = useState<AlertRule[]>([])
 
   useEffect(() => {
-    if (import.meta.env.PROD) {
-      return
-    }
-
     let isMounted = true
 
     loadAiAlertsFixtures()
