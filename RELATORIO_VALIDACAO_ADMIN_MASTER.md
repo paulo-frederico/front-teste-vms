@@ -970,6 +970,5 @@ O **Admin Master do VMS Unifique** está em estágio funcional de **Protótipo (
 
 ---
 
-**Relatório gerado em:** 11/12/2025  
-**Responsável:** GitHub Copilot (Claude Sonnet 4.5)  
+**Relatório gerado em:** 11/12/2025
 **Versão do Sistema:** 0.1.0
