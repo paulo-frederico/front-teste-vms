@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cameraSchema, defaultCameraValues, generateStreamUrl } from '@/schemas/camera.schema';
@@ -29,7 +29,12 @@ import {
 
 export const CameraEditPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams<{ id: string }>();
+
+  // Detecta se está no contexto de técnico para redirecionar corretamente
+  const isTechnicianContext = location.pathname.startsWith('/technician');
+  const camerasListPath = isTechnicianContext ? '/technician/cameras' : '/admin/cameras';
 
   const { data: camera, isLoading } = useCamera(id!);
   const updateMutation = useUpdateCamera();
@@ -133,7 +138,7 @@ export const CameraEditPage: React.FC = () => {
           retentionDays: data.retentionDays
         }
       });
-      navigate('/admin/cameras');
+      navigate(camerasListPath);
     } catch (error) {
       console.error('Erro ao atualizar câmera:', error);
     }
@@ -249,7 +254,7 @@ export const CameraEditPage: React.FC = () => {
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
           <h2 className="text-xl font-semibold text-red-900 mb-2">Câmera não encontrada</h2>
           <p className="text-red-700 mb-4">A câmera solicitada não foi encontrada no sistema.</p>
-          <Button onClick={() => navigate('/admin/cameras')}>
+          <Button onClick={() => navigate(camerasListPath)}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar para a lista
           </Button>
@@ -262,7 +267,7 @@ export const CameraEditPage: React.FC = () => {
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Button variant="ghost" size="sm" onClick={() => navigate('/admin/cameras')}>
+        <Button variant="ghost" size="sm" onClick={() => navigate(camerasListPath)}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           Voltar
         </Button>
@@ -344,7 +349,7 @@ export const CameraEditPage: React.FC = () => {
 
             {/* Ações */}
             <div className="flex justify-end gap-3 pt-6 border-t">
-              <Button type="button" variant="outline" onClick={() => navigate('/admin/cameras')}>
+              <Button type="button" variant="outline" onClick={() => navigate(camerasListPath)}>
                 Cancelar
               </Button>
               <LoadingButton type="submit" isLoading={updateMutation.isPending}>
@@ -428,7 +433,7 @@ export const CameraEditPage: React.FC = () => {
 
             {/* Ações */}
             <div className="flex justify-end gap-3 pt-6 border-t">
-              <Button type="button" variant="outline" onClick={() => navigate('/admin/cameras')}>
+              <Button type="button" variant="outline" onClick={() => navigate(camerasListPath)}>
                 Cancelar
               </Button>
               <LoadingButton type="submit" isLoading={updateMutation.isPending}>
@@ -480,7 +485,7 @@ export const CameraEditPage: React.FC = () => {
 
             {/* Ações */}
             <div className="flex justify-end gap-3 pt-6 border-t">
-              <Button type="button" variant="outline" onClick={() => navigate('/admin/cameras')}>
+              <Button type="button" variant="outline" onClick={() => navigate(camerasListPath)}>
                 Cancelar
               </Button>
               <LoadingButton type="submit" isLoading={updateMutation.isPending}>
@@ -559,7 +564,7 @@ export const CameraEditPage: React.FC = () => {
 
             {/* Ações */}
             <div className="flex justify-end gap-3 pt-6 border-t">
-              <Button type="button" variant="outline" onClick={() => navigate('/admin/cameras')}>
+              <Button type="button" variant="outline" onClick={() => navigate(camerasListPath)}>
                 Cancelar
               </Button>
               <LoadingButton type="submit" isLoading={updateMutation.isPending}>

@@ -13,6 +13,7 @@ import {
   Signal,
   Video,
   Wrench,
+  Settings,
 } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -28,94 +29,46 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
-// Mock data
+// Mock data - IDs devem corresponder ao cameras.service.ts
 const mockCameras = [
   {
-    id: 'CAM-001',
-    nome: 'Entrada Principal',
-    cliente: 'Hospital Vida Plena',
-    local: 'Prédio Principal',
-    modelo: 'Hikvision DS-2CD2143G2-I',
+    id: '1',
+    nome: 'Câmera Entrada Principal',
+    cliente: 'Empresa ABC Ltda',
+    local: 'Matriz São Paulo',
+    modelo: 'Hikvision DS-2CD2143G0-I',
+    ip: '192.168.1.100',
+    status: 'online',
+    qualidade: '1080p',
+    fps: 30,
+    ultimaConexao: '2024-01-14T10:30:00',
+  },
+  {
+    id: '2',
+    nome: 'Câmera Estacionamento',
+    cliente: 'Empresa ABC Ltda',
+    local: 'Matriz São Paulo',
+    modelo: 'Dahua SD59230U-HNI',
     ip: '192.168.1.101',
     status: 'online',
     qualidade: '1080p',
-    fps: 30,
-    ultimaConexao: '2024-01-14T10:30:00',
-  },
-  {
-    id: 'CAM-002',
-    nome: 'Recepção',
-    cliente: 'Hospital Vida Plena',
-    local: 'Prédio Principal',
-    modelo: 'Hikvision DS-2CD2143G2-I',
-    ip: '192.168.1.102',
-    status: 'online',
-    qualidade: '1080p',
-    fps: 30,
-    ultimaConexao: '2024-01-14T10:30:00',
-  },
-  {
-    id: 'CAM-003',
-    nome: 'Corredor UTI',
-    cliente: 'Hospital Vida Plena',
-    local: 'UTI Adulto',
-    modelo: 'Dahua IPC-HDW2431T-AS',
-    ip: '192.168.1.103',
-    status: 'offline',
-    qualidade: '1080p',
     fps: 25,
+    ultimaConexao: '2024-01-14T10:30:00',
+  },
+  {
+    id: '3',
+    nome: 'Câmera Recepção',
+    cliente: 'Condomínio XYZ',
+    local: 'Bloco A',
+    modelo: 'Intelbras VIP 1230 D',
+    ip: '192.168.2.100',
+    status: 'offline',
+    qualidade: '720p',
+    fps: 20,
     ultimaConexao: '2024-01-14T08:00:00',
   },
   {
-    id: 'CAM-004',
-    nome: 'Estacionamento',
-    cliente: 'Hospital Vida Plena',
-    local: 'Área Externa',
-    modelo: 'Intelbras VIP 5280 B',
-    ip: '192.168.1.104',
-    status: 'online',
-    qualidade: '4K',
-    fps: 15,
-    ultimaConexao: '2024-01-14T10:30:00',
-  },
-  {
-    id: 'CAM-005',
-    nome: 'Emergência',
-    cliente: 'Hospital Vida Plena',
-    local: 'Pronto Socorro',
-    modelo: 'Hikvision DS-2CD2143G2-I',
-    ip: '192.168.1.105',
-    status: 'online',
-    qualidade: '1080p',
-    fps: 30,
-    ultimaConexao: '2024-01-14T10:30:00',
-  },
-  {
-    id: 'CAM-015',
-    nome: 'Estacionamento A',
-    cliente: 'Retail Park Brasil',
-    local: 'Shopping Center',
-    modelo: 'Intelbras VIP 3230 B',
-    ip: '192.168.2.15',
-    status: 'online',
-    qualidade: '1080p',
-    fps: 25,
-    ultimaConexao: '2024-01-14T10:30:00',
-  },
-  {
-    id: 'CAM-016',
-    nome: 'Estacionamento B',
-    cliente: 'Retail Park Brasil',
-    local: 'Shopping Center',
-    modelo: 'Intelbras VIP 3230 B',
-    ip: '192.168.2.16',
-    status: 'online',
-    qualidade: '1080p',
-    fps: 25,
-    ultimaConexao: '2024-01-14T10:30:00',
-  },
-  {
-    id: 'CAM-017',
+    id: '1',
     nome: 'Entrada Loja',
     cliente: 'Retail Park Brasil',
     local: 'Shopping Center',
@@ -291,12 +244,17 @@ export function TechnicianCamerasPage() {
                     {statusLabels[camera.status as keyof typeof statusLabels]}
                   </span>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                      <Link to="/technician/live">
+                    <Button variant="ghost" size="icon" className="h-8 w-8" title="Ao vivo" asChild>
+                      <Link to={`/technician/live?camera=${camera.id}`}>
                         <Video className="h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8" title="Editar câmera" asChild>
+                      <Link to={`/technician/cameras/${camera.id}/edit`}>
+                        <Settings className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8" title="Diagnóstico" asChild>
                       <Link to="/technician/diagnostics">
                         <Wrench className="h-4 w-4" />
                       </Link>

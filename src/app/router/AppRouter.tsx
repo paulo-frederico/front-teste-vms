@@ -241,6 +241,8 @@ export function AppRoutes() {
         <Route path="tickets" element={<TicketsPage />} />
         <Route path="access" element={<MyAccessPage />} />
         <Route path="cameras" element={<TechnicianCamerasPage />} />
+        <Route path="cameras/:id" element={<CameraDetailPage />} />
+        <Route path="cameras/:id/edit" element={<CameraEditPage />} />
         <Route path="live" element={<VideoWallPage />} />
         <Route path="diagnostics" element={<TechnicianDiagnosticsPage />} />
         <Route path="history" element={<HistoryPage />} />

@@ -16,6 +16,9 @@ import {
   Video,
   Shield,
   Info,
+  Settings,
+  Eye,
+  RotateCcw,
 } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -38,11 +41,9 @@ const mockAcessos = [
     expiraEm: '2024-01-14T18:00:00',
     motivo: 'Manutenção preventiva das câmeras do setor de emergência',
     cameras: [
-      { id: 'CAM-001', nome: 'Entrada Principal', status: 'online' },
-      { id: 'CAM-002', nome: 'Recepção', status: 'online' },
-      { id: 'CAM-003', nome: 'Corredor UTI', status: 'offline' },
-      { id: 'CAM-004', nome: 'Estacionamento', status: 'online' },
-      { id: 'CAM-005', nome: 'Emergência', status: 'online' },
+      { id: '1', nome: 'Entrada Principal', status: 'online' },
+      { id: '2', nome: 'Estacionamento', status: 'online' },
+      { id: '3', nome: 'Recepção', status: 'offline' },
     ],
     sites: ['Prédio Principal', 'Anexo'],
     permissoes: ['visualizar', 'configurar', 'reiniciar'],
@@ -60,9 +61,8 @@ const mockAcessos = [
     expiraEm: '2024-01-15T12:00:00',
     motivo: 'Ajuste de foco e posicionamento das câmeras do estacionamento',
     cameras: [
-      { id: 'CAM-015', nome: 'Estacionamento A', status: 'online' },
-      { id: 'CAM-016', nome: 'Estacionamento B', status: 'online' },
-      { id: 'CAM-017', nome: 'Entrada Loja', status: 'online' },
+      { id: '1', nome: 'Estacionamento A', status: 'online' },
+      { id: '2', nome: 'Estacionamento B', status: 'online' },
     ],
     sites: ['Shopping Center'],
     permissoes: ['visualizar', 'configurar'],
@@ -253,7 +253,7 @@ export function MyAccessPage() {
                     {isExpanded && (
                       <div className="mt-2 space-y-2 pl-4 border-l-2 border-muted">
                         {acesso.cameras.map((camera) => (
-                          <div key={camera.id} className="flex items-center justify-between text-sm">
+                          <div key={camera.id} className="flex items-center justify-between text-sm py-1.5 hover:bg-muted/50 rounded px-2 -mx-2">
                             <div className="flex items-center gap-2">
                               <span className={cn(
                                 'h-2 w-2 rounded-full',
@@ -262,12 +262,53 @@ export function MyAccessPage() {
                               <span>{camera.nome}</span>
                               <span className="text-xs text-muted-foreground">({camera.id})</span>
                             </div>
-                            <Badge variant="outline" className={cn(
-                              'text-[10px]',
-                              camera.status === 'online' ? 'text-green-700' : 'text-red-700'
-                            )}>
-                              {camera.status === 'online' ? 'Online' : 'Offline'}
-                            </Badge>
+                            <div className="flex items-center gap-1">
+                              <Badge variant="outline" className={cn(
+                                'text-[10px]',
+                                camera.status === 'online' ? 'text-green-700' : 'text-red-700'
+                              )}>
+                                {camera.status === 'online' ? 'Online' : 'Offline'}
+                              </Badge>
+                              {/* Ações rápidas por câmera */}
+                              <div className="flex items-center gap-0.5 ml-2">
+                                {acesso.permissoes.includes('visualizar') && (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                    title="Ver ao vivo"
+                                    asChild
+                                  >
+                                    <Link to={`/technician/live?camera=${camera.id}`}>
+                                      <Eye className="h-3.5 w-3.5" />
+                                    </Link>
+                                  </Button>
+                                )}
+                                {acesso.permissoes.includes('configurar') && (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                    title="Configurar câmera"
+                                    asChild
+                                  >
+                                    <Link to={`/technician/cameras/${camera.id}/edit`}>
+                                      <Settings className="h-3.5 w-3.5" />
+                                    </Link>
+                                  </Button>
+                                )}
+                                {acesso.permissoes.includes('reiniciar') && (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                    title="Reiniciar câmera"
+                                  >
+                                    <RotateCcw className="h-3.5 w-3.5" />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -281,6 +322,14 @@ export function MyAccessPage() {
                         Diagnóstico
                       </Link>
                     </Button>
+                    {acesso.permissoes.includes('configurar') && (
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to={`/technician/cameras?client=${acesso.tenantId}`}>
+                          <Settings className="h-4 w-4 mr-2" />
+                          Configurar Câmeras
+                        </Link>
+                      </Button>
+                    )}
                     <Button size="sm" asChild>
                       <Link to="/technician/live">
                         <Video className="h-4 w-4 mr-2" />
