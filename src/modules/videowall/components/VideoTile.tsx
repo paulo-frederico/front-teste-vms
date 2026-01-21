@@ -19,6 +19,7 @@ import {
   Loader2,
   Circle,
   Plus,
+  Settings,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -42,7 +43,9 @@ interface VideoTileProps {
   onPinToggle: () => void
   onReconnect: () => void
   onSwapCamera: () => void
+  onConfigure?: () => void
   isMaximized?: boolean
+  canConfigure?: boolean
 }
 
 export const VideoTile = memo(function VideoTile({
@@ -54,7 +57,9 @@ export const VideoTile = memo(function VideoTile({
   onPinToggle,
   onReconnect,
   onSwapCamera,
+  onConfigure,
   isMaximized = false,
+  canConfigure = false,
 }: VideoTileProps) {
   const [showControls, setShowControls] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
@@ -169,7 +174,9 @@ export const VideoTile = memo(function VideoTile({
             onSwapCamera={onSwapCamera}
             onMaximize={onMaximize}
             onPin={onPinToggle}
+            onConfigure={onConfigure}
             isPinned={tile.isPinned}
+            canConfigure={canConfigure}
           />
         </div>
 
@@ -203,7 +210,9 @@ export const VideoTile = memo(function VideoTile({
             onSwapCamera={onSwapCamera}
             onMaximize={onMaximize}
             onPin={onPinToggle}
+            onConfigure={onConfigure}
             isPinned={tile.isPinned}
+            canConfigure={canConfigure}
           />
         </div>
         <div className="flex-1 flex flex-col items-center justify-center text-white/70">
@@ -291,7 +300,9 @@ export const VideoTile = memo(function VideoTile({
                   onSwapCamera={onSwapCamera}
                   onMaximize={onMaximize}
                   onPin={onPinToggle}
+                  onConfigure={onConfigure}
                   isPinned={tile.isPinned}
+                  canConfigure={canConfigure}
                 />
               </div>
             </div>
@@ -395,13 +406,17 @@ const TileMenu = memo(function TileMenu({
   onSwapCamera,
   onMaximize,
   onPin,
+  onConfigure,
   isPinned,
+  canConfigure = false,
 }: {
   onRemove: () => void
   onSwapCamera: () => void
   onMaximize: () => void
   onPin: () => void
+  onConfigure?: () => void
   isPinned: boolean
+  canConfigure?: boolean
 }) {
   return (
     <DropdownMenu>
@@ -415,7 +430,16 @@ const TileMenu = memo(function TileMenu({
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40">
+      <DropdownMenuContent align="end" className="w-44">
+        {canConfigure && onConfigure && (
+          <>
+            <DropdownMenuItem onClick={onConfigure}>
+              <Settings className="h-4 w-4 mr-2" />
+              Configurar
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem onClick={onSwapCamera}>
           <Camera className="h-4 w-4 mr-2" />
           Trocar câmera

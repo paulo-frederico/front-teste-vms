@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Grid3X3,
   Maximize,
@@ -62,6 +63,8 @@ const PRESET_OPTIONS: { value: LayoutPreset; label: string; tiles: number }[] = 
 ]
 
 export function VideoWallPage() {
+  const navigate = useNavigate()
+
   // LGPD: Filtrar por tenant do usuário logado (clientes só veem suas câmeras)
   const tenantFilter = useTenantFilter()
 
@@ -344,6 +347,11 @@ export function VideoWallPage() {
     console.log('Trocar câmera do tile:', tilePosition)
   }, [])
 
+  const handleConfigureCamera = useCallback((cameraId: string) => {
+    // Navega para a página de edição da câmera (sempre usa a rota admin)
+    navigate(`/admin/cameras/${cameraId}/edit`)
+  }, [navigate])
+
   // Handle drag & drop
   const handleDrop = useCallback(
     async (e: React.DragEvent, tilePosition: number) => {
@@ -592,6 +600,8 @@ export function VideoWallPage() {
                       onPinToggle={() => handleTilePinToggle(tile.position)}
                       onReconnect={() => handleTileReconnect(tile.position)}
                       onSwapCamera={() => handleSwapCamera(tile.position)}
+                      onConfigure={camera ? () => handleConfigureCamera(camera.id) : undefined}
+                      canConfigure={!!camera}
                       isMaximized={maximizedTile === tile.position}
                     />
                   </div>
